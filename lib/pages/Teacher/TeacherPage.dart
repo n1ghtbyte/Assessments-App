@@ -83,7 +83,7 @@ class _TeacherPageState extends State<TeacherPage> {
                       enabled: data['DONE'] == false ? true : false,
                       title: Text('${data['Type']} Assessment'),
                       subtitle: Text(
-                          "Class Name:${data['ClassName'].toString()}\nCount:${data['Count'].toString()}/${data['Students'].values.toList().length}\nTarget:${data['Target'].toString()}"),
+                          "Class Name:${data['ClassName'].toString()}\nCount:${data['Count'].toString()}/${data['Students'].values.toList().length}\nNumber:${data['currentNumber'].toString()}"),
                     );
                   }).toList(),
                 ),
