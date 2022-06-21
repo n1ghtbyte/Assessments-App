@@ -26,7 +26,7 @@ class _AssessmentsCreateTeacherPageState
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
 
   String? _iD;
-  Future<void> addAssessment(Map X, Map comp) {
+  Future<void> addAssessment(Map X, Map comp, var curr) {
     if (widget.passedStudName.contains("@")) {
       return assessments.add({
         'ClassId': widget.passedClassName,
@@ -57,6 +57,7 @@ class _AssessmentsCreateTeacherPageState
         'Students': X,
         'DONE': false,
         'Count': 0,
+        'currentNumber': curr,
         'documentID': _iD
       }).then((value) {
         print(value.id);
@@ -107,6 +108,7 @@ class _AssessmentsCreateTeacherPageState
           comp.entries.forEach((e) => list.add(e.key));
           var studsList = data['StudentList'];
           var resultMap = {for (var v in studsList) v: false};
+
           return Scaffold(
             appBar: AppBar(
               title: Text('Generate Assessment'),
@@ -273,32 +275,44 @@ class _AssessmentsCreateTeacherPageState
                       primary: Color(0xFF29D09E),
                     ),
                     onPressed: () {
-                      _competencesAssess = [];
-                      //Navigator.pop(context);
-                      if (id == 3) {
-                        _typeAssess = "Formative";
-                        for (int i = 0; i < list.length; i++) {
-                          if (isChecked[i] == true) {
-                            _competencesAssess.add(list[i]);
+                      if (data['prevAssess'] == data['currAssess']) {
+                        FirebaseFirestore.instance
+                            .collection('classes')
+                            .doc(widget.passedClassName)
+                            .update({'currAssess': FieldValue.increment(1)});
+                        _competencesAssess = [];
+                        //Navigator.pop(context);
+                        if (id == 3) {
+                          _typeAssess = "Formative";
+                          for (int i = 0; i < list.length; i++) {
+                            if (isChecked[i] == true) {
+                              _competencesAssess.add(list[i]);
+                            }
                           }
-                        }
 
-                        Map<String, dynamic> competencesFirebase = {};
-                        for (var x in widget.passedCompetences.entries) {
-                          if (_competencesAssess.contains(x.key.toString()) ==
-                              true) {
-                            competencesFirebase[x.key] = x.value;
+                          Map<String, dynamic> competencesFirebase = {};
+                          for (var x in widget.passedCompetences.entries) {
+                            if (_competencesAssess.contains(x.key.toString()) ==
+                                true) {
+                              competencesFirebase[x.key] = x.value;
+                            }
                           }
+                          addAssessment(resultMap, competencesFirebase,
+                              data['currAssess']);
+                          final snackBar = SnackBar(
+                              content: Text(
+                                  'The assessment has been issued to this Class :)'));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          Navigator.pop(context);
+                        } else {
+                          final snackBar =
+                              SnackBar(content: Text('Still in dev.'));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
-                        addAssessment(resultMap, competencesFirebase);
+                      } else {
                         final snackBar = SnackBar(
                             content: Text(
-                                'The assessment has been issued to this Class :)'));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        Navigator.pop(context);
-                      } else {
-                        final snackBar =
-                            SnackBar(content: Text('Still in dev.'));
+                                'You must end the assessment that you assigned to this class first!'));
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       }
                     },
