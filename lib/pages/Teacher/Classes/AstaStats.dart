@@ -3,9 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:assessments_app/model/FormativeData.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class AstaStats extends StatefulWidget {
   final String passedStudentName;
@@ -77,7 +74,7 @@ class _AstaStatsState extends State<AstaStats> {
             );
           }
           //print(snapshot.data?.docs[0].data());
-          var _indicators;
+          //var _indicators;
           for (var i = 0; i < snapshot.data!.docs.length.toInt(); i++) {
             Map<String, dynamic> foo =
                 snapshot.data?.docs[i].data()! as Map<String, dynamic>;
