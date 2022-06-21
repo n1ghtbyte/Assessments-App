@@ -1,4 +1,5 @@
 import 'package:assessments_app/pages/Teacher/Assessments/AssessmentsCreateTeacherPage.dart';
+import 'package:assessments_app/pages/Teacher/Classes/ReviewAssessmentsClass.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AddStudentClass.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AstaStats.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassSetup.dart';
@@ -75,9 +76,10 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                     onSelected: (value) {
                       switch (value) {
                         case _MenuValues.ReviewAssess:
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (c) =>
-                                  AddStudentToClass(widget.passedClassName)));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ReviewAssessments()));
                           break;
                         case _MenuValues.AddStuddent:
                           Navigator.of(context).push(MaterialPageRoute(
@@ -180,9 +182,11 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                         onSelected: (value) {
                           switch (value) {
                             case _MenuValues.ReviewAssess:
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (c) => AddStudentToClass(
-                                      widget.passedClassName)));
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ReviewAssessments()),
+                              );
                               break;
                             case _MenuValues.AddStuddent:
                               Navigator.of(context).push(MaterialPageRoute(
