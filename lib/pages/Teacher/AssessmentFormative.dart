@@ -65,23 +65,6 @@ class _AssessmentFormativeState extends State<AssessmentFormative> {
   }
 
   Widget build(BuildContext context) {
-    // Future<Map> getDescriptors(List<String> _x) async {
-    //   Map mapao = {};
-    //   for (var i in _x) {
-    //     var docSnapshot = await FirebaseFirestore.instance
-    //         .collection("Competences")
-    //         .doc(i.toString())
-    //         .get();
-    //     if (docSnapshot.exists) {
-    //       for (var x in docSnapshot.data()!.entries) {
-    //         mapao[x.key.toString()] = x.value;
-    //       }
-    //     }
-    //   }
-    //   //print(mapao);
-    //   return mapao;
-    // }
-
     return FutureBuilder<DocumentSnapshot>(
         future: _assess.doc(widget.passedAssessmentIdName).get(),
         builder:
@@ -99,9 +82,7 @@ class _AssessmentFormativeState extends State<AssessmentFormative> {
           }
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
-          if (data['DONE'] == true) {
-            Navigator.pop(context);
-          }
+
           return StreamBuilder<QuerySnapshot>(
               stream: _stream,
               builder:
@@ -229,12 +210,20 @@ class _AssessmentFormativeState extends State<AssessmentFormative> {
                         }
                         updateAssessment(
                             widget.passedAssessmentIdName, studs, data, x);
-                        print(studs);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    super.widget));
+                        if (x == true) {
+                          FirebaseFirestore.instance
+                              .collection('classes')
+                              .doc(data['ClassId'])
+                              .update({'prevAssess': FieldValue.increment(1)});
+                          Navigator.pop(context);
+                        } else {
+                          print(studs);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      super.widget));
+                        }
                       },
                       icon: Icon(Icons.skip_next),
                       label: Text('Next'),
