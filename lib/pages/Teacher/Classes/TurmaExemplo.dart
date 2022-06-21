@@ -128,14 +128,16 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                 // print(x);
                 // print(snp.data?.docs);
                 List<dynamic> studs = data['StudentList'];
+                print(studs);
                 //print(x);
 
                 for (var i = 0; i < x!; i++) {
                   Map<String, dynamic> foo =
                       snp.data?.docs[i].data()! as Map<String, dynamic>;
+                  print(foo);
                   if (studs.contains(foo['Email'])) {
-                    // print(foo);
-                    // print(i);
+                    print(foo);
+                    print(i);
 
                     namedStuds[foo['Email'].toString()] =
                         foo['FirstName'].toString() +
@@ -143,7 +145,12 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                             foo['LastName'].toString();
                   }
                 }
-                // print(namedStuds);
+                print(namedStuds);
+                for (var i in studs) {
+                  if (!namedStuds.containsKey(i)) {
+                    namedStuds[i.toString()] = i.toString();
+                  }
+                }
 
                 Map competences = data['Competences'];
                 //print(data['StudentsList'].runtimeType);
@@ -248,9 +255,11 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                 builder: (context) => AstaStats(
                                     passedClassID:
                                         widget.passedClassName.toString(),
-                                    passedStudentName: studs[index].toString(),
+                                    passedStudentName:
+                                        namedStuds[studs[index].toString()],
                                     passedCompetences: competences,
-                                    passedClassName: data['Name'].toString()),
+                                    passedClassName: data['Name'].toString(),
+                                    passedEmail: studs[index].toString()),
                               ),
                             );
                           },

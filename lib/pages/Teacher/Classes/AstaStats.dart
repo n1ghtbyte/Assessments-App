@@ -12,12 +12,14 @@ class AstaStats extends StatefulWidget {
   final Map<dynamic, dynamic> passedCompetences;
   final String passedClassID;
   final String passedClassName;
+  final String passedEmail;
 
   AstaStats(
       {Key? key,
       required this.passedStudentName,
       required this.passedClassName,
       required this.passedCompetences,
+      required this.passedEmail,
       required this.passedClassID})
       : super(key: key);
 
