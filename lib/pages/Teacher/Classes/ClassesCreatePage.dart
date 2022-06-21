@@ -37,7 +37,9 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
       'MaxStudents': _controllerMaxStudents.text, // 42
       'Competences': _competences,
       'StudentList': [],
-      'documentID': _iD
+      'documentID': _iD,
+      'prevAssess': 0,
+      'currAssess': 0,
     }).then((value) {
       print(value.id);
       updateClass(value.id);
