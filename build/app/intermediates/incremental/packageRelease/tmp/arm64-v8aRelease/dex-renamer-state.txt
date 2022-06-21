@@ -1,0 +1,4 @@
+#Wed Apr 27 10:25:19 WEST 2022
+base.0=/home/tomas/Development/Inovlabs/Source/build/app/intermediates/dex/release/minifyReleaseWithR8/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

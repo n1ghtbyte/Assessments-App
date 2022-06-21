@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "154364759188",
+    "project_id": "assessments-app-o3",
+    "storage_bucket": "assessments-app-o3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:154364759188:android:b04e79962db73a5c68f881",
+        "android_client_info": {
+          "package_name": "com.example.assessments_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "154364759188-nt4oakubt3rgt3v11sm4kv99on5mjjd8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeCPpnH0iIRT3IAs4kkid0AyWpRD-I4cA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "154364759188-nt4oakubt3rgt3v11sm4kv99on5mjjd8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

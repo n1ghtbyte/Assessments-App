@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">154364759188-nt4oakubt3rgt3v11sm4kv99on5mjjd8.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">154364759188</string>
+    <string name="google_api_key" translatable="false">AIzaSyCeCPpnH0iIRT3IAs4kkid0AyWpRD-I4cA</string>
+    <string name="google_app_id" translatable="false">1:154364759188:android:b04e79962db73a5c68f881</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCeCPpnH0iIRT3IAs4kkid0AyWpRD-I4cA</string>
+    <string name="google_storage_bucket" translatable="false">assessments-app-o3.appspot.com</string>
+    <string name="project_id" translatable="false">assessments-app-o3</string>
+</resources>
