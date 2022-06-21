@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 enum _MenuValues {
+  ReviewAssess,
   AddStuddent,
   Setup,
   Settings,
@@ -51,16 +52,13 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                 centerTitle: true,
                 backgroundColor: Color(0xFF29D09E),
                 actions: [
-                  // IconButton(icon: new Icon(Icons.more_vert), onPressed:  () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(builder: (context) => ClassesSettingsPage()),
-                  //     );
-                  //   },
-
                   PopupMenuButton<_MenuValues>(
                     icon: Icon(Icons.more_vert),
                     itemBuilder: (BuildContext context) => [
+                      PopupMenuItem(
+                        child: Text('Review Assessments'),
+                        value: _MenuValues.AddStuddent,
+                      ),
                       PopupMenuItem(
                         child: Text('Add a Student'),
                         value: _MenuValues.AddStuddent,
@@ -76,6 +74,11 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                     ],
                     onSelected: (value) {
                       switch (value) {
+                        case _MenuValues.ReviewAssess:
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (c) =>
+                                  AddStudentToClass(widget.passedClassName)));
+                          break;
                         case _MenuValues.AddStuddent:
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (c) =>
@@ -123,13 +126,9 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                     ),
                   );
                 }
-
                 var x = snp.data?.size;
-                // print(x);
-                // print(snp.data?.docs);
                 List<dynamic> studs = data['StudentList'];
                 print(studs);
-                //print(x);
 
                 for (var i = 0; i < x!; i++) {
                   Map<String, dynamic> foo =
@@ -151,7 +150,6 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                     namedStuds[i.toString()] = i.toString();
                   }
                 }
-
                 Map competences = data['Competences'];
                 //print(data['StudentsList'].runtimeType);
                 return Scaffold(
@@ -159,16 +157,13 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                     title: Text("Class ${data['Name'].toString()}"),
                     centerTitle: true,
                     actions: [
-                      // IconButton(icon: new Icon(Icons.more_vert), onPressed:  () {
-                      //     Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(builder: (context) => ClassesSettingsPage()),
-                      //     );
-                      //   },
-
                       PopupMenuButton<_MenuValues>(
                         icon: Icon(Icons.more_vert),
                         itemBuilder: (BuildContext context) => [
+                          PopupMenuItem(
+                            child: Text('Review Assessments'),
+                            value: _MenuValues.ReviewAssess,
+                          ),
                           PopupMenuItem(
                             child: Text('Add a Student'),
                             value: _MenuValues.AddStuddent,
@@ -184,6 +179,11 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                         ],
                         onSelected: (value) {
                           switch (value) {
+                            case _MenuValues.ReviewAssess:
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (c) => AddStudentToClass(
+                                      widget.passedClassName)));
+                              break;
                             case _MenuValues.AddStuddent:
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (c) => AddStudentToClass(
@@ -227,28 +227,9 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                         elevation: 8,
                         margin: EdgeInsets.all(7),
                         child: ListTile(
-                          //     title: FirebaseFirestore.instance
-                          // .collection("users")
-                          // .doc(studs[index].toString())
-                          // .get()
-                          // .then((value) => Text(value.data().toString())),
                           title: Text(
                               namedStuds[studs[index].toString()].toString()),
-                          // title: Text(FirebaseFirestore.instance
-                          //     .collection('users')
-                          //     .doc(studs[index].toString())
-                          //     .id),
                           onTap: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => AstaStats(
-                            //         passedClassID:
-                            //             widget.passedClassName.toString(),
-                            //         passedStudentName: studs[index].toString(),
-                            //         passedCompetences: competences,
-                            //         passedClassName: data['Name'].toString()),
-                            //   ),
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -263,8 +244,6 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                               ),
                             );
                           },
-                          // subtitle: Text(studs[index]["subtitle"]),
-                          // trailing: Icon(Icons.add_a_photo),
                         ),
                       ),
                     ),
