@@ -16,7 +16,7 @@ class _AssessmentFormativeState extends State<AssessmentFormative> {
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
 
   Future<void> addGrade(String stud, Map<dynamic, Map<dynamic, dynamic>> comp,
-      var assessinfo, String _id) {
+      var currAssess, var assessinfo, String _id) {
     late CollectionReference assessments = FirebaseFirestore.instance
         .collection('classes')
         .doc(assessinfo['ClassId'].toString())
@@ -29,6 +29,7 @@ class _AssessmentFormativeState extends State<AssessmentFormative> {
       'ClassName': assessinfo['ClassId'],
       'Created': FieldValue.serverTimestamp(),
       'Creator': currentUser,
+      'Current': currAssess,
       'Type': "Formative",
       'Competences': comp,
       'AssessID': _id,
@@ -203,7 +204,7 @@ class _AssessmentFormativeState extends State<AssessmentFormative> {
                         print(_mapao);
 
                         // print(uploadComps);
-                        addGrade(currentStudent, _mapao, data, assesId);
+                        addGrade(currentStudent, _mapao, 1, data, assesId);
                         bool x = true;
                         for (var k in studs.values) {
                           if (k == false) x = false;
