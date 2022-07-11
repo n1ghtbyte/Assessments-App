@@ -12,8 +12,10 @@ class AssessmentCheck extends StatefulWidget {
   State<AssessmentCheck> createState() => _AssessmentCheckState();
 }
 
+final db = FirebaseFirestore.instance;
 final CollectionReference _assess =
     FirebaseFirestore.instance.collection('assessments');
+Map<dynamic, dynamic> namedStuds = {};
 
 class _AssessmentCheckState extends State<AssessmentCheck> {
   @override
@@ -33,41 +35,94 @@ class _AssessmentCheckState extends State<AssessmentCheck> {
               ),
             );
           }
+
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
 
-          print(data['Students'].keys);
-          var a = Map();
+          List<String> studs = data['Students'].keys.toList();
+          return StreamBuilder<QuerySnapshot>(
+              stream:
+                  FirebaseFirestore.instance.collection('users').snapshots(),
+              builder:
+                  (BuildContext context, AsyncSnapshot<QuerySnapshot> snp) {
+                if (snp.hasError) {
+                  return Text('Something went wrong');
+                }
 
-          List<String> studentsList = data['Students'].keys.toList();
+                if (snp.connectionState == ConnectionState.waiting) {
+                  return Container(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+                var x = snp.data?.size;
+                print(studs);
 
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Review'),
-              centerTitle: true,
-              backgroundColor: Color(0xff29d092),
-            ),
-            floatingActionButton: FloatingActionButton.extended(
-              onPressed: null,
-              backgroundColor: const Color(0xFF29D09E),
-              label: Text('All'),
-              icon: Icon(Icons.all_inclusive),
-            ),
-            body: GridView.count(
-              // Create a grid with 2 columns. If you change the scrollDirection to
-              // horizontal, this produces 2 rows.
-              crossAxisCount: 3,
-              // Generate 100 widgets that display their index in the List.
-              children: List.generate(studentsList.length, (index) {
-                return Center(
-                  child: Text(
-                    '${studentsList[index]}',
-                    style: Theme.of(context).textTheme.headline5,
+                for (var i = 0; i < x!; i++) {
+                  Map<String, dynamic> foo =
+                      snp.data?.docs[i].data()! as Map<String, dynamic>;
+                  print(foo);
+                  if (studs.contains(foo['Email'])) {
+                    print(foo);
+                    print(i);
+
+                    namedStuds[foo['Email'].toString()] =
+                        foo['FirstName'].toString() +
+                            " " +
+                            foo['LastName'].toString();
+                  }
+                }
+                print(namedStuds);
+                for (var i in studs) {
+                  if (!namedStuds.containsKey(i)) {
+                    namedStuds[i.toString()] = i.toString();
+                  }
+                }
+
+                return Scaffold(
+                  appBar: AppBar(
+                    title: Text('Review'),
+                    centerTitle: true,
+                    backgroundColor: Color(0xff29d092),
+                  ),
+                  floatingActionButton: FloatingActionButton.extended(
+                    onPressed: null,
+                    backgroundColor: const Color(0xFF29D09E),
+                    label: Text('All'),
+                    icon: Icon(Icons.all_inclusive),
+                  ),
+                  body: SafeArea(
+                    child: ListView.builder(
+                      itemCount: studs.length,
+                      itemBuilder: (context, index) => Card(
+                        elevation: 8,
+                        margin: EdgeInsets.all(7),
+                        child: ListTile(
+                          //title: Text("KII"),
+                          title: Text(
+                              namedStuds[studs[index].toString()].toString()),
+                          // onTap: () {
+                          //   Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => AstaStats(
+                          //           passedClassID:
+                          //               widget.passedClassName.toString(),
+                          //           passedStudentName:
+                          //               namedStuds[studs[index].toString()],
+                          //           passedCompetences: competences,
+                          //           passedClassName: data['Name'].toString(),
+                          //           passedEmail: studs[index].toString()),
+                          //     ),
+                          //   );
+                          // },
+                        ),
+                      ),
+                    ),
                   ),
                 );
-              }),
-            ),
-          );
+              });
         });
   }
 }
