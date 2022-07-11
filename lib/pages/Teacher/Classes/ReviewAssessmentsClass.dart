@@ -1,4 +1,4 @@
-import 'package:assessments_app/pages/Teacher/AssessmentFormative.dart';
+import 'package:assessments_app/pages/Teacher/Classes/ReviewTheAssess.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -67,7 +67,7 @@ class _ReviewAssessmentsState extends State<ReviewAssessments> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => AssessmentFormative(
+                                builder: (context) => ReviewAssessment(
                                       passedAssessmentIdName:
                                           data['documentID'],
                                     )),
