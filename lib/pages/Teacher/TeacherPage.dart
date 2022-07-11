@@ -1,4 +1,5 @@
 import 'package:assessments_app/InovWidgets/NavBarTeacher.dart';
+import 'package:assessments_app/pages/Teacher/AssessmentCheck.dart';
 import 'package:assessments_app/pages/Teacher/AssessmentFormative.dart';
 // import 'package:assessments_app/pages/Teacher/AssessmentFormative.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -67,11 +68,23 @@ class _TeacherPageState extends State<TeacherPage> {
 
                     return ListTile(
                       onTap: () {
-                        if (data['Type'] == 'Formative') {
+                        if (data['Type'] == 'Formative' &&
+                            data['DONE'] == false) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => AssessmentFormative(
+                                      passedAssessmentIdName:
+                                          data['documentID'],
+                                    )),
+                          );
+                        }
+                        if (data['Type'] == 'Formative' &&
+                            data['DONE'] == true) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AssessmentCheck(
                                       passedAssessmentIdName:
                                           data['documentID'],
                                     )),
