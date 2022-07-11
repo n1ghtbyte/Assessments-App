@@ -1,3 +1,4 @@
+import 'package:assessments_app/pages/Teacher/AssessReviewSolo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -102,21 +103,16 @@ class _AssessmentCheckState extends State<AssessmentCheck> {
                           //title: Text("KII"),
                           title: Text(
                               namedStuds[studs[index].toString()].toString()),
-                          // onTap: () {
-                          //   Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) => AstaStats(
-                          //           passedClassID:
-                          //               widget.passedClassName.toString(),
-                          //           passedStudentName:
-                          //               namedStuds[studs[index].toString()],
-                          //           passedCompetences: competences,
-                          //           passedClassName: data['Name'].toString(),
-                          //           passedEmail: studs[index].toString()),
-                          //     ),
-                          //   );
-                          // },
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AssessReviewSolo(
+                                    passedAssessmentIdName:
+                                        namedStuds[studs[index].toString()]),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
