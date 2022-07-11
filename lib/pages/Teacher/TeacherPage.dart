@@ -80,7 +80,9 @@ class _TeacherPageState extends State<TeacherPage> {
                       },
                       leading: Icon(Icons.assessment),
                       isThreeLine: true,
-                      enabled: data['DONE'] == false ? true : false,
+                      textColor: data['DONE'] == false
+                          ? Color(0xFF29D09E)
+                          : Color.fromARGB(255, 123, 123, 123),
                       title: Text('${data['Type']} Assessment'),
                       subtitle: Text(
                           "Class Name:${data['ClassName'].toString()}\nCount:${data['Count'].toString()}/${data['Students'].values.toList().length}\nNumber:${data['currentNumber'].toString()}"),
