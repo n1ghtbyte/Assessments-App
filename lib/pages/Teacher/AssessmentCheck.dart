@@ -93,29 +93,25 @@ class _AssessmentCheckState extends State<AssessmentCheck> {
                     icon: Icon(Icons.all_inclusive),
                   ),
                   body: SafeArea(
-                    child: ListView.builder(
-                      itemCount: studs.length,
-                      itemBuilder: (context, index) => Card(
-                        elevation: 8,
-                        margin: EdgeInsets.all(7),
-                        child: ListTile(
-                          //title: Text("KII"),
-                          title: Text(
-                              namedStuds[studs[index].toString()].toString()),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AssessReviewSolo(
-                                    passedAssessmentIdName:
-                                        namedStuds[studs[index].toString()]),
-                              ),
+                      child: ListView.builder(
+                          itemCount: studs.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ListTile(
+                              //title: Text("KII"),
+                              title: Text(namedStuds[studs[index].toString()]
+                                  .toString()),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AssessReviewSolo(
+                                        passedAssessmentIdName: namedStuds[
+                                            studs[index].toString()]),
+                                  ),
+                                );
+                              },
                             );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
+                          })),
                 );
               });
         });
