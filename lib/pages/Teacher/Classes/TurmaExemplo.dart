@@ -130,6 +130,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                 }
                 var x = snp.data?.size;
                 List<dynamic> studs = data['StudentList'];
+                print("::::::::::::::::::");
                 print(studs);
 
                 for (var i = 0; i < x!; i++) {
@@ -225,33 +226,34 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                         "null")));
                       }),
                   body: SafeArea(
-                    child: ListView.builder(
-                      itemCount: studs.length,
-                      itemBuilder: (context, index) => Card(
-                        elevation: 8,
-                        margin: EdgeInsets.all(7),
-                        child: ListTile(
-                          title: Text(
-                              namedStuds[studs[index].toString()].toString()),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AstaStats(
-                                    passedClassID:
-                                        widget.passedClassName.toString(),
-                                    passedStudentName:
-                                        namedStuds[studs[index].toString()],
-                                    passedCompetences: competences,
-                                    passedClassName: data['Name'].toString(),
-                                    passedEmail: studs[index].toString()),
-                              ),
+                      child: ListView.builder(
+                          itemCount: studs.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ListTile(
+                              title: Text(namedStuds[studs[index].toString()]
+                                  .toString()),
+                              subtitle: studs[index] ==
+                                      namedStuds[studs[index].toString()]
+                                  ? Text("You added this ghost")
+                                  : Text(studs[index]),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AstaStats(
+                                        passedClassID:
+                                            widget.passedClassName.toString(),
+                                        passedStudentName:
+                                            namedStuds[studs[index].toString()],
+                                        passedCompetences: competences,
+                                        passedClassName:
+                                            data['Name'].toString(),
+                                        passedEmail: studs[index].toString()),
+                                  ),
+                                );
+                              },
                             );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
+                          })),
                 );
               });
         });
