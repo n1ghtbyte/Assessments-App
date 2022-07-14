@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/tomas/Development/Inovlabs/Source/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-is/values-is.xml",
+            "outputFile": "/home/tomas/Desktop/Development/Inovlabs/Source/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-is/values-is.xml",
             "map": [
                 {
                     "source": "/home/tomas/.gradle/caches/transforms-2/files-2.1/0c11252d9d87559920ca1b1a0bcd2692/jetified-play-services-basement-17.1.0/res/values-is/values.xml",
