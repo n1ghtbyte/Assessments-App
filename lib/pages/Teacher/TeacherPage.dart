@@ -34,6 +34,7 @@ class _TeacherPageState extends State<TeacherPage> {
               ),
             );
           }
+          print(snapshot.data.toString());
           if (snapshot.data?.size.toInt() == 0) {
             return MaterialApp(
               home: Scaffold(
