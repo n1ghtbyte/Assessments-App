@@ -104,9 +104,12 @@ class _AssessmentCheckState extends State<AssessmentCheck> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => AssessReviewSolo(
-                                        passedAssessmentIdName: namedStuds[
-                                            studs[index].toString()]),
+                                    builder: (context) => AssessReview(
+                                      passedAssessmentIdName:
+                                          widget.passedAssessmentIdName,
+                                      passedClassName: data['ClassId'],
+                                      passedStudName: studs[index],
+                                    ),
                                   ),
                                 );
                               },

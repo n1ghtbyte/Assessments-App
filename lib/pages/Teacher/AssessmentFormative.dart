@@ -149,11 +149,6 @@ class _AssessmentFormativeState extends State<AssessmentFormative> {
                   }
                 }
 
-                // print(List<String>.from([
-                //   "Contributing suggestions for the ideas, situations, cases or problems posed"
-                // ]));
-                // print("lqlqlq");
-
                 return Scaffold(
                   appBar: AppBar(
                     title: Text('Formative Assessment'),
@@ -203,7 +198,8 @@ class _AssessmentFormativeState extends State<AssessmentFormative> {
                       print(_mapao);
 
                       // print(uploadComps);
-                      addGrade(currentStudent, _mapao, 1, data, assesId);
+                      addGrade(currentStudent, _mapao,
+                          data['currentNumber'].toString(), data, assesId);
                       bool x = true;
                       for (var k in studs.values) {
                         if (k == false) x = false;
