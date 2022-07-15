@@ -153,6 +153,10 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                     namedStuds[i.toString()] = i.toString();
                   }
                 }
+                studs.sort((a, b) {
+                  //sorting in descending order
+                  return a.compareTo(b);
+                });
                 Map competences = data['Competences'];
                 //print(data['StudentsList'].runtimeType);
                 return Scaffold(
