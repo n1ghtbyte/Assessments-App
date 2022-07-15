@@ -120,7 +120,14 @@ class _AssessReviewState extends State<AssessReview> {
                       Map savedGrade = Map<String, dynamic>.from(
                           gradesnp.data?.docs[0].data()
                               as Map<String, dynamic>);
-                      print(savedGrade);
+                      savedGrade = savedGrade['Competences'];
+                      print(':::::::::::::::::::::::::::::::');
+                      print(savedGrade['Writing Skills'][
+                          'Using appropriate language for the type of document and reader.']);
+                      print(_comps);
+                      print(_comps[
+                              'Using appropriate language for the type of document and reader.']
+                          ?.toList()[1]);
 
                       return Scaffold(
                         appBar: AppBar(
@@ -128,7 +135,115 @@ class _AssessReviewState extends State<AssessReview> {
                           centerTitle: true,
                           backgroundColor: Color(0xFF29D09E),
                         ),
-                        body: null,
+                        floatingActionButton: FloatingActionButton.extended(
+                            onPressed: null, label: Text("cona")),
+                        body: SafeArea(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Container(
+                                  padding: EdgeInsets.all(20.0),
+                                  child: Text(
+                                    "Student: ${widget.passedStudName}\nClass:${data['ClassName']}\n",
+                                    style: TextStyle(fontSize: 26),
+                                  ),
+                                ),
+                                for (var k in namesC)
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          Divider(
+                                            height: 20,
+                                            thickness: 4,
+                                          ),
+                                          SizedBox(
+                                            height: 40,
+                                          ),
+                                          Text(
+                                            k,
+                                            style: TextStyle(
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          for (String x in List<String>.from(
+                                              data['Competences'][k] as List))
+                                            Padding(
+                                              padding: EdgeInsets.all(16.0),
+                                              child: Column(children: <Widget>[
+                                                Divider(
+                                                  height: 4,
+                                                ),
+                                                Text(
+                                                  x,
+                                                  style:
+                                                      TextStyle(fontSize: 18),
+                                                ),
+                                                SizedBox(
+                                                  height: 12,
+                                                ),
+                                                RadioGroup<String>.builder(
+                                                  spacebetween: 65.0,
+                                                  direction: Axis.vertical,
+                                                  groupValue: _comps[x]
+                                                      ?.toList()[int.parse(
+                                                          savedGrade[k][x]) -
+                                                      1],
+                                                  horizontalAlignment:
+                                                      MainAxisAlignment.start,
+                                                  onChanged: (value) {
+                                                    // setState(
+                                                    //   () {
+                                                    //     _mapinha[x.toString()] =
+                                                    //         value.toString();
+                                                    //     if (_mapao[
+                                                    //             k.toString()] !=
+                                                    //         null) {
+                                                    //       _mapao[k.toString()]![
+                                                    //               x.toString()] =
+                                                    //           value.toString();
+                                                    //     } else {
+                                                    //       _mapao[k.toString()] =
+                                                    //           Map();
+                                                    //     }
+                                                    //     _mapao[k.toString()]![
+                                                    //             x.toString()] =
+                                                    //         value.toString();
+
+                                                    //     print(
+                                                    //         _mapao.toString());
+                                                    //   },
+                                                    // );
+                                                  },
+                                                  activeColor:
+                                                      Color(0xFF29D09E),
+                                                  items: textifier(_comps[x]),
+                                                  textStyle: TextStyle(
+                                                    fontSize: 14,
+                                                  ),
+                                                  itemBuilder: (item) =>
+                                                      RadioButtonBuilder(
+                                                          item.toString(),
+                                                          textPosition:
+                                                              RadioButtonTextPosition
+                                                                  .left),
+                                                ),
+                                              ]),
+                                            )
+                                        ]),
+                                  ),
+                                SizedBox(
+                                  height: 32,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       );
                     });
               });
