@@ -121,13 +121,6 @@ class _AssessReviewState extends State<AssessReview> {
                           gradesnp.data?.docs[0].data()
                               as Map<String, dynamic>);
                       savedGrade = savedGrade['Competences'];
-                      print(':::::::::::::::::::::::::::::::');
-                      print(savedGrade['Writing Skills'][
-                          'Using appropriate language for the type of document and reader.']);
-                      print(_comps);
-                      print(_comps[
-                              'Using appropriate language for the type of document and reader.']
-                          ?.toList()[1]);
 
                       return Scaffold(
                         appBar: AppBar(
