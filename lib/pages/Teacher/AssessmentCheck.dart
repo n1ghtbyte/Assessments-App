@@ -79,43 +79,58 @@ class _AssessmentCheckState extends State<AssessmentCheck> {
                     namedStuds[i.toString()] = i.toString();
                   }
                 }
+                print("::::::");
+                print(studs);
 
                 return Scaffold(
-                  appBar: AppBar(
-                    title: Text('Review'),
-                    centerTitle: true,
-                    backgroundColor: Color(0xff29d092),
-                  ),
-                  floatingActionButton: FloatingActionButton.extended(
-                    onPressed: null,
-                    backgroundColor: const Color(0xFF29D09E),
-                    label: Text('All'),
-                    icon: Icon(Icons.all_inclusive),
-                  ),
-                  body: SafeArea(
-                      child: ListView.builder(
-                          itemCount: studs.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return ListTile(
-                              //title: Text("KII"),
-                              title: Text(namedStuds[studs[index].toString()]
-                                  .toString()),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AssessReview(
-                                      passedAssessmentIdName:
-                                          widget.passedAssessmentIdName,
-                                      passedClassName: data['ClassId'],
-                                      passedStudName: studs[index],
-                                    ),
-                                  ),
+                    appBar: AppBar(
+                      title: Text('Review'),
+                      centerTitle: true,
+                      backgroundColor: Color(0xff29d092),
+                    ),
+                    body: Column(
+                      children: [
+                        SizedBox(
+                          height: 14,
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(14.0),
+                          child: Text(
+                            "Assessment number: ${data['currentNumber']}#\nClass: ${data['ClassName']}\n",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                        Divider(
+                          height: 20,
+                          thickness: 4,
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                              itemCount: studs.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return ListTile(
+                                  //title: Text("KII"),
+                                  title: Text(
+                                      namedStuds[studs[index].toString()]
+                                          .toString()),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => AssessReview(
+                                          passedAssessmentIdName:
+                                              widget.passedAssessmentIdName,
+                                          passedClassName: data['ClassId'],
+                                          passedStudName: studs[index],
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 );
-                              },
-                            );
-                          })),
-                );
+                              }),
+                        ),
+                      ],
+                    ));
               });
         });
   }
