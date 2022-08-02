@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +72,6 @@ class _AssessReviewState extends State<AssessReview> {
                   }
                 }
                 //_comps -> competencias
-                print(_comps);
                 var _indicators = [];
                 List<String> namesC = [];
                 List<String> allIndicators = [];
@@ -108,7 +104,6 @@ class _AssessReviewState extends State<AssessReview> {
                       if (gradesnp.hasError) {
                         return Text('Something went wrong');
                       }
-
                       if (gradesnp.connectionState == ConnectionState.waiting) {
                         return Container(
                           child: Center(
@@ -128,8 +123,30 @@ class _AssessReviewState extends State<AssessReview> {
                           centerTitle: true,
                           backgroundColor: Color(0xFF29D09E),
                         ),
-                        floatingActionButton: FloatingActionButton.extended(
-                            onPressed: null, label: Text("cona")),
+                        floatingActionButton: Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              FloatingActionButton(
+                                heroTag: "btn1",
+                                onPressed: () {},
+                                child: Icon(Icons.skip_previous),
+                                backgroundColor: Color(0xFF29D09E),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(child: Container()),
+                              FloatingActionButton(
+                                heroTag: "btn2",
+                                onPressed: () {},
+                                child: Icon(Icons.skip_next),
+                                backgroundColor: Color(0xFF29D09E),
+                              ),
+                            ],
+                          ),
+                        ),
                         body: SafeArea(
                           child: SingleChildScrollView(
                             child: Column(
@@ -189,30 +206,32 @@ class _AssessReviewState extends State<AssessReview> {
                                                       1],
                                                   horizontalAlignment:
                                                       MainAxisAlignment.start,
-                                                  onChanged: (value) {
-                                                    // setState(
-                                                    //   () {
-                                                    //     _mapinha[x.toString()] =
-                                                    //         value.toString();
-                                                    //     if (_mapao[
-                                                    //             k.toString()] !=
-                                                    //         null) {
-                                                    //       _mapao[k.toString()]![
-                                                    //               x.toString()] =
-                                                    //           value.toString();
-                                                    //     } else {
-                                                    //       _mapao[k.toString()] =
-                                                    //           Map();
-                                                    //     }
-                                                    //     _mapao[k.toString()]![
-                                                    //             x.toString()] =
-                                                    //         value.toString();
+                                                  onChanged: (value) =>
+                                                      setState(() {
+                                                    var docId = gradesnp.data!
+                                                        .docs[0].reference.id
+                                                        .toString();
 
-                                                    //     print(
-                                                    //         _mapao.toString());
-                                                    //   },
-                                                    // );
-                                                  },
+                                                    _grades
+                                                        .doc(widget
+                                                            .passedClassName)
+                                                        .collection('grading')
+                                                        .doc(widget
+                                                            .passedStudName)
+                                                        .collection('grades')
+                                                        .doc(docId)
+                                                        .update({
+                                                      "Competences.$k": {
+                                                        x: value
+                                                            .toString()
+                                                            .substring(0, 1)
+                                                      }
+                                                    }).then(
+                                                            (value) => print(
+                                                                "DocumentSnapshot successfully updated!"),
+                                                            onError: (e) => print(
+                                                                "Error updating document $e"));
+                                                  }),
                                                   activeColor:
                                                       Color(0xFF29D09E),
                                                   items: textifier(_comps[x]),
@@ -231,7 +250,7 @@ class _AssessReviewState extends State<AssessReview> {
                                         ]),
                                   ),
                                 SizedBox(
-                                  height: 32,
+                                  height: 64,
                                 ),
                               ],
                             ),
