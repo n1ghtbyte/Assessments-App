@@ -45,6 +45,9 @@ class _AssessReviewState extends State<AssessReview> {
           // data -> assessment
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
+          List<String> studs = data['Students'].keys.toList();
+          print(studs);
+
           return StreamBuilder<QuerySnapshot>(
               stream: _compsStream,
               builder:
@@ -130,7 +133,22 @@ class _AssessReviewState extends State<AssessReview> {
                             children: [
                               FloatingActionButton(
                                 heroTag: "btn1",
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AssessReview(
+                                        passedAssessmentIdName:
+                                            widget.passedAssessmentIdName,
+                                        passedClassName: data['ClassId'],
+                                        passedStudName: studs[(studs.indexOf(
+                                                    widget.passedStudName) -
+                                                1) %
+                                            studs.length],
+                                      ),
+                                    ),
+                                  );
+                                },
                                 child: Icon(Icons.skip_previous),
                                 backgroundColor: Color(0xFF29D09E),
                               ),
@@ -140,7 +158,22 @@ class _AssessReviewState extends State<AssessReview> {
                               Expanded(child: Container()),
                               FloatingActionButton(
                                 heroTag: "btn2",
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AssessReview(
+                                        passedAssessmentIdName:
+                                            widget.passedAssessmentIdName,
+                                        passedClassName: data['ClassId'],
+                                        passedStudName: studs[(studs.indexOf(
+                                                    widget.passedStudName) +
+                                                1) %
+                                            studs.length],
+                                      ),
+                                    ),
+                                  );
+                                },
                                 child: Icon(Icons.skip_next),
                                 backgroundColor: Color(0xFF29D09E),
                               ),
