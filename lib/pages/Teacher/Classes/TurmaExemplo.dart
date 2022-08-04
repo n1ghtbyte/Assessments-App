@@ -241,20 +241,20 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                   ? Text("You added this ghost")
                                   : Text(studs[index]),
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AstaStats(
-                                        passedClassID:
-                                            widget.passedClassName.toString(),
-                                        passedStudentName:
-                                            namedStuds[studs[index].toString()],
-                                        passedCompetences: competences,
-                                        passedClassName:
-                                            data['Name'].toString(),
-                                        passedEmail: studs[index].toString()),
-                                  ),
-                                );
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => AstaStats(
+                                //         passedClassID:
+                                //             widget.passedClassName.toString(),
+                                //         passedStudentName:
+                                //             namedStuds[studs[index].toString()],
+                                //         passedCompetences: competences,
+                                //         passedClassName:
+                                //             data['Name'].toString(),
+                                //         passedEmail: studs[index].toString()),
+                                //   ),
+                                // );
                               },
                             );
                           })),
