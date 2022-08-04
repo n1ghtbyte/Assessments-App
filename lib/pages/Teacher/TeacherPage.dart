@@ -13,15 +13,15 @@ class TeacherPage extends StatefulWidget {
 }
 
 class _TeacherPageState extends State<TeacherPage> {
-  final _classesStream = FirebaseFirestore.instance
+  final Query _classesStream = FirebaseFirestore.instance
       .collection('assessments')
       .where('Creator', isEqualTo: FirebaseAuth.instance.currentUser!.email)
-      .snapshots();
+      .orderBy('Created');
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: _classesStream,
+        stream: _classesStream.snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text('Something went wrong');

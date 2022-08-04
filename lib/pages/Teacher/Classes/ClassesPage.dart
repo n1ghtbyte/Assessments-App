@@ -64,12 +64,6 @@ class _ClassesPageState extends State<ClassesPage> {
             ),
           );
         }
-        // print("pppppppppppppppppppppppppppppppppppppppppp");
-        // print(i);
-
-        //print(_comps);
-        // print(snp.data?.docs[i].data().runtimeType);
-
         return Scaffold(
           appBar: AppBar(
             title: Text('Classes'),

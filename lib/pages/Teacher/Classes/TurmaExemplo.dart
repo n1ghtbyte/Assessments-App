@@ -1,7 +1,7 @@
 import 'package:assessments_app/pages/Teacher/Assessments/AssessmentsCreateTeacherPage.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ReviewAssessmentsClass.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AddStudentClass.dart';
-import 'package:assessments_app/pages/Teacher/Classes/AstaStats.dart';
+// import 'package:assessments_app/pages/Teacher/Classes/AstaStats.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassSetup.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassesSettingsPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
