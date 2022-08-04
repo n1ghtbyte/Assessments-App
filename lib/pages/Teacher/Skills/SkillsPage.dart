@@ -1,113 +1,53 @@
-import 'package:assessments_app/pages/Teacher/Skills/Skills2.dart';
-import 'package:assessments_app/pages/Teacher/Skills/SkillsCreatePage.dart';
-import 'package:assessments_app/pages/Teacher/Skills/SkillsInfoPage.dart';
+import 'package:assessments_app/pages/Teacher/Skills/CompetencePicked.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-// class SkillsPage extends StatefulWidget {
-//   const SkillsPage({ Key? key }) : super(key: key);
-
-//   @override
-//   _SkillsPageState createState() => _SkillsPageState();
-// }
-
-// class _SkillsPageState extends State<SkillsPage> {
-//   bool value = false;
-//   @override
-//   Widget build(BuildContext context) {
-//     return SafeArea(
-//       child: Scaffold(appBar: AppBar(
-//         title: Text('Skills'),
-//         centerTitle: true,
-//         backgroundColor: Color(0xFF29D09E),
-//       ),
-//       body: ListView(
-//         scrollDirection: Axis.vertical,
-//         children: <Widget>[
-//           const SizedBox(height: 16),
-//           ListTile(
-//             title: Text("         Skill 1"),
-//             leading: Icon(Icons.menu_book),
-//             subtitle: Text(
-//                 "          Critical Thinking"),
-//           ),
-//         ],
-//       ),
-//       ),
-//     );
-//   }
-// }
 class SkillsPage extends StatelessWidget {
+  final CollectionReference _competences =
+      FirebaseFirestore.instance.collection('Competences');
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Competences'),
-        centerTitle: true,
-        backgroundColor: Color(0xFF29D09E),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => SkillsCreatePage()),
+    return FutureBuilder<QuerySnapshot>(
+        future: _competences.get(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text("Something went wrong");
+          }
+          if (!snapshot.hasData) {
+            return Container(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          print(snapshot.data);
+
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Competences'),
+              centerTitle: true,
+              backgroundColor: Color(0xFF29D09E),
+            ),
+            body: ListView(
+              children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                Map<String, dynamic> data =
+                    document.data()! as Map<String, dynamic>;
+                return ListTile(
+                  onTap: () {
+                    print(data['Name']);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CompetencePicked(
+                              passedCompName: data['Name'].toString())),
+                    );
+                  },
+                  leading: Icon(Icons.arrow_forward_rounded),
+                  title: Text(data['Name']),
+                );
+              }).toList(),
+            ),
           );
-        },
-      ),
-      body: ListView(
-        scrollDirection: Axis.vertical,
-        children: <Widget>[
-          const SizedBox(height: 32),
-          ListTile(
-            leading: Icon(Icons.menu_book),
-            title: Text("Competence 1"),
-            subtitle: Text("Critical Thinking"),
-            trailing: Icon(Icons.arrow_right_alt),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SkillsInfoPage()),
-              );
-            },
-          ),
-          const SizedBox(height: 16),
-          Divider(
-            thickness: 1,
-            height: 1,
-          ),
-          const SizedBox(height: 16),
-          ListTile(
-            leading: Icon(Icons.menu_book),
-            title: Text("Competence 2"),
-            subtitle: Text("Creativity"),
-            trailing: Icon(Icons.arrow_right_alt),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Skills2()),
-              );
-            },
-          ),
-          const SizedBox(height: 16),
-          Divider(
-            thickness: 1,
-            height: 1,
-          ),
-          const SizedBox(height: 16),
-          ListTile(
-            leading: Icon(Icons.menu_book),
-            title: Text("Competence 3"),
-            subtitle: Text("Interpersonal Communication"),
-            trailing: Icon(Icons.arrow_right_alt),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SkillsInfoPage()),
-              );
-            },
-          ),
-        ],
-      ),
-    );
+        });
   }
 }
