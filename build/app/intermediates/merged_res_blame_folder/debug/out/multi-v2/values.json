@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/tomas/Desktop/Development/Inovlabs/Source/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
+            "outputFile": "/home/tomas/Development/AppClond/Assessments-App/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
             "map": [
                 {
                     "source": "/home/tomas/.gradle/caches/transforms-2/files-2.1/1c0769389455a4c14b7a50bc2530cb4a/jetified-play-services-base-18.0.1/res/values/values.xml",
@@ -78,23 +78,6 @@
                     }
                 },
                 {
-                    "source": "/home/tomas/Desktop/Development/Inovlabs/Source/build/app/generated/res/google-services/debug/values/values.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "55,199,281,385,494,614,716",
-                        "endColumns": "143,81,103,108,119,101,78",
-                        "endOffsets": "194,276,380,489,609,711,790"
-                    },
-                    "to": {
-                        "startLines": "126,130,131,132,133,134,135",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "8973,9332,9414,9518,9627,9747,9849",
-                        "endColumns": "143,81,103,108,119,101,78",
-                        "endOffsets": "9112,9409,9513,9622,9742,9844,9923"
-                    }
-                },
-                {
                     "source": "/home/tomas/.gradle/caches/transforms-2/files-2.1/4a1e8147c3db656939cfc830651ce63e/jetified-play-services-basement-18.0.0/res/values/values.xml",
                     "from": {
                         "startLines": "4,7",
@@ -112,7 +95,24 @@
                     }
                 },
                 {
-                    "source": "/home/tomas/Desktop/Development/Inovlabs/Source/android/app/src/main/res/values/styles.xml",
+                    "source": "/home/tomas/Development/AppClond/Assessments-App/build/app/generated/res/google-services/debug/values/values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,199,281,385,494,614,716",
+                        "endColumns": "143,81,103,108,119,101,78",
+                        "endOffsets": "194,276,380,489,609,711,790"
+                    },
+                    "to": {
+                        "startLines": "126,130,131,132,133,134,135",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "8973,9332,9414,9518,9627,9747,9849",
+                        "endColumns": "143,81,103,108,119,101,78",
+                        "endOffsets": "9112,9409,9513,9622,9742,9844,9923"
+                    }
+                },
+                {
+                    "source": "/home/tomas/Development/AppClond/Assessments-App/android/app/src/main/res/values/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

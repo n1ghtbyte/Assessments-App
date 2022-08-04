@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/tomas/Desktop/Development/Inovlabs/Source/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-kk/values-kk.xml",
+            "outputFile": "/home/tomas/Development/AppClond/Assessments-App/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-kk/values-kk.xml",
             "map": [
                 {
                     "source": "/home/tomas/.gradle/caches/transforms-2/files-2.1/e220a32ca2be066bb9a75eda3346b92d/browser-1.4.0/res/values-kk/values-kk.xml",

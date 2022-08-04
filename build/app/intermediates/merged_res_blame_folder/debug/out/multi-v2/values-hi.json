@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/tomas/Desktop/Development/Inovlabs/Source/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-hi/values-hi.xml",
+            "outputFile": "/home/tomas/Development/AppClond/Assessments-App/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-hi/values-hi.xml",
             "map": [
                 {
                     "source": "/home/tomas/.gradle/caches/transforms-2/files-2.1/1c0769389455a4c14b7a50bc2530cb4a/jetified-play-services-base-18.0.1/res/values-hi/values.xml",
