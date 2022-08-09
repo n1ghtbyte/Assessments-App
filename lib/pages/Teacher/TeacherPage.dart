@@ -16,7 +16,7 @@ class _TeacherPageState extends State<TeacherPage> {
   final Query _classesStream = FirebaseFirestore.instance
       .collection('assessments')
       .where('Creator', isEqualTo: FirebaseAuth.instance.currentUser!.email)
-      .orderBy('Created');
+      .orderBy('Created', descending: true);
 
   @override
   Widget build(BuildContext context) {
