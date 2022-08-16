@@ -40,8 +40,7 @@ dependencies:
   cloud_functions: ^3.2.10
   group_radio_button: ^1.2.0
   basic_utils: ^4.2.0
-  syncfusion_flutter_charts: ^20.1.50
-  charts_flutter: ^0.12.0
+  string_to_hex: ^0.2.2
     
   
 
