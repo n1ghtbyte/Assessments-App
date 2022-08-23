@@ -3,6 +3,9 @@ import 'package:assessments_app/pages/Teacher/Classes/AstaGraphs.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ReviewAssessmentsClass.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AddStudentClass.dart';
 // import 'package:assessments_app/pages/Teacher/Classes/AstaStats.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:assessments_app/pages/Teacher/Assessments/GenFormAssessment.dart';
+
 import 'package:assessments_app/pages/Teacher/Classes/ClassSetup.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassesSettingsPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,6 +33,8 @@ class _TurmaExemploState extends State<TurmaExemplo> {
     late CollectionReference _class =
         FirebaseFirestore.instance.collection('classes');
     Map<dynamic, dynamic> namedStuds = {};
+
+    ValueNotifier<bool> isDialOpen = ValueNotifier(false);
 
     return FutureBuilder<DocumentSnapshot>(
       future: _class.doc(widget.passedClassName).get(),
@@ -222,21 +227,71 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                 ],
                 backgroundColor: Color(0xFF29D09E),
               ),
-              floatingActionButton: FloatingActionButton(
-                  child: Icon(Icons.assessment),
-                  backgroundColor: Color(0xFF29D09E),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AssessmentsCreateTeacherPage(
-                            widget.passedClassName,
-                            data['Name'].toString(),
-                            competences,
-                            "null"),
-                      ),
-                    );
-                  }),
+              floatingActionButton: SpeedDial(
+                icon: Icons.assessment,
+                activeIcon: Icons.arrow_back,
+                spacing: 5,
+                openCloseDial: isDialOpen,
+                curve: Curves.bounceInOut,
+                childPadding: const EdgeInsets.all(5),
+                spaceBetweenChildren: 4,
+                backgroundColor: Color(0xFF29D09E),
+                foregroundColor: Color.fromARGB(255, 255, 255, 255),
+                overlayColor: Colors.black,
+                elevation: 8.0,
+                onOpen: () => debugPrint('OPENING DIAL'),
+                onClose: () => debugPrint('DIAL CLOSED'),
+                shape: CircleBorder(),
+                children: [
+                  SpeedDialChild(
+                      child: Icon(Icons.summarize),
+                      backgroundColor: Color.fromARGB(135, 41, 208, 158),
+                      label: 'Summative',
+                      elevation: 5.0),
+                  SpeedDialChild(
+                      child: Icon(Icons.self_improvement),
+                      backgroundColor: Color.fromARGB(135, 41, 208, 158),
+                      label: 'Self',
+                      elevation: 5.0),
+                  SpeedDialChild(
+                      child: Icon(Icons.group),
+                      backgroundColor: Color.fromARGB(135, 41, 208, 158),
+                      label: 'Peer',
+                      elevation: 5.0),
+                  SpeedDialChild(
+                      child: Icon(Icons.quiz),
+                      backgroundColor: Color(0xFF29D09E),
+                      label: 'Formative',
+                      elevation: 5.0,
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => GenFormAssessment(
+                                  widget.passedClassName,
+                                  data['Name'].toString(),
+                                  competences,
+                                  "null"),
+                            ));
+                      }),
+                ],
+              ),
+              // floatingActionButton: FloatingActionButton(
+              //   child: Icon(Icons.assessment),
+              //   backgroundColor: Color(0xFF29D09E),
+              //   onPressed: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => AssessmentsCreateTeacherPage(
+              //             widget.passedClassName,
+              //             data['Name'].toString(),
+              //             competences,
+              //             "null"),
+              //       ),
+              //     );
+              //   },
+              // ),
               body: SafeArea(
                 child: ListView.builder(
                   itemCount: studs.length,
