@@ -195,13 +195,6 @@ class _AssessmentsCreateTeacherPageState
                     height: 1,
                   ),
                   const SizedBox(height: 16),
-                  // TextField(
-                  //   decoration: const InputDecoration(
-                  //     icon: Icon(Icons.confirmation_number),
-                  //     labelText: 'Number of skills',
-                  //     hintText: 'Enter the number of Skills'
-                  //   )
-                  // ),
 
                   Container(
                     padding: EdgeInsets.all(20.0),
@@ -325,88 +318,3 @@ class _AssessmentsCreateTeacherPageState
         });
   }
 }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text('Create a Class'),
-  //       centerTitle: true,
-  //       backgroundColor: Color(0xFF29D09E),
-  //     ),
-  //     body: SafeArea(
-  //         child: ListView(
-  //           children: [
-  //             TextFormField(
-  //               decoration: InputDecoration(
-  //                 icon: Icon(Icons.person),
-  //                 labelText: 'Class',
-  //                 labelStyle: TextStyle(
-  //                   color: Color(0xFF29D09E),
-  //                 ),
-  //                 helperText: 'Year ID',
-  //                 suffixIcon: Icon(
-  //                   Icons.check_circle,
-  //                 ),
-  //                 enabledBorder: UnderlineInputBorder(
-  //                   borderSide: BorderSide(color: Color(0xFF29D09E)),
-  //                 ),
-  //               ),
-  //             ),
-  //             const SizedBox(
-  //               height: 16,
-  //             ),
-  //             Divider(
-  //               thickness: 1,
-  //               height: 1,
-  //             ),
-  //             const SizedBox(
-  //               height: 16,
-  //             ),
-
-  //             TextFormField(
-  //               decoration: InputDecoration(
-  //                 icon: Icon(Icons.group),
-  //                 labelText: 'Number of pupils',
-  //                 labelStyle: TextStyle(
-  //                   color: Color(0xFF29D09E),
-  //                 ),
-  //                 helperText: 'Type the cardinal of the class',
-  //                 suffixIcon: Icon(
-  //                   Icons.check_circle,
-  //                 ),
-  //                 enabledBorder: UnderlineInputBorder(
-  //                   borderSide: BorderSide(color: Color(0xFF29D09E)),
-  //                 ),
-  //               ),
-  //             ),
-  //             // ElevatedButton.icon(
-  //             //   onPressed: () {},
-  //             //   icon: Icon(Icons.add, size: 18),
-  //             //   label: Text('Create'),
-
-  //             // ),
-  //             const SizedBox(
-  //               height: 16,
-  //             ),
-  //             const SizedBox(
-  //               height: 16,
-  //             ),
-  //             ElevatedButton(
-  //               style: ElevatedButton.styleFrom(
-  //                 onPrimary: Colors.white,
-  //                 primary: Color(0xFF29D09E),
-  //                 ),
-  //               onPressed: () {
-  //                   Navigator.pop(context);
-
-  //                   final snackBar = SnackBar(content: Text('The login credentials will be sent to your email :)'));
-  //                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  //               },
-  //               child: const Text('Create'),
-  //             ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
