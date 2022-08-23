@@ -39,7 +39,7 @@ class _TeacherPageState extends State<TeacherPage> {
               home: Scaffold(
                   drawer: NavBarTeacher(),
                   appBar: AppBar(
-                    title: Text('Feed'),
+                    title: Text('Assessments'),
                     centerTitle: true,
                     backgroundColor: Color(0xFF29D09E),
                   ),
