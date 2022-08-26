@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:developer';
+import 'package:assessments_app/pages/Teacher/Classes/TurmaExemplo.dart';
 import 'package:collection/collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -65,9 +66,9 @@ class _AstaGraphsState extends State<AstaGraphs> {
 
   var _max = 0;
 
-  late CollectionReference _gradesCollection = FirebaseFirestore.instance
+  late CollectionReference _formativeCollection = FirebaseFirestore.instance
       .collection(
-          'classes/${widget.passedClassId}/grading/${widget.passedEmail}/grades');
+          '/classes/${widget.passedClassId}/grading/${widget.passedEmail}/formative');
   var _ind = 0;
 
   static List _leColours = [
@@ -151,7 +152,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
     print(widget.passedEmail);
     print(widget.passedLegitName);
     return FutureBuilder<QuerySnapshot>(
-      future: _gradesCollection.orderBy('Current', descending: false).get(),
+      future: _formativeCollection.orderBy('Current', descending: false).get(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return Text("Something went wrong");
@@ -371,6 +372,84 @@ class _AstaGraphsState extends State<AstaGraphs> {
                       const SizedBox(height: 16),
                     ],
                   ),
+                  Container(
+                      width: double.infinity,
+                      child: RawMaterialButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                    title: Text("Remove Student"),
+                                    content: Text(
+                                        'Are you sure you wish to remove this student from this class and delete all their assesments?'),
+                                    actions: [
+                                      TextButton(
+                                        style: ButtonStyle(
+                                          foregroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.blue),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop();
+                                        },
+                                        child: Text('CANCEL'),
+                                      ),
+                                      TextButton(
+                                        style: ButtonStyle(
+                                          foregroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Colors.blue),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop();
+                                          FirebaseFirestore.instance
+                                              .collection('classes')
+                                              .doc(widget.passedClassId)
+                                              .get()
+                                              .then((DocumentSnapshot
+                                                  documentSnapshot) {
+                                            if (documentSnapshot.exists) {
+                                              var num = documentSnapshot[
+                                                      'NumStudents'] -
+                                                  1;
+                                              List<dynamic> tmp =
+                                                  documentSnapshot[
+                                                      'StudentList'];
+                                              tmp.remove(widget.passedEmail);
+                                              FirebaseFirestore.instance
+                                                  .collection('classes')
+                                                  .doc(widget.passedClassId)
+                                                  .update({'StudentList': tmp});
+                                              FirebaseFirestore.instance
+                                                  .collection('classes')
+                                                  .doc(widget.passedClassId)
+                                                  .update({'NumStudents': num});
+                                              Navigator.of(context)
+                                                  .pushReplacement(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              TurmaExemplo(widget
+                                                                  .passedClassId
+                                                                  .toString())));
+                                            }
+                                          });
+                                        },
+                                        child: Text(
+                                          'DELETE',
+                                        ),
+                                      ),
+                                    ],
+                                  ));
+                        },
+                        child: Text(
+                          "Remove Student",
+                          style: TextStyle(color: Colors.red, fontSize: 18.0),
+                        ),
+                      )),
                 ],
               ),
             ],
