@@ -19,11 +19,11 @@ class AssessReview extends StatefulWidget {
 
 class _AssessReviewState extends State<AssessReview> {
   final Stream<QuerySnapshot> _compsStream =
-      FirebaseFirestore.instance.collection('Competences').snapshots();
+      FirebaseFirestore.instance.collection('/Competences').snapshots();
   final CollectionReference _assess =
-      FirebaseFirestore.instance.collection('assessments');
-  final CollectionReference _grades =
-      FirebaseFirestore.instance.collection('classes');
+      FirebaseFirestore.instance.collection('/assessments');
+  final CollectionReference _formative =
+      FirebaseFirestore.instance.collection('/classes');
 
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
@@ -93,29 +93,30 @@ class _AssessReviewState extends State<AssessReview> {
                   }
                 }
                 return StreamBuilder<QuerySnapshot>(
-                    stream: _grades
+                    stream: _formative
                         .doc(widget.passedClassName)
                         .collection('grading')
                         .doc(widget.passedStudName)
-                        .collection('grades')
+                        .collection('formative')
                         .where('AssessID',
                             isEqualTo: widget.passedAssessmentIdName)
                         .snapshots(),
                     builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> gradesnp) {
-                      if (gradesnp.hasError) {
+                        AsyncSnapshot<QuerySnapshot> formativenp) {
+                      if (formativenp.hasError) {
                         return Text('Something went wrong');
                       }
-                      if (gradesnp.connectionState == ConnectionState.waiting) {
+                      if (formativenp.connectionState ==
+                          ConnectionState.waiting) {
                         return Container(
                           child: Center(
                             child: CircularProgressIndicator(),
                           ),
                         );
                       }
-                      // grades of studend X
+                      // formative of studend X
                       Map savedGrade = Map<String, dynamic>.from(
-                          gradesnp.data?.docs[0].data()
+                          formativenp.data?.docs[0].data()
                               as Map<String, dynamic>);
                       savedGrade = savedGrade['Competences'];
 
@@ -240,17 +241,20 @@ class _AssessReviewState extends State<AssessReview> {
                                                       MainAxisAlignment.start,
                                                   onChanged: (value) =>
                                                       setState(() {
-                                                    var docId = gradesnp.data!
-                                                        .docs[0].reference.id
+                                                    var docId = formativenp
+                                                        .data!
+                                                        .docs[0]
+                                                        .reference
+                                                        .id
                                                         .toString();
 
-                                                    _grades
+                                                    _formative
                                                         .doc(widget
                                                             .passedClassName)
                                                         .collection('grading')
                                                         .doc(widget
                                                             .passedStudName)
-                                                        .collection('grades')
+                                                        .collection('formative')
                                                         .doc(docId)
                                                         .update({
                                                       "Competences.$k": {

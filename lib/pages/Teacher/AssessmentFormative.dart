@@ -22,7 +22,7 @@ class _AssessmentFormativeState extends State<AssessmentFormative> {
         .doc(assessinfo['ClassId'].toString())
         .collection("grading")
         .doc(stud.toString())
-        .collection("grades");
+        .collection("formative");
 
     // Call the user's CollectionReference to add a new assessment
     return assessments.add({
