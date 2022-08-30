@@ -1,20 +1,28 @@
+import 'package:assessments_app/pages/Teacher/Classes/ClassesPage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ClassesSettingsPage extends StatefulWidget {
-  const ClassesSettingsPage({Key? key}) : super(key: key);
+  final String passedClassName;
+
+  const ClassesSettingsPage(this.passedClassName);
 
   @override
-  _ClassesSettingsPageState createState() => _ClassesSettingsPageState();
+  State<ClassesSettingsPage> createState() => _ClassesSettingsPageState();
 }
 
 class _ClassesSettingsPageState extends State<ClassesSettingsPage> {
+  final nameController = TextEditingController();
 
-  // bool isChecked0 =
-  //     false;
-  //     bool isChecked1 =
-  //     false;
-  // bool isChecked2 =
-  //     false;
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    nameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -26,6 +34,7 @@ class _ClassesSettingsPageState extends State<ClassesSettingsPage> {
         child: ListView(
           children: [
             TextFormField(
+              controller: nameController,
               decoration: InputDecoration(
                 icon: Icon(Icons.school),
                 labelText: 'Change class name',
@@ -41,102 +50,84 @@ class _ClassesSettingsPageState extends State<ClassesSettingsPage> {
                 ),
               ),
             ),
-            // const SizedBox(
-            //   height: 16,
-            // ),
-            // Divider(
-            //   thickness: 1,
-            //   height: 1,
-            // ),
-            // const SizedBox(
-            //   height: 16,
-            // ),
-            // CheckboxListTile(
-            // title: Text("Skill 1"),
-
-            //   value: isChecked0,
-            //   onChanged: (kora0) {
-            //     setState(() {
-            //       isChecked0 = kora0!;
-            //       }
-            //     );
-            //   },
-            // ),
-            // CheckboxListTile(
-            // title: Text("Skill 2"),
-
-            //   value: isChecked1,
-            //   onChanged: (kora1) {
-            //     setState(() {
-            //       isChecked1 = kora1!;
-            //       }
-            //     );
-            //   },
-            // ),
-            // CheckboxListTile(
-            // title: Text("Skill 3"),
-
-            //   value: isChecked2,
-            //   onChanged: (kora2) {
-            //     setState(() {
-            //       isChecked2 = kora2!;
-            //       }
-            //     );
-            //   },
-            // ),
-            // TextFormField(
-            //   decoration: InputDecoration(
-            //     icon: Icon(Icons.group),
-            //     labelText: 'Add pupils',
-            //     labelStyle: TextStyle(
-            //       color: Color(0xFF29D09E),
-            //     ),
-            //     helperText: 'How many pupils to add?',
-            //     suffixIcon: Icon(
-            //       Icons.check_circle,
-            //     ),
-            //     enabledBorder: UnderlineInputBorder(
-            //       borderSide: BorderSide(color: Color(0xFF29D09E)),
-            //     ),
-            //   ),
-            // ),
-            // ElevatedButton.icon(
-            //   onPressed: () {},
-            //   icon: Icon(Icons.add, size: 18),
-            //   label: Text('Create'),
-
-            // ),
-
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                onPrimary: Colors.white,
-                primary: Color(0xFF29D09E),
+            Container(
+              alignment: Alignment.bottomCenter,
+              width: double.infinity,
+              child: RawMaterialButton(
+                child: Text('Change the class\'s name'),
+                onPressed: () {
+                  var collection =
+                      FirebaseFirestore.instance.collection('/classes');
+                  collection
+                      .doc(widget
+                          .passedClassName) // <-- Doc ID where data should be updated.
+                      .update({'Name': nameController.text}) // <-- Updated data
+                      .then((_) => print('Updated'))
+                      .catchError((error) => print('Update failed: $error'));
+                  Navigator.pop(context);
+                },
               ),
-              onPressed: () {
-                Navigator.pop(context);
-
-                final snackBar = SnackBar(
-                    content: Text(
-                        'Updated! :)'));
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              },
-              child: const Text('Change'),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                onPrimary: Colors.white,
-                primary: Color(0xFFF60000),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-
-                final snackBar = SnackBar(
-                    content: Text(
-                        'Killed the whole class! ☉ ‿ ⚆'));
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              },
-              child: const Text('Delete'),
-            ),
+            Container(
+                alignment: Alignment.bottomCenter,
+                width: double.infinity,
+                child: RawMaterialButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                              title: Text("Delete this class"),
+                              content: Text(
+                                  'Are you sure you wish to delete this class and delete all their assesments?'),
+                              actions: [
+                                TextButton(
+                                  style: ButtonStyle(
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.blue),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop();
+                                  },
+                                  child: Text('CANCEL'),
+                                ),
+                                TextButton(
+                                  style: ButtonStyle(
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.blue),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop();
+                                    final collection = FirebaseFirestore
+                                        .instance
+                                        .collection('/classes');
+                                    collection
+                                        .doc(widget
+                                            .passedClassName) // <-- Doc ID to be deleted.
+                                        .delete() // <-- Delete
+                                        .then((_) => print('Deleted'))
+                                        .catchError((error) =>
+                                            print('Delete failed: $error'));
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ClassesPage()));
+                                  },
+                                  child: Text(
+                                    'DELETE',
+                                  ),
+                                ),
+                              ],
+                            ));
+                  },
+                  child: Text(
+                    "Delete Class",
+                    style: TextStyle(color: Colors.red, fontSize: 18.0),
+                  ),
+                )),
           ],
         ),
       ),
