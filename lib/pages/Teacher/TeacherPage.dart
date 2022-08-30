@@ -5,6 +5,7 @@ import 'package:assessments_app/pages/Teacher/AssessmentFormative.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 
 class TeacherPage extends StatefulWidget {
   TeacherPage({Key? key}) : super(key: key);
@@ -98,7 +99,7 @@ class _TeacherPageState extends State<TeacherPage> {
                           : Color.fromARGB(255, 123, 123, 123),
                       title: Text('${data['Type']} Assessment'),
                       subtitle: Text(
-                          "Class Name:${data['ClassName'].toString()}\nCount:${data['Count'].toString()}/${data['Students'].values.toList().length}\nNumber:${data['currentNumber'].toString()}"),
+                          "Class Name:${data['ClassName'].toString()}\nCount:${data['Count'].toString()}/${data['Students'].values.toList().length}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}"),
                     );
                   }).toList(),
                 ),
