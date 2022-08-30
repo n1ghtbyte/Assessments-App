@@ -11,10 +11,12 @@ class ClassSetup extends StatefulWidget {
 }
 
 class _ClassSetupState extends State<ClassSetup> {
-  Widget build(BuildContext context) {
-    late CollectionReference _class =
-        FirebaseFirestore.instance.collection('classes');
+  List<TextEditingController> _controllers =
+      List.generate(11, (i) => new TextEditingController());
+  late CollectionReference _class =
+      FirebaseFirestore.instance.collection('/classes');
 
+  Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
         future: _class.doc(widget.passedClassNameSetup).get(),
         builder:
@@ -30,14 +32,14 @@ class _ClassSetupState extends State<ClassSetup> {
               ),
             );
           }
+          print("lolo");
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
 
           var comp = data['Competences'];
           List<String?> list = [];
           comp.entries.forEach((e) => list.add(e.key));
-          List<TextEditingController> _controllers =
-              List.generate(list.length, (i) => new TextEditingController());
+          var numComp = list.length;
 
           return Scaffold(
             appBar: AppBar(
@@ -58,16 +60,16 @@ class _ClassSetupState extends State<ClassSetup> {
               onPressed: () {
                 Map<String?, int> map1 = {};
                 int sum = 0;
-                for (int i = 0; i < list.length; i++) {
+                for (int i = 0; i < numComp; i++) {
                   sum += int.parse(_controllers[i].text);
                 }
                 print(map1);
                 if (sum == 100) {
-                  for (int i = 0; i < list.length; i++) {
+                  for (int i = 0; i < numComp; i++) {
                     map1[list[i].toString()] = int.parse(_controllers[i].text);
                   }
                   FirebaseFirestore.instance
-                      .collection("classes")
+                      .collection("/classes")
                       .doc(widget.passedClassNameSetup)
                       .set({"Weights": map1}, SetOptions(merge: true));
                   final snackBar =
@@ -86,7 +88,7 @@ class _ClassSetupState extends State<ClassSetup> {
             body: ListView.builder(
                 shrinkWrap: true,
                 physics: ScrollPhysics(),
-                itemCount: list.length,
+                itemCount: numComp,
                 itemBuilder: (BuildContext context, int index) {
                   _controllers.add(new TextEditingController());
                   return Container(
