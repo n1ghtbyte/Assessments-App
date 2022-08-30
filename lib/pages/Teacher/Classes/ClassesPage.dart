@@ -49,9 +49,8 @@ class _ClassesPageState extends State<ClassesPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ClassesCreatePage(
-                            addMessage: (String message) {},
-                          )),
+                    builder: (context) => ClassesCreatePage(),
+                  ),
                 );
               },
             ),
@@ -77,9 +76,8 @@ class _ClassesPageState extends State<ClassesPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ClassesCreatePage(
-                          addMessage: (String message) {},
-                        )),
+                  builder: (context) => ClassesCreatePage(),
+                ),
               );
             },
           ),
