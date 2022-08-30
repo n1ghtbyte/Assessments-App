@@ -1,20 +1,18 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:assessments_app/assets/Mypluggin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ClassesCreatePage extends StatefulWidget {
-  const ClassesCreatePage({required this.addMessage});
-
-  final FutureOr<void> Function(String message) addMessage;
+  const ClassesCreatePage({Key? key}) : super(key: key);
 
   @override
   _ClassesCreatePageState createState() => _ClassesCreatePageState();
 }
 
 class _ClassesCreatePageState extends State<ClassesCreatePage> {
-  late Stream<QuerySnapshot> _stream;
+  late Stream<QuerySnapshot> _stream =
+      FirebaseFirestore.instance.collection('Competences').snapshots();
 
   final _controllerName = TextEditingController();
   final _controllerMaxStudents = TextEditingController();
@@ -71,12 +69,6 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
   }
 
   List<Map<String, dynamic>> _comps = [];
-  @override
-  void initState() {
-    // Only create the stream once
-    _stream = FirebaseFirestore.instance.collection('Competences').snapshots();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +100,7 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
             _comps.add(foo);
             // print(foo['Name']);
           }
+          print(_competences);
 
           return Scaffold(
             appBar: AppBar(
@@ -148,6 +141,7 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                   ),
                   TextFormField(
                     controller: _controllerMaxStudents,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       icon: Icon(Icons.group),
                       labelText: 'Number of pupils',
@@ -167,7 +161,7 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                     height: 16,
                   ),
                   Divider(
-                    thickness: 1,
+                    thickness: 5,
                     height: 1,
                   ),
                   const SizedBox(
@@ -180,59 +174,18 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                     enabled: true,
                     // trailing: Icon(Icons.arrow_drop_down),
                   ),
-
                   const SizedBox(
                     height: 16,
                   ),
                   for (var i = 0; i < actualNumberComp; i++)
                     ParentChildCheckbox(
-                        parent: Text(
-                          _comps[i]['Name'],
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                        children: textify(_comps[i].keys.toList())),
-
-                  // ParentChildCheckbox(
-                  //   parent: Text('Critical Thinking'),
-                  //   children: [
-                  //     Text('Showing critical spirit'),
-                  //     Text('Actively participating in discussion'),
-                  //   ],
-                  //   parentCheckboxColor: Colors.lightBlue,
-                  //   childrenCheckboxColor: Colors.greenAccent,
-                  // ),
-
-                  // ParentChildCheckbox(
-                  //   parent: Text('Creativity'),
-                  //   children: [
-                  //     Text(
-                  //         'Contributing suggestions for the ideas, \nsituations, cases or problems posed'),
-                  //     Text(
-                  //         'Proposing ideas that are innovative as far\n as contents, development, etc. are concerned'),
-                  //   ],
-                  //   parentCheckboxColor: Colors.lightBlue,
-                  //   childrenCheckboxColor: Colors.pink,
-                  // ),
-                  // ParentChildCheckbox(
-                  //   parent: Text('Interpersonal Communication'),
-                  //   children: [
-                  //     Text('Listening attentively'),
-                  //     Text('Saying what one thinks and feels on a subject'),
-                  //   ],
-                  //   parentCheckboxColor: Colors.lightBlue,
-                  //   childrenCheckboxColor: Colors.pink,
-                  // ),
-                  // // ElevatedButton.icon(
-                  // //   onPressed: () {},
-                  // //   icon: Icon(Icons.add, size: 18),
-                  // //   label: Text('Create'),
-
-                  // // ),
-                  // const SizedBox(
-                  //   height: 32,
-                  // ),
-
+                      parent: Text(
+                        _comps[i]['Name'],
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      children: textify(_comps[i].keys.toList()),
+                    ),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       onPrimary: Colors.white,
@@ -240,22 +193,13 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                     ),
                     onPressed: () {
                       addClass();
-                      // print("kiki");
-                      // print(ParentChildCheckbox.selectedChildrens.toString());
-
-                      // print(_competences.toString());
-                      // print(ParentChildCheckbox.selectedChildrens.entries);
-                      // print("koko");
-                      // print(_weights);
-
                       Navigator.pop(context);
+                      final snackBar =
+                          SnackBar(content: Text('Generating the join code'));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     },
                     // Navigator.pop(context);
 
-                    // final snackBar = SnackBar(
-                    //     content: Text(
-                    //         'The login credentials will be sent to your email :)'));
-                    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     label: Text('Create'),
                     icon: Icon(Icons.add, size: 18),
                   ),
