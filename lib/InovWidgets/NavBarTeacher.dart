@@ -15,7 +15,7 @@ class NavBarTeacher extends StatefulWidget {
 
 class _NavBarTeacherState extends State<NavBarTeacher> {
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
-
+  final _firebaseAuth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -131,30 +131,26 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
                                 //   MaterialPageRoute(builder: (context) => QuitPage()),
 
                                 onPressed: () async {
-                                  await _signOut();
-                                  Navigator.of(context, rootNavigator: true)
-                                      .pop();
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (context) => LoginScreen()));
+                                  await _firebaseAuth.signOut().then(
+                                    (user) {
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop();
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (context) => LoginScreen(),
+                                        ),
+                                      );
+                                    },
+                                  );
                                 },
                                 child: Text('LOGOUT'),
                               )
                             ]));
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => LogoutPage()),
-                // );
               }),
         ],
       ),
     );
   }
-}
-
-Future<void> _signOut() async {
-  await FirebaseAuth.instance.signOut();
-  print("User Logged out");
 }
 
 void selectedItem(BuildContext context, int index) {
