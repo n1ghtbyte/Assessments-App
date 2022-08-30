@@ -1,4 +1,5 @@
-import 'package:assessments_app/pages/Teacher/Assessments/AssessmentsCreateTeacherPage.dart';
+// import 'package:assessments_app/pages/Teacher/Assessments/AssessmentsCreateTeacherPage.dart';
+import 'package:assessments_app/pages/Teacher/Assessments/GenSummAssessment.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AstaGraphs.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ReviewAssessmentsClass.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AddStudentClass.dart';
@@ -94,7 +95,8 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                         break;
                       case _MenuValues.Settings:
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (c) => ClassesSettingsPage()));
+                            builder: (c) =>
+                                ClassesSettingsPage(widget.passedClassName)));
                         break;
                       case _MenuValues.Setup:
                         Navigator.of(context).push(MaterialPageRoute(
@@ -208,7 +210,8 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                         case _MenuValues.Settings:
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (c) => ClassesSettingsPage(),
+                              builder: (c) =>
+                                  ClassesSettingsPage(widget.passedClassName),
                             ),
                           );
                           break;
@@ -244,10 +247,20 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                 shape: CircleBorder(),
                 children: [
                   SpeedDialChild(
-                      child: Icon(Icons.summarize),
-                      backgroundColor: Color.fromARGB(135, 41, 208, 158),
-                      label: 'Summative',
-                      elevation: 5.0),
+                    child: Icon(Icons.summarize),
+                    backgroundColor: Color(0xFF29D09E),
+                    label: 'Summative',
+                    elevation: 5.0,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              GenSummAssessment(widget.passedClassName),
+                        ),
+                      );
+                    },
+                  ),
                   SpeedDialChild(
                       child: Icon(Icons.self_improvement),
                       backgroundColor: Color.fromARGB(135, 41, 208, 158),
@@ -259,21 +272,23 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                       label: 'Peer',
                       elevation: 5.0),
                   SpeedDialChild(
-                      child: Icon(Icons.quiz),
-                      backgroundColor: Color(0xFF29D09E),
-                      label: 'Formative',
-                      elevation: 5.0,
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => GenFormAssessment(
-                                  widget.passedClassName,
-                                  data['Name'].toString(),
-                                  competences,
-                                  "null"),
-                            ));
-                      }),
+                    child: Icon(Icons.quiz),
+                    backgroundColor: Color(0xFF29D09E),
+                    label: 'Formative',
+                    elevation: 5.0,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => GenFormAssessment(
+                              widget.passedClassName,
+                              data['Name'].toString(),
+                              competences,
+                              "null"),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
               // floatingActionButton: FloatingActionButton(
