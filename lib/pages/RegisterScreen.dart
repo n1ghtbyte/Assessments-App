@@ -121,14 +121,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(
                 height: 44.0,
               ),
-              TextFormField(
-                validator: (val) => val!.isEmpty || !val.contains("@")
-                    ? "enter a valid eamil"
-                    : null,
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  hintText: "Email",
+              Tooltip(
+                child: TextFormField(
+                  validator: (val) => val!.isEmpty || !val.contains("@")
+                      ? "enter a valid email"
+                      : null,
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    hintText: "Enter you email or account name",
+                  ),
                 ),
               ),
               SizedBox(
@@ -139,11 +141,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 obscureText: true,
                 decoration: InputDecoration(
                   // errorText: _errorText,
-                  hintText: "Password",
+                  hintText: "Enter your password",
                 ),
               ),
               SizedBox(
                 height: 26.0,
+              ),
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  // errorText: _errorText,
+                  hintText: "Re-enter your password",
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
