@@ -1,6 +1,7 @@
 import 'package:assessments_app/pages/Teacher/AssessReviewSolo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AssessmentCheck extends StatefulWidget {
   final String passedAssessmentIdName;
@@ -96,7 +97,7 @@ class _AssessmentCheckState extends State<AssessmentCheck> {
                         Container(
                           padding: EdgeInsets.all(14.0),
                           child: Text(
-                            "Assessment number: ${data['currentNumber']}#\nClass: ${data['ClassName']}\n",
+                            "Assessment number: ${data['currentNumber'] + 1}\nClass: ${data['ClassName']}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}",
                             style: TextStyle(fontSize: 20),
                           ),
                         ),
