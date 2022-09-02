@@ -151,74 +151,55 @@ class _AssessmentFormativeState extends State<AssessmentFormative> {
 
                 return Scaffold(
                   appBar: AppBar(
-                    title: Text('Formative Assessment'),
+                    title: Text(currentStudent.toString()),
                     centerTitle: true,
                     backgroundColor: Color(0xFF29D09E),
                   ),
                   floatingActionButton: FloatingActionButton.extended(
                     backgroundColor: const Color(0xFF29D09E),
                     onPressed: () {
-                      //Navigator.pop(context=
-                      // print(currentStudent);
                       for (var ent in _mapinha.keys) {
                         _mapinha[ent] =
                             _mapinha[ent].toString().substring(0, 1);
                       }
                       print("-----------------------------------------");
                       for (var skill in _mapao.keys) {
-                        // print(_mapao[skill]);
-                        // _mapao[skill]
-                        //     ?.forEach((k, v) => print(v.substring(0, 1)));
                         _mapao[skill]?.updateAll(
                             ((key, value) => value = value.substring(0, 1)));
-
-                        // _mapao[skill] = {
-                        //   _mapao[skill].toString():
-                        //       _mapao[indicator].toString().substring(0, 1)
                       }
+                      if (_mapao.keys.length == allIndicators.length) {
+                        studs[currentStudent] = true;
+                        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-                      // }
-
-                      // Map<String, Map<String, String>> uploadComps = {};
-                      // for (var compName in namesC) {
-                      //For each competence name, assing a map
-                      // print(compName);
-                      //   print(_mapinha.entries);
-                      //   for (var indicatorFoo in _comps.keys) {
-                      //     if (_mapinha.containsKey(indicatorFoo)) {
-                      //       // print(indicatorFoo);
-                      //       uploadComps[compName] = _mapinha.map((key,
-                      //               value) =>
-                      //           MapEntry(key.toString(), value.toString()));
-                      //     }
-                      //   }
-                      // }
-                      studs[currentStudent] = true;
-                      print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                      print(_mapao);
-
-                      // print(uploadComps);
-                      addGrade(currentStudent, _mapao,
-                          data['currentNumber'].toString(), data, assesId);
-                      bool x = true;
-                      for (var k in studs.values) {
-                        if (k == false) x = false;
-                      }
-                      updateAssessment(
-                          widget.passedAssessmentIdName, studs, data, x);
-                      if (x == true) {
-                        FirebaseFirestore.instance
-                            .collection('classes')
-                            .doc(data['ClassId'])
-                            .update({'prevAssess': FieldValue.increment(1)});
-                        Navigator.pop(context);
+                        // print(uploadComps);
+                        addGrade(currentStudent, _mapao,
+                            data['currentNumber'].toString(), data, assesId);
+                        bool x = true;
+                        for (var k in studs.values) {
+                          if (k == false) x = false;
+                        }
+                        updateAssessment(
+                            widget.passedAssessmentIdName, studs, data, x);
+                        if (x == true) {
+                          FirebaseFirestore.instance
+                              .collection('classes')
+                              .doc(data['ClassId'])
+                              .update({'prevAssess': FieldValue.increment(1)});
+                          Navigator.pop(context);
+                        } else {
+                          print(studs);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      super.widget));
+                        }
                       } else {
-                        print(studs);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    super.widget));
+                        final snackBar = SnackBar(
+                            content: Text(
+                                'You forgot to evaluate the student in some indicator(s)'));
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        print("COCO");
                       }
                     },
                     icon: Icon(Icons.skip_next),
