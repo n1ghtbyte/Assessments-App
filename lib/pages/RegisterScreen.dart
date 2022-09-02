@@ -18,6 +18,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  TextEditingController _passwordController2 = TextEditingController();
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
@@ -100,9 +101,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(
                 height: 44.0,
               ),
-              SizedBox(
-                height: 44.0,
-              ),
               TextField(
                 controller: _firstName,
                 decoration: InputDecoration(
@@ -121,20 +119,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(
                 height: 44.0,
               ),
-              Tooltip(
-                child: TextFormField(
-                  validator: (val) => val!.isEmpty || !val.contains("@")
-                      ? "enter a valid email"
-                      : null,
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    hintText: "Enter you email or account name",
-                  ),
+              TextFormField(
+                validator: (val) => val!.isEmpty || !val.contains("@")
+                    ? "enter a valid email"
+                    : null,
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  hintText: "Enter you email or account name",
                 ),
               ),
               SizedBox(
-                height: 26.0,
+                height: 44.0,
               ),
               TextField(
                 controller: _passwordController,
@@ -145,10 +141,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               SizedBox(
-                height: 26.0,
+                height: 44.0,
               ),
               TextField(
-                controller: _passwordController,
+                controller: _passwordController2,
                 obscureText: true,
                 decoration: InputDecoration(
                   // errorText: _errorText,
@@ -216,28 +212,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   onPressed: () async {
-                    try {
-                      await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                              email: _emailController.text,
-                              password: _passwordController.text);
-                      addUser();
-                      Navigator.of(context).pop();
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'weak-password') {
-                        print('The password provided is too weak.');
-                        final snackBar = SnackBar(
-                            content: Text(
-                                'The password provided is too weak. (min 8 chars)'));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      } else if (e.code == 'email-already-in-use') {
-                        print('email-already-in-use');
-                        final snackBar = SnackBar(
-                            content: Text('The account already exists!!'));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    if (_passwordController.text == _passwordController2.text) {
+                      try {
+                        await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                                email: _emailController.text,
+                                password: _passwordController.text);
+                        addUser();
+                        Navigator.of(context).pop();
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'weak-password') {
+                          print('The password provided is too weak.');
+                          final snackBar = SnackBar(
+                              content: Text(
+                                  'The password provided is too weak. (min 8 chars)'));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        } else if (e.code == 'email-already-in-use') {
+                          print('email-already-in-use');
+                          final snackBar = SnackBar(
+                              content: Text('The account already exists!!'));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      } catch (e) {
+                        print(e);
                       }
-                    } catch (e) {
-                      print(e);
+                    } else {
+                      final snackBar =
+                          SnackBar(content: Text('Passwords do not match'));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   },
                   child: Text(
