@@ -115,18 +115,18 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                     controller: _controllerName,
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xff388e3c)),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xff388e3c)),
+                      ),
                       icon: Icon(Icons.person),
                       labelText: 'Class Name',
                       labelStyle: TextStyle(
                         color: Color(0xFF29D09E),
                       ),
                       helperText: 'Enter the name that will be displayed',
-                      suffixIcon: Icon(
-                        Icons.check_circle,
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFF29D09E)),
-                      ),
                     ),
                   ),
                   const SizedBox(
@@ -143,18 +143,18 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                     controller: _controllerMaxStudents,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xff388e3c)),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xff388e3c)),
+                      ),
                       icon: Icon(Icons.group),
                       labelText: 'Number of pupils',
                       labelStyle: TextStyle(
                         color: Color(0xFF29D09E),
                       ),
                       helperText: 'Enter the number of students',
-                      suffixIcon: Icon(
-                        Icons.check_circle,
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFF29D09E)),
-                      ),
                     ),
                   ),
                   const SizedBox(
@@ -177,15 +177,23 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                   const SizedBox(
                     height: 16,
                   ),
-                  for (var i = 0; i < actualNumberComp; i++)
-                    ParentChildCheckbox(
-                      parent: Text(
-                        _comps[i]['Name'],
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                      children: textify(_comps[i].keys.toList()),
-                    ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (var i = 0; i < actualNumberComp; i++)
+                        ParentChildCheckbox(
+                          parentCheckboxColor: Color(0xFF29D09E),
+                          childrenCheckboxColor: Color(0xff388e3c),
+                          parent: Text(
+                            _comps[i]['Name'],
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                          children: textify(_comps[i].keys.toList()),
+                        ),
+                    ],
+                  ),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       onPrimary: Colors.white,
