@@ -122,7 +122,7 @@ class _AssessReviewState extends State<AssessReview> {
 
                       return Scaffold(
                         appBar: AppBar(
-                          title: Text('Reviewing'),
+                          title: Text('Reviewing ${widget.passedStudName}'),
                           centerTitle: true,
                           backgroundColor: Color(0xFF29D09E),
                         ),
