@@ -1,3 +1,4 @@
+import 'package:assessments_app/pages/Teacher/Skills/IndicatorPicked.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +38,6 @@ class _CompetencePickedState extends State<CompetencePicked> {
             snapshot.data!.data() as Map<String, dynamic>;
 
         print(data.keys);
-
         data.removeWhere((key, value) => key == "Name");
 
         return Scaffold(
@@ -55,49 +55,26 @@ class _CompetencePickedState extends State<CompetencePicked> {
                   SizedBox(
                     height: 8,
                   ),
-                  for (var k in data.keys)
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text(
-                            k,
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w400),
-                            textAlign: TextAlign.left,
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Divider(
-                            height: 12,
-                            thickness: 4,
-                          ),
-                          for (String x in (data[k]))
-                            Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: Column(
-                                children: <Widget>[
-                                  Text(
-                                    x,
-                                    style: TextStyle(fontSize: 12),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                  SizedBox(
-                                    height: 14,
-                                  ),
-                                ],
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: data.keys.toList().length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(data.keys.toList()[index]),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => IndicatorPicked(
+                                passedList: data[data.keys.toList()[index]],
                               ),
                             ),
-                          Divider(
-                            height: 12,
-                            thickness: 4,
-                          ),
-                        ],
-                      ),
-                    ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
