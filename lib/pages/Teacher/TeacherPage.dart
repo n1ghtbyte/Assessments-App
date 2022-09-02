@@ -66,7 +66,6 @@ class _TeacherPageState extends State<TeacherPage> {
                       snapshot.data!.docs.map((DocumentSnapshot document) {
                     Map<String, dynamic> data =
                         document.data()! as Map<String, dynamic>;
-
                     return ListTile(
                       onTap: () {
                         if (data['Type'] == 'Formative' &&
