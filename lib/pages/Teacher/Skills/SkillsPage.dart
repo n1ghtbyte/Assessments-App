@@ -42,7 +42,7 @@ class SkillsPage extends StatelessWidget {
                               passedCompName: data['Name'].toString())),
                     );
                   },
-                  leading: Icon(Icons.arrow_forward_rounded),
+                  trailing: Icon(Icons.arrow_circle_right_rounded),
                   title: Text(data['Name']),
                 );
               }).toList(),
