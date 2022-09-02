@@ -83,10 +83,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
     Color(0xff33691e),
   ];
 
-  // static Map<String, Color> _compColour = {
-  //   "Writing Skills": Color.fromARGB(255, 172, 55, 137),
-  //   "Project Management": Color.fromARGB(255, 166, 229, 42),
-  // };
   int indicatorToHash(String indicator) {
     int _sum = 0;
 
