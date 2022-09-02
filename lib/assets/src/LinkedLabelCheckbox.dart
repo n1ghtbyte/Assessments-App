@@ -28,7 +28,7 @@ class LinkedLabelCheckbox extends StatelessWidget {
               text: TextSpan(
                 text: label,
                 style: const TextStyle(
-                  color: Colors.blueAccent,
+                  color: Color(0xFF29D09E),
                   decoration: TextDecoration.underline,
                 ),
                 recognizer: TapGestureRecognizer()
@@ -45,6 +45,7 @@ class LinkedLabelCheckbox extends StatelessWidget {
             ),
           ),
           Checkbox(
+            activeColor: Color(0xFF29D09E),
             value: value,
             onChanged: (bool? newValue) {
               onChanged(newValue!);
