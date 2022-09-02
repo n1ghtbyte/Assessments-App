@@ -27,9 +27,9 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
   Future<void> addAssessment(Map X, Map comp, var curr) {
     if (widget.passedStudName.contains("@")) {
       return assessments.add({
+        'Created': FieldValue.serverTimestamp(),
         'ClassId': widget.passedClassName,
         'ClassName': widget.passedName,
-        'Created': FieldValue.serverTimestamp(),
         'Creator': currentUser,
         'Type': _typeAssess,
         'Target': "Single",
@@ -45,9 +45,9 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
     } else {
       // Call the user's CollectionReference to add a new assessment
       return assessments.add({
+        'Created': FieldValue.serverTimestamp(),
         'ClassId': widget.passedClassName,
         'ClassName': widget.passedName,
-        'Created': FieldValue.serverTimestamp(),
         'Creator': currentUser,
         'Type': _typeAssess,
         'Target': "Multiple",
@@ -127,6 +127,7 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
                     itemCount: list.length,
                     itemBuilder: (context, index) {
                       return CheckboxListTile(
+                        activeColor: Color(0xFF29D09E),
                         title: Text("${list[index]}"),
                         value: isChecked[index],
                         onChanged: (value) {
