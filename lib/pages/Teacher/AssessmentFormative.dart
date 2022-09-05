@@ -167,7 +167,9 @@ class _AssessmentFormativeState extends State<AssessmentFormative> {
                         _mapao[skill]?.updateAll(
                             ((key, value) => value = value.substring(0, 1)));
                       }
-                      if (_mapao.keys.length == allIndicators.length) {
+                      if (_mapinha.values.length == allIndicators.length) {
+                        print(_mapao.keys.length);
+                        print(allIndicators.length);
                         studs[currentStudent] = true;
                         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
@@ -195,6 +197,10 @@ class _AssessmentFormativeState extends State<AssessmentFormative> {
                                       super.widget));
                         }
                       } else {
+                        print("DSDS");
+                        print(_mapinha.values.length);
+
+                        print(allIndicators.length);
                         final snackBar = SnackBar(
                             content: Text(
                                 'You forgot to evaluate the student in some indicator(s)'));
