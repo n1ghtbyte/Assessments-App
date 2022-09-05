@@ -12,6 +12,11 @@ class AddStudentToClass extends StatefulWidget {
 
 class _AddStudentToClassState extends State<AddStudentToClass> {
   final _controllerJoin = TextEditingController();
+  @override
+  void dispose() {
+    _controllerJoin.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
