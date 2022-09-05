@@ -36,6 +36,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   //   // return null if the text is valid
   //   return null;
   // }
+  @override
+  void dispose() {
+    _firstName.dispose();
+    _lastName.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _passwordController2.dispose();
+    super.dispose();
+  }
 
   Future<void> addUser() {
     // Call the user's CollectionReference to add a new user
