@@ -69,6 +69,12 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
   }
 
   List<Map<String, dynamic>> _comps = [];
+  @override
+  void dispose() {
+    _controllerMaxStudents.dispose();
+    _controllerName.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
