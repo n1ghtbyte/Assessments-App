@@ -11,179 +11,22 @@ class _StudentPageState extends State<StudentPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(
-            drawer: NavBarStudent(),
-            appBar: AppBar(
-              title: Text('Main Page'),
-              centerTitle: true,
-              backgroundColor: Color(0xFF29D09E),
-            ),
-            body: ListView(
-              scrollDirection: Axis.vertical,
-              children: const <Widget>[
-                const SizedBox(height: 16),
-                ListTile(
-                  leading: Icon(Icons.functions),
-                  title: Text("Math"),
-                  subtitle: Text("Deliver date: XX/YY/ZZ"),
-                ),
-                const SizedBox(height: 16),
-                Divider(
-                  thickness: 1,
-                  height: 1,
-                ),
-                const SizedBox(height: 16),
-                ListTile(
-                  leading: Icon(Icons.group),
-                  title: Text("Peer Assessment"),
-                  subtitle: Text("Deliver Date: XX/YY/ZZ"),
-                ),
-                const SizedBox(height: 16),
-                Divider(
-                  thickness: 1,
-                  height: 1,
-                ),
-                const SizedBox(height: 16),
-                ListTile(
-                  leading: Icon(Icons.science),
-                  title: Text("Science"),
-                  subtitle: Text("Deliver date: XX/YY/ZZ"),
-                ),
-                const SizedBox(height: 16),
-                Divider(
-                  thickness: 1,
-                  height: 1,
-                ),
-                const SizedBox(height: 16),
-                ListTile(
-                  leading: Icon(Icons.group),
-                  title: Text("Peer Assessment"),
-                  subtitle: Text("Deliver Date: XX/YY/ZZ"),
-                ),
-                const SizedBox(height: 16),
-                Divider(
-                  thickness: 1,
-                  height: 1,
-                ),
-                const SizedBox(height: 16),
-                ListTile(
-                  leading: Icon(Icons.language),
-                  title: Text("Languages"),
-                  subtitle: Text("Deliver date: XX/YY/ZZ"),
-                ),
-                const SizedBox(height: 16),
-                Divider(
-                  thickness: 1,
-                  height: 1,
-                ),
-                const SizedBox(height: 16),
-                ListTile(
-                  leading: Icon(Icons.self_improvement),
-                  title: Text("Self Assessment"),
-                  subtitle: Text("Deliver date: XX/YY/ZZ"),
-                ),
-                const SizedBox(height: 16),
-                Divider(
-                  thickness: 1,
-                  height: 1,
-                ),
-                const SizedBox(height: 16),
-                ListTile(
-                  leading: Icon(Icons.school),
-                  title: Text("Teacher Assessment"),
-                  subtitle: Text("Deliver date: XX/YY/ZZ"),
-                ),
-                const SizedBox(height: 16),
-                Divider(
-                  thickness: 1,
-                  height: 1,
-                ),
-                const SizedBox(height: 16),
-                ListTile(
-                  leading: Icon(Icons.group),
-                  title: Text("Peer Assessment"),
-                  subtitle: Text("Deliver date: XX/YY/ZZ"),
-                ),
-                const SizedBox(height: 16),
-                Divider(
-                  thickness: 1,
-                  height: 1,
-                ),
-                const SizedBox(height: 16),
-                ListTile(
-                  leading: Icon(Icons.self_improvement),
-                  title: Text("Self Assessment"),
-                  subtitle: Text("Deliver date: XX/YY/ZZ"),
-                ),
-                const SizedBox(height: 16),
-                Divider(
-                  thickness: 1,
-                  height: 1,
-                ),
-                const SizedBox(height: 16),
-                ListTile(
-                  leading: Icon(Icons.functions),
-                  title: Text("Math"),
-                  subtitle: Text("Deliver date: XX/YY/ZZ"),
-                ),
-                const SizedBox(height: 16),
-                Divider(
-                  thickness: 1,
-                  height: 1,
-                ),
-                const SizedBox(height: 16),
-                ListTile(
-                  leading: Icon(Icons.group),
-                  title: Text("Peer Assessment"),
-                  subtitle: Text("Deliver Date: XX/YY/ZZ"),
-                ),
-                const SizedBox(height: 16),
-                Divider(
-                  thickness: 1,
-                  height: 1,
-                ),
-                const SizedBox(height: 16),
-                ListTile(
-                  leading: Icon(Icons.science),
-                  title: Text("Science"),
-                  subtitle: Text("Deliver date: XX/YY/ZZ"),
-                ),
-                const SizedBox(height: 16),
-                Divider(
-                  thickness: 1,
-                  height: 1,
-                ),
-                const SizedBox(height: 16),
-                ListTile(
-                  leading: Icon(Icons.group),
-                  title: Text("Peer Assessment"),
-                  subtitle: Text("Deliver Date: XX/YY/ZZ"),
-                ),
-                const SizedBox(height: 16),
-                Divider(
-                  thickness: 1,
-                  height: 1,
-                ),
-                const SizedBox(height: 16),
-                ListTile(
-                  leading: Icon(Icons.language),
-                  title: Text("Languages"),
-                  subtitle: Text("Deliver date: XX/YY/ZZ"),
-                ),
-                const SizedBox(height: 16),
-                Divider(
-                  thickness: 1,
-                  height: 1,
-                ),
-                const SizedBox(height: 16),
-                ListTile(
-                  leading: Icon(Icons.self_improvement),
-                  title: Text("Self Assessment"),
-                  subtitle: Text("Deliver date: XX/YY/ZZ"),
-                ),
-                const SizedBox(height: 16),
-              ],
-            )));
+      home: Scaffold(
+        drawer: NavBarStudent(),
+        appBar: AppBar(
+          title: Text('Main Page'),
+          centerTitle: true,
+          backgroundColor: Color(0xFF29D09E),
+        ),
+        body: Center(
+          child: Text(
+            "Assessments will be displayed here, once they are generated",
+            style: TextStyle(fontStyle: FontStyle.italic),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
   }
 }
 // class _MyHomePageState extends State<MyHomePage> {
