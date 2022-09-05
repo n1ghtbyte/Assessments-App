@@ -1,7 +1,6 @@
 // check this out https://github.com/imaNNeoFighT/fl_chart/blob/master/repo_files/documentations/bar_chart.md
 
 import 'dart:convert';
-import 'dart:developer';
 import 'package:assessments_app/pages/Teacher/Classes/TurmaExemplo.dart';
 import 'package:collection/collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -71,16 +70,47 @@ class _AstaGraphsState extends State<AstaGraphs> {
           '/classes/${widget.passedClassId}/grading/${widget.passedEmail}/formative');
   var _ind = 0;
 
+  // Color(0xffa5d6a7),
+  // Color(0xff81c784),
+  // Color(0xff66bb6a),
+  // Color(0xff4caf50),
+  // Color(0xff43a047),
+  // Color(0xff388e3c),
+  // Color(0xff2e7d32),
+  // Color(0xff1b5e20),
+  // Color(0xff33691e),
+
   static List _leColours = [
-    Color(0xffa5d6a7),
-    Color(0xff81c784),
-    Color(0xff66bb6a),
-    Color(0xff4caf50),
-    Color(0xff43a047),
-    Color(0xff388e3c),
-    Color(0xff2e7d32),
-    Color(0xff1b5e20),
-    Color(0xff33691e),
+    Color(0xff7a3279),
+    Color(0xff58c770),
+    Color(0xffc24fa8),
+    Color(0xffadbc3c),
+    Color(0xff483588),
+    Color(0xff80aa3d),
+    Color(0xff9c69cc),
+    Color(0xff48862e),
+    Color(0xff5c7cde),
+    Color(0xffcb9f2e),
+    Color(0xff6789cf),
+    Color(0xffc88130),
+    Color(0xff33d4d1),
+    Color(0xffcf483f),
+    Color(0xff4ac08f),
+    Color(0xffcb417f),
+    Color(0xff86c275),
+    Color(0xff872957),
+    Color(0xff347435),
+    Color(0xffd088d2),
+    Color(0xffc6ba61),
+    Color(0xffdb75a2),
+    Color(0xff7c7527),
+    Color(0xffd24660),
+    Color(0xffcc8b52),
+    Color(0xff8d2836),
+    Color(0xffc15c2d),
+    Color(0xffca5e71),
+    Color(0xff86341a),
+    Color(0xffdc7a67),
   ];
 
   int indicatorToHash(String indicator) {
@@ -97,9 +127,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
   // Relative to bar charts
   SideTitles get _bottomTitles => SideTitles(
         showTitles: true,
-        reservedSize: 30,
-        margin: 8,
-        interval: null,
+        reservedSize: 20,
         rotateAngle: 0,
         getTextStyles: (context, value) => const TextStyle(
           color: Color(0xff939393),
@@ -215,8 +243,15 @@ class _AstaGraphsState extends State<AstaGraphs> {
             helper = [];
           }
         }
-        inspect(_smallData);
+        // inspect(_smallData);
         // inspect(_bigData);
+        var thevalue = 0;
+
+        _smallData.forEach((k, v) {
+          if (v.length > thevalue) {
+            thevalue = v.length;
+          }
+        });
 
         for (var comp in widget.passedCompetences.keys) {
           for (var i = 0; i < _bigData[comp]!.length; i++) {
@@ -259,40 +294,45 @@ class _AstaGraphsState extends State<AstaGraphs> {
                         ),
                         const SizedBox(height: 14),
                         SizedBox(height: 16),
-                        AspectRatio(
-                          aspectRatio: 1.5,
-                          child: Padding(
-                            padding: const EdgeInsets.all(30.0),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Container(
+                            padding: EdgeInsets.all(20),
+                            height: 300,
+                            width: (_bigData[_comp]!.length * 200) +
+                                _smallData[_comp]!.length * 15,
                             child: BarChart(
                               BarChartData(
-                                  titlesData: FlTitlesData(
-                                    bottomTitles: _bottomTitles,
-                                    leftTitles: SideTitles(showTitles: true),
-                                    topTitles: SideTitles(showTitles: false),
-                                    rightTitles: SideTitles(showTitles: false),
-                                  ),
-                                  gridData: FlGridData(
-                                      drawHorizontalLine: true,
-                                      drawVerticalLine: false),
-                                  maxY: 5,
-                                  minY: 0,
-                                  groupsSpace: 10,
-                                  barGroups: _bigData[_comp]
-                                      ?.map((dataItem) => BarChartGroupData(
-                                              x: dataItem.hash,
-                                              barRods: [
-                                                for (var ind = 0;
-                                                    ind < dataItem.y.length;
-                                                    ind++)
-                                                  BarChartRodData(
-                                                      y: double.parse(
-                                                          dataItem.y[ind]),
-                                                      width: 15,
-                                                      colors: [
-                                                        _leColours[ind]
-                                                      ]),
-                                              ]))
-                                      .toList()),
+                                titlesData: FlTitlesData(
+                                  bottomTitles: _bottomTitles,
+                                  leftTitles: SideTitles(showTitles: true),
+                                  topTitles: SideTitles(showTitles: false),
+                                  rightTitles: SideTitles(showTitles: false),
+                                ),
+                                gridData: FlGridData(
+                                    drawHorizontalLine: true,
+                                    drawVerticalLine: false),
+                                maxY: 5,
+                                minY: 0,
+                                groupsSpace: 10,
+                                barGroups: _bigData[_comp]
+                                    ?.map(
+                                      (dataItem) => BarChartGroupData(
+                                        x: dataItem.hash,
+                                        barRods: [
+                                          for (var ind = 0;
+                                              ind < dataItem.y.length;
+                                              ind++)
+                                            BarChartRodData(
+                                                y: double.parse(
+                                                    dataItem.y[ind]),
+                                                width: 15,
+                                                colors: [_leColours[ind]]),
+                                        ],
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
                               swapAnimationDuration:
                                   Duration(milliseconds: 150), // Optional
                               swapAnimationCurve: Curves.linear, // Optional
@@ -328,10 +368,12 @@ class _AstaGraphsState extends State<AstaGraphs> {
                       ),
                       const SizedBox(height: 14),
                       SizedBox(height: 16),
-                      AspectRatio(
-                        aspectRatio: 1.5,
-                        child: Padding(
-                            padding: const EdgeInsets.all(30.0),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Container(
+                            padding: EdgeInsets.all(40),
+                            height: 300,
+                            width: thevalue * 100,
                             child: LineChart(
                               LineChartData(
                                 titlesData: FlTitlesData(
