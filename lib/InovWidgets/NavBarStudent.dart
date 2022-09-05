@@ -7,8 +7,16 @@ import 'package:flutter/material.dart';
 
 import '../pages/LoginScreen.dart';
 
-class NavBarStudent extends StatelessWidget {
+class NavBarStudent extends StatefulWidget {
   const NavBarStudent({Key? key}) : super(key: key);
+
+  @override
+  State<NavBarStudent> createState() => _NavBarStudentState();
+}
+
+class _NavBarStudentState extends State<NavBarStudent> {
+  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  String? currentUser = FirebaseAuth.instance.currentUser!.email;
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +25,8 @@ class NavBarStudent extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text('Student'),
-            accountEmail: Text('student@domain.com'),
+            accountName: Text('Teacher'),
+            accountEmail: Text(currentUser!),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.network(
@@ -31,33 +39,29 @@ class NavBarStudent extends StatelessWidget {
             ),
             decoration: BoxDecoration(color: Color(0xFF29D09E)),
           ),
-          ListTile(
-            leading: Icon(Icons.assessment),
-            title: const Text('Assessments'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => AssessmentsStudentPage()),
-              );
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.assessment),
+          //   title: const Text('Assessments'),
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //           builder: (context) => AssessmentsStudentPage()),
+          //     );
+          //   },
+          // ),
           ListTile(
             leading: Icon(Icons.school),
             title: const Text('Classes'),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => StudentClass()),
+                MaterialPageRoute(builder: (context) => StudendClasses()),
               );
             },
           ),
           const SizedBox(height: 16),
-          Divider(
-            thickness: 1,
-            height: 1,
-          ),
-          const SizedBox(height: 16),
+
           ListTile(
             leading: Icon(Icons.account_box),
             title: const Text('Account'),
@@ -79,58 +83,53 @@ class NavBarStudent extends StatelessWidget {
             },
           ),
           ListTile(
-              leading: Icon(Icons.logout),
-              title: const Text('Log out'),
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (_) => AlertDialog(
-                            title: Text("Logout"),
-                            content: Text('Log out now?'),
-                            actions: [
-                              TextButton(
-                                style: ButtonStyle(
-                                  foregroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.blue),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context, rootNavigator: true)
-                                      .pop();
-                                },
-                                child: Text('CANCEL'),
+            leading: Icon(Icons.logout),
+            title: const Text('Log out'),
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text("Logout"),
+                  content: Text('Log out now?'),
+                  actions: [
+                    TextButton(
+                      style: ButtonStyle(
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.blue),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context, rootNavigator: true).pop();
+                      },
+                      child: Text('CANCEL'),
+                    ),
+                    TextButton(
+                      style: ButtonStyle(
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.blue),
+                      ),
+                      onPressed: () async {
+                        await _firebaseAuth.signOut().then(
+                          (user) {
+                            Navigator.of(context, rootNavigator: true).pop();
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => LoginScreen(),
                               ),
-                              TextButton(
-                                style: ButtonStyle(
-                                  foregroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.blue),
-                                ),
-                                onPressed: () async {
-                                  await _signOut();
-                                  Navigator.of(context, rootNavigator: true)
-                                      .pop();
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (context) => LoginScreen()));
-                                },
-                                child: Text('LOGOUT'),
-                              )
-                            ]));
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => LogoutPage()),
-                // );
-              }),
+                            );
+                          },
+                        );
+                      },
+                      child: Text('LOGOUT'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
   }
-}
-
-Future<void> _signOut() async {
-  await FirebaseAuth.instance.signOut();
-  print("User Logged out");
 }
 
 void selectedItem(BuildContext context, int index) {
