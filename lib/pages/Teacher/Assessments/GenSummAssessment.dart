@@ -1,4 +1,4 @@
-import 'package:assessments_app/pages/Teacher/AssessReviewSolo.dart';
+// import 'package:assessments_app/pages/Teacher/AssessReviewSolo.dart';
 import 'package:assessments_app/pages/Teacher/AssessmentCheck.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -151,7 +151,8 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                               _assessmentsFormativeMultiple.length, 100);
                           _isSelected = _isSelected.reversed.toList();
                           print(_isSelected);
-                          generateSummative(_isSelected, _assessmentsFormativeMultiple);
+                          generateSummative(
+                              _isSelected, _assessmentsFormativeMultiple);
                           Navigator.pop(context);
                         },
                         child: Text(('Generate'),
@@ -189,10 +190,9 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
       },
     );
   }
-  
 }
+
 // Generate a summative assessment for the whole class
-  // Regarding the formatives that were selected
-  void generateSummative(List<bool> isSelected, List assessmentsFormativeMultiple) {
-    
-  }
+// Regarding the formatives that were selected
+void generateSummative(
+    List<bool> isSelected, List assessmentsFormativeMultiple) {}
