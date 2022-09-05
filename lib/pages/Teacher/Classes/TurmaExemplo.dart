@@ -316,7 +316,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                           Text(namedStuds[studs[index].toString()].toString()),
                       subtitle:
                           studs[index] == namedStuds[studs[index].toString()]
-                              ? Text("You added this ghost")
+                              ? Text("Has no account")
                               : Text(studs[index]),
                       onTap: () {
                         Navigator.push(
