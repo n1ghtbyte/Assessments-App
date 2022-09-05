@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 child: Text(
                   "Register",
-                  style: TextStyle(color: Color.fromARGB(255, 68, 157, 230)),
+                  style: TextStyle(color: Color.fromARGB(255, 21, 78, 54)),
                 )),
             SizedBox(
               height: 8.0,
@@ -106,10 +106,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   borderRadius: BorderRadius.circular(12.0),
                 ),
                 onPressed: () async {
+                  showLoaderDialog(context);
                   User? user = await loginUsingEmailPassword(
                       email: _emailController.text,
                       password: _passwordController.text,
                       context: context);
+
                   print(user);
                   FirebaseFirestore.instance
                       .collection('users')
@@ -120,14 +122,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       print('Document data: ${documentSnapshot['Status']}');
                       if (user != null &&
                           documentSnapshot['Status'] == "Teacher") {
+                        Navigator.pop(context);
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => TeacherPage()));
                       } else if (user != null &&
                           documentSnapshot['Status'] == 'Student') {
+                        Navigator.pop(context);
+
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => StudentPage()));
                       } else if (user != null &&
                           documentSnapshot['Status'] == 'Parent') {
+                        Navigator.pop(context);
+
                         final snackBar = SnackBar(
                             content:
                                 Text('Parent interface still in development'));
@@ -136,6 +143,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         //     builder: (context) => StudentPage()));
                       }
                     } else {
+                      Navigator.pop(context);
+
+                      final snackBar =
+                          SnackBar(content: Text('That user does not exist'));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       print('Document does not exist on the database');
                     }
                   });
@@ -153,90 +165,20 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-// class LoginPage extends StatefulWidget {
-//   const LoginPage({Key? key}) : super(key: key);
-
-//   @override
-//   _LoginPageState createState() => _LoginPageState();
-// }
-
-// class _LoginPageState extends State<LoginPage> {
-
-//   bool _isHidden = true;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: SafeArea(
-//         child: ListView(
-//           padding: EdgeInsets.symmetric(horizontal: 18.0),
-//           children: <Widget>[
-//             Column(
-//               children: <Widget>[
-//                 SizedBox(height: 200),
-//                 // Image.asset('assessments_app/lib/assets/eye.jpeg'),
-//                 SizedBox(height: 60),
-//                 Text(
-//                   'Login Screen',
-//                   style: TextStyle(fontSize: 24),
-//                 ),
-//               ],
-//             ),
-//             SizedBox(height: 60.0),
-//             TextField(
-//               decoration: InputDecoration(
-//                 hintText: 'E-mail',
-//                 filled: true,
-//               ),
-//             ),
-//             SizedBox(height: 20.0),
-//             TextField(
-//               obscureText: _isHidden,
-//               decoration: InputDecoration(
-//                 filled: true,
-//                 hintText: 'Password',
-//                 suffix: InkWell(
-//                   onTap: _togglePasswordView,
-//                   child: Icon(
-//                     _isHidden ? Icons.visibility : Icons.visibility_off,
-//                   ),
-//                 ),
-//               ),
-//               // obscureText: true,
-//               // decoration: InputDecoration(
-//               //   labelText: "Password",
-//               //   labelStyle: TextStyle(fontSize: 20),
-//               //   filled: true,
-//             ),
-//             SizedBox(height: 20.0),
-//             Column(
-//               children: <Widget>[
-//                 ElevatedButton(
-//                   style: ButtonStyle(
-//                       backgroundColor:
-//                           MaterialStateProperty.all<Color>(Color(0xFF29D09E))),
-//                   onPressed: () {
-//                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-//                       builder: (context) => TeacherPage(),
-//                     ));
-//                   },
-//                   child: Text(
-//                     'Login',
-//                     style: TextStyle(fontSize: 20, color: Colors.white),
-//                   ),
-//                 ),
-                
-//               ],
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   void _togglePasswordView() {
-//     setState(() {
-//       _isHidden = !_isHidden;
-//     });
-//   }
-// }
+showLoaderDialog(BuildContext context) {
+  AlertDialog alert = AlertDialog(
+    content: new Row(
+      children: [
+        CircularProgressIndicator(),
+        Container(margin: EdgeInsets.only(left: 7), child: Text("Loading...")),
+      ],
+    ),
+  );
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
