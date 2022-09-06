@@ -1,5 +1,4 @@
 import 'package:assessments_app/pages/Student/Account/AccountStudentPage.dart';
-import 'package:assessments_app/pages/Student/Assessments/AssessmentsStudentPage.dart';
 import 'package:assessments_app/pages/Student/Classes/Classes.dart';
 import 'package:assessments_app/pages/SettingsPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,7 +24,7 @@ class _NavBarStudentState extends State<NavBarStudent> {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text('Teacher'),
+            accountName: Text('Student'),
             accountEmail: Text(currentUser!),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
