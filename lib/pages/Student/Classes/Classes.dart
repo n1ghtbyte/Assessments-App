@@ -1,3 +1,5 @@
+import 'package:assessments_app/pages/Student/Classes/StudentAddClass.dart';
+import 'package:assessments_app/pages/Student/Classes/StudentClass.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassesCreatePage.dart';
 import 'package:assessments_app/pages/Teacher/Classes/TurmaExemplo.dart';
 import 'package:flutter/material.dart';
@@ -77,7 +79,7 @@ class _StudendClassesState extends State<StudendClasses> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ClassesCreatePage(),
+                  builder: (context) => StudentAddClass(),
                 ),
               );
             },
@@ -93,7 +95,7 @@ class _StudendClassesState extends State<StudendClasses> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            TurmaExemplo(data['documentID'].toString())),
+                            StudentClass(data['documentID'].toString())),
                   );
                 },
                 leading: Icon(Icons.school),
