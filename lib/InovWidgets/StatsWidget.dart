@@ -9,9 +9,6 @@ class StatsWidget extends StatelessWidget {
           buildDivider(),
           buildButton(context, '6.4', 'Peer'),
           buildDivider(),
-          buildButton(context, '5.2', 'Teacher'),
-          buildDivider(),
-          buildButton(context, '3.9', 'Evaluations'),
         ],
       );
   Widget buildDivider() => Container(
