@@ -371,9 +371,9 @@ class _AstaGraphsState extends State<AstaGraphs> {
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Container(
-                            padding: EdgeInsets.all(40),
+                            padding: EdgeInsets.all(20),
                             height: 300,
-                            width: thevalue * 100,
+                            width: 200 + thevalue * 100,
                             child: LineChart(
                               LineChartData(
                                 titlesData: FlTitlesData(
