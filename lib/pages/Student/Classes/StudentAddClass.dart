@@ -71,10 +71,11 @@ class _StudentAddClassState extends State<StudentAddClass> {
             TextFormField(
               controller: _controllerJoin,
               decoration: InputDecoration(
+                icon: Icon(Icons.class_),
                 labelStyle: TextStyle(
                   color: Color(0xFF29D09E),
                 ),
-                helperText: 'Enter the class\'s code',
+                helperText: 'Enter the class\'s join code',
                 suffixIcon: Icon(Icons.check_circle),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFF29D09E)),
