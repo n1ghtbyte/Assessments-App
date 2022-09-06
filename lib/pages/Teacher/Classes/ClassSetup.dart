@@ -15,6 +15,7 @@ class _ClassSetupState extends State<ClassSetup> {
       List.generate(11, (i) => new TextEditingController());
   late CollectionReference _class =
       FirebaseFirestore.instance.collection('/classes');
+
   @override
   void dispose() {
     _controllers.forEach((element) {
