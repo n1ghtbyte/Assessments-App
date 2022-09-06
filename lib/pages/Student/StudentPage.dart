@@ -10,20 +10,18 @@ class StudentPage extends StatefulWidget {
 class _StudentPageState extends State<StudentPage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        drawer: NavBarStudent(),
-        appBar: AppBar(
-          title: Text('Main Page'),
-          centerTitle: true,
-          backgroundColor: Color(0xFF29D09E),
-        ),
-        body: Center(
-          child: Text(
-            "Assessments will be displayed here, once they are generated",
-            style: TextStyle(fontStyle: FontStyle.italic),
-            textAlign: TextAlign.center,
-          ),
+    return Scaffold(
+      drawer: NavBarStudent(),
+      appBar: AppBar(
+        title: Text('Main Page'),
+        centerTitle: true,
+        backgroundColor: Color(0xFF29D09E),
+      ),
+      body: Center(
+        child: Text(
+          "Assessments will be displayed here, once they are generated",
+          style: TextStyle(fontStyle: FontStyle.italic),
+          textAlign: TextAlign.center,
         ),
       ),
     );

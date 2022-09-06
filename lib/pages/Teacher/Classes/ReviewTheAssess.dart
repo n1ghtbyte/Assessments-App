@@ -131,150 +131,147 @@ class _ReviewAssessmentState extends State<ReviewAssessment> {
                     allIndicators.add(j);
                   }
                 }
-                return MaterialApp(
-                  home: Scaffold(
-                    appBar: AppBar(
-                      title: Text('Review Assessment'),
-                      centerTitle: true,
-                      backgroundColor: Color(0xFF29D09E),
-                    ),
-                    floatingActionButton: FloatingActionButton.extended(
-                      backgroundColor: const Color(0xFF29D09E),
-                      onPressed: () {
-                        for (var ent in _mapinha.keys) {
-                          _mapinha[ent] =
-                              _mapinha[ent].toString().substring(0, 1);
-                        }
+                return Scaffold(
+                  appBar: AppBar(
+                    title: Text('Review Assessment'),
+                    centerTitle: true,
+                    backgroundColor: Color(0xFF29D09E),
+                  ),
+                  floatingActionButton: FloatingActionButton.extended(
+                    backgroundColor: const Color(0xFF29D09E),
+                    onPressed: () {
+                      for (var ent in _mapinha.keys) {
+                        _mapinha[ent] =
+                            _mapinha[ent].toString().substring(0, 1);
+                      }
 
-                        for (var skill in _mapao.keys) {
-                          _mapao[skill]?.updateAll(
-                              ((key, value) => value = value.substring(0, 1)));
-                        }
-                        studs[currentStudent] = true;
-                        addGrade(currentStudent, _mapao, data, assesId);
-                        bool x = true;
-                        for (var k in studs.values) {
-                          if (k == false) x = false;
-                        }
-                        updateAssessment(
-                            widget.passedAssessmentIdName, studs, data, x);
-                        if (x == true) {
-                          FirebaseFirestore.instance
-                              .collection('classes')
-                              .doc(data['ClassId'])
-                              .update({'prevAssess': FieldValue.increment(1)});
-                          Navigator.pop(context);
-                        } else {
-                          print(studs);
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      super.widget));
-                        }
-                      },
-                      icon: Icon(Icons.skip_next),
-                      label: Text('Next'),
-                    ),
-                    body: SafeArea(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.all(20.0),
-                              child: Text(
-                                "Student: $currentStudent\nClass:${data['ClassName']}\nAssessment: ${data['currentNumber']}#",
-                                style: TextStyle(fontSize: 26),
-                              ),
+                      for (var skill in _mapao.keys) {
+                        _mapao[skill]?.updateAll(
+                            ((key, value) => value = value.substring(0, 1)));
+                      }
+                      studs[currentStudent] = true;
+                      addGrade(currentStudent, _mapao, data, assesId);
+                      bool x = true;
+                      for (var k in studs.values) {
+                        if (k == false) x = false;
+                      }
+                      updateAssessment(
+                          widget.passedAssessmentIdName, studs, data, x);
+                      if (x == true) {
+                        FirebaseFirestore.instance
+                            .collection('classes')
+                            .doc(data['ClassId'])
+                            .update({'prevAssess': FieldValue.increment(1)});
+                        Navigator.pop(context);
+                      } else {
+                        print(studs);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    super.widget));
+                      }
+                    },
+                    icon: Icon(Icons.skip_next),
+                    label: Text('Next'),
+                  ),
+                  body: SafeArea(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.all(20.0),
+                            child: Text(
+                              "Student: $currentStudent\nClass:${data['ClassName']}\nAssessment: ${data['currentNumber']}#",
+                              style: TextStyle(fontSize: 26),
                             ),
-                            for (var k in namesC)
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Divider(
-                                        height: 20,
-                                        thickness: 4,
-                                      ),
-                                      SizedBox(
-                                        height: 40,
-                                      ),
-                                      Text(
-                                        k,
-                                        style: TextStyle(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      for (String x in List<String>.from(
-                                          data['Competences'][k] as List))
-                                        Padding(
-                                          padding: EdgeInsets.all(16.0),
-                                          child: Column(children: <Widget>[
-                                            Divider(
-                                              height: 4,
-                                            ),
-                                            Text(
-                                              x,
-                                              style: TextStyle(fontSize: 18),
-                                            ),
-                                            SizedBox(
-                                              height: 12,
-                                            ),
-                                            RadioGroup<String>.builder(
-                                              spacebetween: 65.0,
-                                              direction: Axis.vertical,
-                                              groupValue: _mapinha[x.toString()]
-                                                  .toString(),
-                                              horizontalAlignment:
-                                                  MainAxisAlignment.start,
-                                              onChanged: (value) {
-                                                setState(
-                                                  () {
-                                                    _mapinha[x.toString()] =
-                                                        value.toString();
-                                                    if (_mapao[k.toString()] !=
-                                                        null) {
-                                                      _mapao[k.toString()]![
-                                                              x.toString()] =
-                                                          value.toString();
-                                                    } else {
-                                                      _mapao[k.toString()] =
-                                                          Map();
-                                                    }
+                          ),
+                          for (var k in namesC)
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Divider(
+                                      height: 20,
+                                      thickness: 4,
+                                    ),
+                                    SizedBox(
+                                      height: 40,
+                                    ),
+                                    Text(
+                                      k,
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    for (String x in List<String>.from(
+                                        data['Competences'][k] as List))
+                                      Padding(
+                                        padding: EdgeInsets.all(16.0),
+                                        child: Column(children: <Widget>[
+                                          Divider(
+                                            height: 4,
+                                          ),
+                                          Text(
+                                            x,
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                          SizedBox(
+                                            height: 12,
+                                          ),
+                                          RadioGroup<String>.builder(
+                                            spacebetween: 65.0,
+                                            direction: Axis.vertical,
+                                            groupValue: _mapinha[x.toString()]
+                                                .toString(),
+                                            horizontalAlignment:
+                                                MainAxisAlignment.start,
+                                            onChanged: (value) {
+                                              setState(
+                                                () {
+                                                  _mapinha[x.toString()] =
+                                                      value.toString();
+                                                  if (_mapao[k.toString()] !=
+                                                      null) {
                                                     _mapao[k.toString()]![
                                                             x.toString()] =
                                                         value.toString();
+                                                  } else {
+                                                    _mapao[k.toString()] =
+                                                        Map();
+                                                  }
+                                                  _mapao[k.toString()]![
+                                                          x.toString()] =
+                                                      value.toString();
 
-                                                    print(_mapao.toString());
-                                                  },
-                                                );
-                                              },
-                                              activeColor: Color(0xFF29D09E),
-                                              items: textifier(_comps[x]),
-                                              textStyle: TextStyle(
-                                                fontSize: 14,
-                                              ),
-                                              itemBuilder: (item) =>
-                                                  RadioButtonBuilder(
-                                                      item.toString(),
-                                                      textPosition:
-                                                          RadioButtonTextPosition
-                                                              .left),
+                                                  print(_mapao.toString());
+                                                },
+                                              );
+                                            },
+                                            activeColor: Color(0xFF29D09E),
+                                            items: textifier(_comps[x]),
+                                            textStyle: TextStyle(
+                                              fontSize: 14,
                                             ),
-                                          ]),
-                                        )
-                                    ]),
-                              ),
-                            SizedBox(
-                              height: 32,
+                                            itemBuilder: (item) =>
+                                                RadioButtonBuilder(
+                                                    item.toString(),
+                                                    textPosition:
+                                                        RadioButtonTextPosition
+                                                            .left),
+                                          ),
+                                        ]),
+                                      )
+                                  ]),
                             ),
-                          ],
-                        ),
+                          SizedBox(
+                            height: 32,
+                          ),
+                        ],
                       ),
                     ),
                   ),
