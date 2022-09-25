@@ -128,43 +128,49 @@ class _AstaGraphsState extends State<AstaGraphs> {
   SideTitles get _bottomTitles => SideTitles(
         showTitles: true,
         reservedSize: 20,
-        rotateAngle: 0,
-        getTextStyles: (context, value) => const TextStyle(
-          color: Color(0xff939393),
-          fontSize: 10,
-        ),
-        getTitles: (value) {
+        // getTextStyles: (context, value) => const TextStyle(
+        //   color: Color(0xff939393),
+        //   fontSize: 10,
+        // ),
+        getTitlesWidget: (value, meta) {
           var key = _leTitles.keys.firstWhere((k) => _leTitles[k] == value,
               orElse: () => "ERROR CONTACT O3");
-          return wrapText(key, 20);
+          return Tooltip(
+            message: key,
+            height: 50,
+            child: Text(
+              wrapText(key, 20),
+              style: TextStyle(fontSize: 8, overflow: TextOverflow.fade),
+            ),
+          );
         },
       );
 
   // Relative to Line charts
   SideTitles get _bottomTitlesTimestamps => SideTitles(
         showTitles: true,
-        getTextStyles: (context, value) => const TextStyle(
-          color: Color(0xff939393),
-          fontSize: 10,
-        ),
-        getTitles: (value) {
+        // getTextStyles: (context, value) => const TextStyle(
+        //   color: Color(0xff939393),
+        //   fontSize: 10,
+        // ),
+        getTitlesWidget: (value, meta) {
           var ret = "";
           if (value % 1 != 0) {
-            return ret;
+            return Text(ret);
           }
           if (value == 0) {
             ret = "1st Assess";
-            return ret;
+            return Text(ret);
           } else if (value == 1) {
             ret = "2nd Assess";
-            return ret;
+            return Text(ret);
           } else if (value == 2) {
             ret = "3rd Assess";
-            return ret;
+            return Text(ret);
           } else {
             var k = value + 1;
             ret = k.toString() + "th Assess";
-            return ret;
+            return Text(ret);
           }
         },
       );
@@ -297,17 +303,23 @@ class _AstaGraphsState extends State<AstaGraphs> {
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Container(
-                            padding: EdgeInsets.all(20),
+                            padding: EdgeInsets.all(40),
                             height: 300,
                             width: (_bigData[_comp]!.length * 200) +
                                 _smallData[_comp]!.length * 15,
                             child: BarChart(
                               BarChartData(
                                 titlesData: FlTitlesData(
-                                  bottomTitles: _bottomTitles,
-                                  leftTitles: SideTitles(showTitles: true),
-                                  topTitles: SideTitles(showTitles: false),
-                                  rightTitles: SideTitles(showTitles: false),
+                                  bottomTitles:
+                                      AxisTitles(sideTitles: _bottomTitles),
+                                  leftTitles: AxisTitles(
+                                      sideTitles: SideTitles(showTitles: true)),
+                                  topTitles: AxisTitles(
+                                      sideTitles:
+                                          SideTitles(showTitles: false)),
+                                  rightTitles: AxisTitles(
+                                      sideTitles:
+                                          SideTitles(showTitles: false)),
                                 ),
                                 gridData: FlGridData(
                                     drawHorizontalLine: true,
@@ -324,10 +336,10 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                               ind < dataItem.y.length;
                                               ind++)
                                             BarChartRodData(
-                                                y: double.parse(
+                                                toY: double.parse(
                                                     dataItem.y[ind]),
                                                 width: 15,
-                                                colors: [_leColours[ind]]),
+                                                color: _leColours[ind]),
                                         ],
                                       ),
                                     )
@@ -377,10 +389,16 @@ class _AstaGraphsState extends State<AstaGraphs> {
                             child: LineChart(
                               LineChartData(
                                 titlesData: FlTitlesData(
-                                  bottomTitles: _bottomTitlesTimestamps,
-                                  leftTitles: SideTitles(showTitles: true),
-                                  topTitles: SideTitles(showTitles: false),
-                                  rightTitles: SideTitles(showTitles: false),
+                                  bottomTitles: AxisTitles(
+                                      sideTitles: _bottomTitlesTimestamps),
+                                  leftTitles: AxisTitles(
+                                      sideTitles: SideTitles(showTitles: true)),
+                                  topTitles: AxisTitles(
+                                      sideTitles:
+                                          SideTitles(showTitles: false)),
+                                  rightTitles: AxisTitles(
+                                      sideTitles:
+                                          SideTitles(showTitles: false)),
                                 ),
                                 minY: 0,
                                 maxY: 5,
@@ -398,7 +416,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                           .toList(),
                                       isCurved: false,
                                       barWidth: 2,
-                                      colors: [getColourFromComp(_comp)],
+                                      color: getColourFromComp(_comp),
                                     ),
                                 ],
                               ),
