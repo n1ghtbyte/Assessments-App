@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:assessments_app/pages/LoginScreen.dart';
 import 'package:assessments_app/pages/SettingsPage.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassesPage.dart';
@@ -5,6 +7,7 @@ import 'package:assessments_app/pages/Teacher/Skills/SkillsPage.dart';
 import 'package:assessments_app/pages/Teacher/TeacherProfile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class NavBarTeacher extends StatefulWidget {
   const NavBarTeacher({Key? key}) : super(key: key);
@@ -16,23 +19,44 @@ class NavBarTeacher extends StatefulWidget {
 class _NavBarTeacherState extends State<NavBarTeacher> {
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
 
+  FirebaseStorage _storage = FirebaseStorage.instanceFor(bucket: 'gs://assessments-app-o3.appspot.com');
+  String _profilePic="";
+
+  Future<void> getImage() async {
+    final storageRef = FirebaseStorage.instance.ref();
+    final imgUrl = await storageRef
+        .child('images/profilepic/$currentUser')
+        .getDownloadURL(); 
+    _profilePic = imgUrl;
+    //_profilePic = await _storage.ref("images/profilepic/$currentUser").getDownloadURL();
+    //_profilePic = "https://firebasestorage.googleapis.com/v0/b/assessments-app-o3.appspot.com/o/images%2Fprofilepic%2Fe%40projectassess.eu?alt=media&token=1b17ba25-6f69-4eb2-968b-87c52d048ce1";
+  }
+
   @override
   Widget build(BuildContext context) {
+    getImage();
+    inspect(_profilePic);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
-        children: [
+        children: [ 
           UserAccountsDrawerHeader(
             accountName: Text('Teacher'),
             accountEmail: Text(currentUser!),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.network(
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfDUf1sal3kszOWelEchcmmhjaZwbYCwa-Iw&usqp=CAU',
+                  _profilePic,
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,
                 ),
+                //Image.network(
+                  //'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfDUf1sal3kszOWelEchcmmhjaZwbYCwa-Iw&usqp=CAU',
+                  //width: 100,
+                  //height: 100,
+                  //fit: BoxFit.cover,
+                //),
               ),
             ),
             decoration: BoxDecoration(color: Color(0xFF29D09E)),

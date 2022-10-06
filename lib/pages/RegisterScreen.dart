@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -19,7 +22,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
+  TextEditingController _school = TextEditingController();
+  File _profileImage = File("");
+
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  FirebaseStorage _storage = FirebaseStorage.instanceFor(bucket: 'gs://assessments-app-o3.appspot.com');
 
   // String? get _errorText {
   //   // at any time, we can get the text from _controller.value.text
@@ -38,6 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> addUser() {
     // Call the user's CollectionReference to add a new user
+    _storage.ref().child("images/profilepic/${_emailController.text}").putFile(_profileImage);
     return users
         .doc(_emailController.text)
         .set({
@@ -47,9 +55,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'LastName': _lastName.text,
           'Status': radioButtonItem,
           'Created': FieldValue.serverTimestamp(),
+          'School': _school.text,
         })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
+  }
+
+  Future<void> pickImage() async{
+      XFile? selected = await ImagePicker().pickImage(source: ImageSource.gallery);
+      _profileImage = File(selected!.path);
   }
 
   // static Future<User?> registerUsingEmailPassword(
@@ -98,56 +112,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     fontWeight: FontWeight.bold),
               ),
               SizedBox(
-                height: 44.0,
-              ),
-              SizedBox(
-                height: 44.0,
-              ),
-              TextField(
-                controller: _firstName,
-                decoration: InputDecoration(
-                  hintText: "First Name",
-                ),
-              ),
-              SizedBox(
-                height: 44.0,
-              ),
-              TextField(
-                controller: _lastName,
-                decoration: InputDecoration(
-                  hintText: "Last Name",
-                ),
-              ),
-              SizedBox(
-                height: 44.0,
-              ),
-              TextFormField(
-                validator: (val) => val!.isEmpty || !val.contains("@")
-                    ? "enter a valid eamil"
-                    : null,
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  hintText: "Email",
-                ),
-              ),
-              SizedBox(
-                height: 26.0,
-              ),
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  // errorText: _errorText,
-                  hintText: "Password",
-                ),
-              ),
-              SizedBox(
                 height: 26.0,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
+                  Text('      ', style: new TextStyle(fontSize: 16),),
                   Radio(
                     value: 1,
                     groupValue: id,
@@ -195,6 +165,112 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                 ],
+              ),
+              SizedBox(
+                height: 26.0,
+              ),
+              TextField(
+                controller: _firstName,
+                decoration: InputDecoration(
+                  hintText: "First Name",
+                ),
+              ),
+              SizedBox( 
+                height: 26.0,
+              ),
+              TextField(
+                controller: _lastName,
+                decoration: InputDecoration(
+                  hintText: "Last Name",
+                ),
+              ),
+              SizedBox(
+                height: 26.0,
+              ),
+              TextFormField(
+                validator: (val) => val!.isEmpty || !val.contains("@") //Mas ele aceita que não seja um mail...
+                    ? "enter a valid email"
+                    : null,
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  hintText: "Email",
+                ),
+              ),
+              SizedBox(
+                height: 26.0,
+              ),
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  // errorText: _errorText,
+                  hintText: "Password",
+                ),
+              ),
+              SizedBox(
+                height: 26.0,
+              ),
+              TextField(
+                controller: _school,
+                decoration: InputDecoration(
+                  hintText: "School",
+                ),
+              ),
+              SizedBox(
+                height: 26.0,
+              ),
+              Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 75,
+                    child: ClipOval(
+                      child: Image.file(
+                        _profileImage,
+                        width: 150,
+                        height: 150,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 1,
+                    right: 1,
+                    child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: IconButton(
+                          icon: Icon(Icons.edit), 
+                          color: Colors.black,
+                          onPressed: () {
+                            pickImage();
+                            print(_profileImage.path);
+                          },
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 3,
+                          color: Colors.white,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(50,),
+                        ),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(2, 4),
+                            color: Colors.black.withOpacity(0.3,),
+                            blurRadius: 3,
+                          ),
+                        ]
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 26.0,
               ),
               Container(
                 width: double.infinity,
