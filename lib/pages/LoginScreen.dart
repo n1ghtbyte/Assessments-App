@@ -98,6 +98,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   borderRadius: BorderRadius.circular(12.0),
                 ),
                 onPressed: () async {
+                  if (!_emailController.text.contains("@")) {
+                    _emailController.text = _emailController.text + "@projectassess.eu";
+                  }
                   User? user = await loginUsingEmailPassword(
                       email: _emailController.text,
                       password: _passwordController.text,

@@ -207,6 +207,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   onPressed: () async {
                     try {
+                      if (!_emailController.text.contains("@")) {
+                        _emailController.text = _emailController.text + "@projectassess.eu";
+                      }
                       await FirebaseAuth.instance
                           .createUserWithEmailAndPassword(
                               email: _emailController.text,
