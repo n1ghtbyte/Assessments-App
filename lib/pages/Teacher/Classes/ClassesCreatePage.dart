@@ -192,47 +192,6 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                               fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                         children: textify(_comps[i].keys.toList())),
-
-                  // ParentChildCheckbox(
-                  //   parent: Text('Critical Thinking'),
-                  //   children: [
-                  //     Text('Showing critical spirit'),
-                  //     Text('Actively participating in discussion'),
-                  //   ],
-                  //   parentCheckboxColor: Colors.lightBlue,
-                  //   childrenCheckboxColor: Colors.greenAccent,
-                  // ),
-
-                  // ParentChildCheckbox(
-                  //   parent: Text('Creativity'),
-                  //   children: [
-                  //     Text(
-                  //         'Contributing suggestions for the ideas, \nsituations, cases or problems posed'),
-                  //     Text(
-                  //         'Proposing ideas that are innovative as far\n as contents, development, etc. are concerned'),
-                  //   ],
-                  //   parentCheckboxColor: Colors.lightBlue,
-                  //   childrenCheckboxColor: Colors.pink,
-                  // ),
-                  // ParentChildCheckbox(
-                  //   parent: Text('Interpersonal Communication'),
-                  //   children: [
-                  //     Text('Listening attentively'),
-                  //     Text('Saying what one thinks and feels on a subject'),
-                  //   ],
-                  //   parentCheckboxColor: Colors.lightBlue,
-                  //   childrenCheckboxColor: Colors.pink,
-                  // ),
-                  // // ElevatedButton.icon(
-                  // //   onPressed: () {},
-                  // //   icon: Icon(Icons.add, size: 18),
-                  // //   label: Text('Create'),
-
-                  // // ),
-                  // const SizedBox(
-                  //   height: 32,
-                  // ),
-
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       onPrimary: Colors.white,
@@ -240,22 +199,8 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                     ),
                     onPressed: () {
                       addClass();
-                      // print("kiki");
-                      // print(ParentChildCheckbox.selectedChildrens.toString());
-
-                      // print(_competences.toString());
-                      // print(ParentChildCheckbox.selectedChildrens.entries);
-                      // print("koko");
-                      // print(_weights);
-
                       Navigator.pop(context);
                     },
-                    // Navigator.pop(context);
-
-                    // final snackBar = SnackBar(
-                    //     content: Text(
-                    //         'The login credentials will be sent to your email :)'));
-                    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     label: Text('Create'),
                     icon: Icon(Icons.add, size: 18),
                   ),

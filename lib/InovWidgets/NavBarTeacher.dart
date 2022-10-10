@@ -7,11 +7,12 @@ import 'package:assessments_app/pages/Teacher/Skills/SkillsPage.dart';
 import 'package:assessments_app/pages/Teacher/TeacherProfile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class NavBarTeacher extends StatefulWidget {
-  const NavBarTeacher({Key? key}) : super(key: key);
-
+  final profilePic;
+  const NavBarTeacher(this.profilePic);
+  //const NavBarTeacher({Key? key, this.profilePic}) : super(key: key);
+  
   @override
   State<NavBarTeacher> createState() => _NavBarTeacherState();
 }
@@ -19,23 +20,8 @@ class NavBarTeacher extends StatefulWidget {
 class _NavBarTeacherState extends State<NavBarTeacher> {
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
 
-  FirebaseStorage _storage = FirebaseStorage.instanceFor(bucket: 'gs://assessments-app-o3.appspot.com');
-  String _profilePic="";
-
-  Future<void> getImage() async {
-    final storageRef = FirebaseStorage.instance.ref();
-    final imgUrl = await storageRef
-        .child('images/profilepic/$currentUser')
-        .getDownloadURL(); 
-    _profilePic = imgUrl;
-    //_profilePic = await _storage.ref("images/profilepic/$currentUser").getDownloadURL();
-    //_profilePic = "https://firebasestorage.googleapis.com/v0/b/assessments-app-o3.appspot.com/o/images%2Fprofilepic%2Fe%40projectassess.eu?alt=media&token=1b17ba25-6f69-4eb2-968b-87c52d048ce1";
-  }
-
   @override
   Widget build(BuildContext context) {
-    getImage();
-    inspect(_profilePic);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -45,33 +31,16 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
             accountEmail: Text(currentUser!),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
-                child: Image.network(
-                  _profilePic,
+                  child: Image.network(
+                  widget.profilePic,
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,
                 ),
-                //Image.network(
-                  //'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfDUf1sal3kszOWelEchcmmhjaZwbYCwa-Iw&usqp=CAU',
-                  //width: 100,
-                  //height: 100,
-                  //fit: BoxFit.cover,
-                //),
               ),
             ),
             decoration: BoxDecoration(color: Color(0xFF29D09E)),
           ),
-          // ListTile(
-          //   leading: Icon(Icons.assessment),
-          //   title: const Text('Assessments'),
-          //   onTap: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //           builder: (context) => AssessmentsTeacherPage()),
-          //     );
-          //   },
-          // ),
           ListTile(
             leading: Icon(Icons.school),
             title: const Text('Classes'),
