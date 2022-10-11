@@ -1,12 +1,13 @@
 // check this out https://github.com/imaNNeoFighT/fl_chart/blob/master/repo_files/documentations/bar_chart.md
 
 import 'dart:convert';
-import 'package:assessments_app/pages/Teacher/Classes/TurmaExemplo.dart';
+import 'dart:developer';
 import 'package:collection/collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:assessments_app/InovWidgets/LegendWidget.dart';
+import 'package:intl/intl.dart';
 
 class AstaGraphs extends StatefulWidget {
   final String passedLegitName;
@@ -68,6 +69,10 @@ class _AstaGraphsState extends State<AstaGraphs> {
   late CollectionReference _formativeCollection = FirebaseFirestore.instance
       .collection(
           '/classes/${widget.passedClassId}/grading/${widget.passedEmail}/formative');
+
+  late CollectionReference _summativeCollection = FirebaseFirestore.instance
+      .collection(
+          '/classes/${widget.passedClassId}/grading/${widget.passedEmail}/summative');
   var _ind = 0;
 
   // Color(0xffa5d6a7),
@@ -127,7 +132,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
   // Relative to bar charts
   SideTitles get _bottomTitles => SideTitles(
         showTitles: true,
-        reservedSize: 20,
+        reservedSize: 50,
         // getTextStyles: (context, value) => const TextStyle(
         //   color: Color(0xff939393),
         //   fontSize: 10,
@@ -154,6 +159,23 @@ class _AstaGraphsState extends State<AstaGraphs> {
         //   fontSize: 10,
         // ),
         getTitlesWidget: (value, meta) {
+          for (var _ in _smallData.keys) {
+            for (var v in _smallData[_]!) {
+              if (v.index == value) {
+                return Text(
+                  "\n" +
+                      DateFormat.MEd()
+                          .format(v.timestampDate.toDate())
+                          .toString(),
+                  // overflow: TextOverflow.fade,
+                  style: TextStyle(
+                    fontSize: 10,
+                  ),
+                );
+              }
+            }
+          }
+
           var ret = "";
           if (value % 1 != 0) {
             return Text(ret);
@@ -249,8 +271,8 @@ class _AstaGraphsState extends State<AstaGraphs> {
             helper = [];
           }
         }
-        // inspect(_smallData);
-        // inspect(_bigData);
+        inspect(_smallData);
+        inspect(_bigData);
         var thevalue = 0;
 
         _smallData.forEach((k, v) {
@@ -268,248 +290,706 @@ class _AstaGraphsState extends State<AstaGraphs> {
           _comp2cardinal[comp] = _max;
           _max = 0;
         }
+        inspect(_comp2cardinal);
 
-        return Scaffold(
-          appBar: AppBar(
-            title: Text('${widget.passedLegitName} data'),
-            centerTitle: true,
-            backgroundColor: Color(0xFF29D09E),
-          ),
-          body: ListView(
-            children: [
-              SizedBox(
-                height: 24,
-              ),
-              Column(
-                children: [
-                  for (var _comp in _bigData.keys)
-                    Column(
-                      children: [
-                        Text(
-                          _comp.toString(),
-                          style: TextStyle(
-                              fontSize: 21, fontWeight: FontWeight.w400),
-                          textAlign: TextAlign.left,
-                        ),
-                        const SizedBox(height: 8),
-                        LegendsListWidget(
-                          legends: [
-                            for (var i = 0; i < _comp2cardinal[_comp]!; i++)
-                              Legend("${i + 1}# Assessment", _leColours[i]),
-                          ],
-                        ),
-                        const SizedBox(height: 14),
-                        SizedBox(height: 16),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Container(
-                            padding: EdgeInsets.all(40),
-                            height: 300,
-                            width: (_bigData[_comp]!.length * 200) +
-                                _smallData[_comp]!.length * 15,
-                            child: BarChart(
-                              BarChartData(
-                                titlesData: FlTitlesData(
-                                  bottomTitles:
-                                      AxisTitles(sideTitles: _bottomTitles),
-                                  leftTitles: AxisTitles(
-                                      sideTitles: SideTitles(showTitles: true)),
-                                  topTitles: AxisTitles(
-                                      sideTitles:
-                                          SideTitles(showTitles: false)),
-                                  rightTitles: AxisTitles(
-                                      sideTitles:
-                                          SideTitles(showTitles: false)),
-                                ),
-                                gridData: FlGridData(
-                                    drawHorizontalLine: true,
-                                    drawVerticalLine: false),
-                                maxY: 5,
-                                minY: 0,
-                                groupsSpace: 10,
-                                barGroups: _bigData[_comp]
-                                    ?.map(
-                                      (dataItem) => BarChartGroupData(
-                                        x: dataItem.hash,
-                                        barRods: [
-                                          for (var ind = 0;
-                                              ind < dataItem.y.length;
-                                              ind++)
-                                            BarChartRodData(
-                                                toY: double.parse(
-                                                    dataItem.y[ind]),
-                                                width: 15,
-                                                color: _leColours[ind]),
-                                        ],
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
-                              swapAnimationDuration:
-                                  Duration(milliseconds: 150), // Optional
-                              swapAnimationCurve: Curves.linear, // Optional
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 32,
-                        ),
-                        Divider(
-                          thickness: 2,
-                          height: 4,
-                        ),
-                        SizedBox(
-                          height: 32,
-                        ),
-                      ],
+        //Fetch summative data
+        return FutureBuilder<QuerySnapshot>(
+          future:
+              _summativeCollection.orderBy('Created', descending: false).get(),
+          builder: (BuildContext context,
+              AsyncSnapshot<QuerySnapshot> snapshotSumm) {
+            if (snapshotSumm.hasError) {
+              return Text("Something went wrong");
+            }
+            if (!snapshotSumm.hasData) {
+              return Container(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+            List<Map<dynamic, dynamic>> fsum = [];
+            if (snapshotSumm.data!.docs.isEmpty) {
+              print("no summative here");
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text('${widget.passedLegitName} data'),
+                  centerTitle: true,
+                  backgroundColor: Color(0xFF29D09E),
+                ),
+                body: ListView(
+                  children: [
+                    SizedBox(
+                      height: 6,
                     ),
-                  Column(
-                    children: [
-                      Text(
-                        "Competences Line Chart",
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      child: Text(
+                        "Summative Assessments",
                         style: TextStyle(
-                            fontSize: 21, fontWeight: FontWeight.w400),
+                            fontSize: 21, fontWeight: FontWeight.w800),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+
+                    // SizedBox(
+                    //   height: 24,
+                    // ),
+                    DataTable(
+                      columns: [
+                        DataColumn(
+                            label: Text('Grade',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold))),
+                        DataColumn(
+                            label: Text('Target',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold))),
+                        DataColumn(
+                            label: Text('Date',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold))),
+                      ],
+                      rows: [],
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      child: Text(
+                        "Total: 0 \nAverage: 0",
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w400),
                         textAlign: TextAlign.left,
                       ),
-                      const SizedBox(height: 8),
-                      LegendsListWidget(
-                        legends: [
-                          for (var i in _smallData.keys)
-                            Legend(i, getColourFromComp(i)),
-                        ],
+                    ),
+                    SizedBox(
+                      height: 14,
+                    ),
+                    Divider(height: 2),
+                    SizedBox(
+                      height: 14,
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      child: Text(
+                        "Formative Assessments",
+                        style: TextStyle(
+                            fontSize: 21, fontWeight: FontWeight.w800),
+                        textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 14),
-                      SizedBox(height: 16),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Container(
-                            padding: EdgeInsets.all(20),
-                            height: 300,
-                            width: 200 + thevalue * 100,
-                            child: LineChart(
-                              LineChartData(
-                                titlesData: FlTitlesData(
-                                  bottomTitles: AxisTitles(
-                                      sideTitles: _bottomTitlesTimestamps),
-                                  leftTitles: AxisTitles(
-                                      sideTitles: SideTitles(showTitles: true)),
-                                  topTitles: AxisTitles(
-                                      sideTitles:
-                                          SideTitles(showTitles: false)),
-                                  rightTitles: AxisTitles(
-                                      sideTitles:
-                                          SideTitles(showTitles: false)),
-                                ),
-                                minY: 0,
-                                maxY: 5,
-                                gridData: FlGridData(
-                                    show: true,
-                                    drawHorizontalLine: true,
-                                    drawVerticalLine: false),
-                                borderData: FlBorderData(show: true),
-                                lineBarsData: [
-                                  for (var _comp in _smallData.keys)
-                                    LineChartBarData(
-                                      spots: _smallData[_comp]
-                                          ?.map((point) =>
-                                              FlSpot(point.index, point.value))
-                                          .toList(),
-                                      isCurved: false,
-                                      barWidth: 2,
-                                      color: getColourFromComp(_comp),
-                                    ),
+                    ),
+                    Column(
+                      children: [
+                        for (var _comp in _bigData.keys)
+                          Column(
+                            children: [
+                              Text(
+                                _comp.toString(),
+                                style: TextStyle(
+                                    fontSize: 21, fontWeight: FontWeight.w400),
+                                textAlign: TextAlign.left,
+                              ),
+                              const SizedBox(height: 8),
+                              LegendsListWidget(
+                                legends: [
+                                  for (var i = 0;
+                                      i < _comp2cardinal[_comp]!;
+                                      i++)
+                                    Legend(
+                                        "${DateFormat.yMMMEd().format(_smallData[_comp]![i].timestampDate.toDate())}",
+                                        _leColours[i]),
                                 ],
                               ),
-                              swapAnimationDuration:
-                                  Duration(milliseconds: 150), // Optional
-                              swapAnimationCurve: Curves.linear, // Optional
-                            )),
-                      ),
-                      const SizedBox(height: 16),
-                    ],
-                  ),
-                  Container(
-                      width: double.infinity,
-                      child: RawMaterialButton(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (_) => AlertDialog(
-                                    title: Text("Remove Student"),
-                                    content: Text(
-                                        'Are you sure you wish to remove this student from this class and delete all their assesments?'),
-                                    actions: [
-                                      TextButton(
-                                        style: ButtonStyle(
-                                          foregroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Colors.blue),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.of(context,
-                                                  rootNavigator: true)
-                                              .pop();
-                                        },
-                                        child: Text('CANCEL'),
+                              const SizedBox(height: 14),
+                              SizedBox(height: 16),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      left: 20, right: 20, top: 20, bottom: 20),
+                                  height: 300,
+                                  width: (_bigData[_comp]!.length * 200) +
+                                      _smallData[_comp]!.length * 15,
+                                  child: BarChart(
+                                    BarChartData(
+                                      titlesData: FlTitlesData(
+                                        bottomTitles: AxisTitles(
+                                            sideTitles: _bottomTitles),
+                                        leftTitles: AxisTitles(
+                                            sideTitles:
+                                                SideTitles(showTitles: true)),
+                                        topTitles: AxisTitles(
+                                            sideTitles:
+                                                SideTitles(showTitles: false)),
+                                        rightTitles: AxisTitles(
+                                            sideTitles:
+                                                SideTitles(showTitles: false)),
                                       ),
-                                      TextButton(
-                                        style: ButtonStyle(
-                                          foregroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Colors.blue),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.of(context,
-                                                  rootNavigator: true)
-                                              .pop();
-                                          FirebaseFirestore.instance
-                                              .collection('/classes')
-                                              .doc(widget.passedClassId)
-                                              .get()
-                                              .then((DocumentSnapshot
-                                                  documentSnapshot) {
-                                            if (documentSnapshot.exists) {
-                                              var num = documentSnapshot[
-                                                      'NumStudents'] -
-                                                  1;
-                                              List<dynamic> tmp =
-                                                  documentSnapshot[
-                                                      'StudentList'];
-                                              tmp.remove(widget.passedEmail);
-                                              FirebaseFirestore.instance
-                                                  .collection('classes')
-                                                  .doc(widget.passedClassId)
-                                                  .update({'StudentList': tmp});
-                                              FirebaseFirestore.instance
-                                                  .collection('classes')
-                                                  .doc(widget.passedClassId)
-                                                  .update({'NumStudents': num});
-                                              Navigator.of(context)
-                                                  .pushReplacement(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              TurmaExemplo(widget
-                                                                  .passedClassId
-                                                                  .toString())));
-                                            }
-                                          });
-                                        },
-                                        child: Text(
-                                          'DELETE',
-                                        ),
+                                      gridData: FlGridData(
+                                          drawHorizontalLine: true,
+                                          drawVerticalLine: false),
+                                      maxY: 5,
+                                      minY: 0,
+                                      groupsSpace: 10,
+                                      barGroups: _bigData[_comp]
+                                          ?.map(
+                                            (dataItem) => BarChartGroupData(
+                                              x: dataItem.hash,
+                                              barRods: [
+                                                for (var ind = 0;
+                                                    ind < dataItem.y.length;
+                                                    ind++)
+                                                  BarChartRodData(
+                                                      toY: double.parse(
+                                                          dataItem.y[ind]),
+                                                      width: 15,
+                                                      color: _leColours[ind]),
+                                              ],
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                    swapAnimationDuration:
+                                        Duration(milliseconds: 150), // Optional
+                                    swapAnimationCurve:
+                                        Curves.linear, // Optional
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 32,
+                              ),
+                              Divider(
+                                thickness: 2,
+                                height: 4,
+                              ),
+                              SizedBox(
+                                height: 32,
+                              ),
+                            ],
+                          ),
+                        Column(
+                          children: [
+                            Text(
+                              "Competences Line Chart",
+                              style: TextStyle(
+                                  fontSize: 21, fontWeight: FontWeight.w400),
+                              textAlign: TextAlign.left,
+                            ),
+                            const SizedBox(height: 8),
+                            LegendsListWidget(
+                              legends: [
+                                for (var i in _smallData.keys)
+                                  Legend(i, getColourFromComp(i)),
+                              ],
+                            ),
+                            const SizedBox(height: 14),
+                            // SizedBox(height: 16),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Container(
+                                  padding: EdgeInsets.only(
+                                      left: 50,
+                                      right: 100,
+                                      top: 100,
+                                      bottom: 40),
+                                  height: 350,
+                                  width: 200 + thevalue * 100,
+                                  child: LineChart(
+                                    LineChartData(
+                                      titlesData: FlTitlesData(
+                                        bottomTitles: AxisTitles(
+                                            sideTitles:
+                                                _bottomTitlesTimestamps),
+                                        leftTitles: AxisTitles(
+                                            sideTitles:
+                                                SideTitles(showTitles: true)),
+                                        topTitles: AxisTitles(
+                                            sideTitles:
+                                                SideTitles(showTitles: false)),
+                                        rightTitles: AxisTitles(
+                                            sideTitles:
+                                                SideTitles(showTitles: false)),
                                       ),
-                                    ],
-                                  ));
-                        },
-                        child: Text(
-                          "Remove Student",
-                          style: TextStyle(color: Colors.red, fontSize: 18.0),
+                                      minY: 0,
+                                      maxY: 5,
+                                      gridData: FlGridData(
+                                          show: true,
+                                          drawHorizontalLine: true,
+                                          drawVerticalLine: true),
+                                      borderData: FlBorderData(show: true),
+                                      lineBarsData: [
+                                        for (var _comp in _smallData.keys)
+                                          LineChartBarData(
+                                            spots: _smallData[_comp]
+                                                ?.map((point) => FlSpot(
+                                                    point.index, point.value))
+                                                .toList(),
+                                            isCurved: false,
+                                            barWidth: 2,
+                                            color: getColourFromComp(_comp),
+                                          ),
+                                      ],
+                                    ),
+                                    swapAnimationDuration:
+                                        Duration(milliseconds: 150), // Optional
+                                    swapAnimationCurve:
+                                        Curves.linear, // Optional
+                                  )),
+                            ),
+                            const SizedBox(height: 16),
+                          ],
                         ),
-                      )),
-                ],
-              ),
-            ],
-          ),
+                        Container(
+                            width: double.infinity,
+                            child: RawMaterialButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                          title: Text("Remove Student"),
+                                          content: Text(
+                                              'Are you sure you wish to remove this student from this class and delete all their assesments?'),
+                                          actions: [
+                                            TextButton(
+                                              style: ButtonStyle(
+                                                foregroundColor:
+                                                    MaterialStateProperty.all<
+                                                        Color>(Colors.blue),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .pop();
+                                              },
+                                              child: Text('CANCEL'),
+                                            ),
+                                            TextButton(
+                                              style: ButtonStyle(
+                                                foregroundColor:
+                                                    MaterialStateProperty.all<
+                                                        Color>(Colors.blue),
+                                              ),
+                                              onPressed: () async {
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .pop();
+                                                await FirebaseFirestore.instance
+                                                    .collection('/classes')
+                                                    .doc(widget.passedClassId)
+                                                    .get()
+                                                    .then(
+                                                  (DocumentSnapshot
+                                                      documentSnapshot) {
+                                                    if (documentSnapshot
+                                                        .exists) {
+                                                      var num = documentSnapshot[
+                                                              'NumStudents'] -
+                                                          1;
+                                                      List<dynamic> tmp =
+                                                          documentSnapshot[
+                                                              'StudentList'];
+                                                      tmp.remove(
+                                                          widget.passedEmail);
+                                                      FirebaseFirestore.instance
+                                                          .collection('classes')
+                                                          .doc(widget
+                                                              .passedClassId)
+                                                          .update({
+                                                        'StudentList': tmp
+                                                      });
+                                                      FirebaseFirestore.instance
+                                                          .collection('classes')
+                                                          .doc(widget
+                                                              .passedClassId)
+                                                          .update({
+                                                        'NumStudents': num
+                                                      });
+                                                      // Navigator.of(context)
+                                                      //     .pushReplacement(
+                                                      //   MaterialPageRoute(
+                                                      //     builder: (context) =>
+                                                      //         TurmaExemplo(
+                                                      //       widget.passedClassId
+                                                      //           .toString(),
+                                                      //     ),
+                                                      //   ),
+                                                      // );
+                                                    }
+                                                  },
+                                                );
+                                                Future.microtask(() =>
+                                                    Navigator.pop(context));
+                                              },
+                                              child: Text(
+                                                'DELETE',
+                                              ),
+                                            ),
+                                          ],
+                                        ));
+                              },
+                              child: Text(
+                                "Remove Student",
+                                style: TextStyle(
+                                    color: Colors.red, fontSize: 18.0),
+                              ),
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              for (var _doc in snapshotSumm.data!.docs) {
+                print("FDS");
+                fsum.add(_doc.data()! as Map<dynamic, dynamic>);
+              }
+
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text('${widget.passedLegitName} data'),
+                  centerTitle: true,
+                  backgroundColor: Color(0xFF29D09E),
+                ),
+                body: ListView(
+                  children: [
+                    SizedBox(
+                      height: 6,
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      child: Text(
+                        "Summative Assessments",
+                        style: TextStyle(
+                            fontSize: 21, fontWeight: FontWeight.w800),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+
+                    // SizedBox(
+                    //   height: 24,
+                    // ),
+                    DataTable(
+                      columns: [
+                        DataColumn(
+                            label: Text('Grade',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold))),
+                        DataColumn(
+                            label: Text('Target',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold))),
+                        DataColumn(
+                            label: Text('Date',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold))),
+                      ],
+                      rows: [
+                        for (var dt in fsum)
+                          DataRow(cells: [
+                            DataCell(Text(dt['Result'].toStringAsFixed(2))),
+                            DataCell(dt['Targets'].toString() == "Multiple"
+                                ? Text("Class")
+                                : Text("Student")),
+                            DataCell(Text(DateFormat.yMMMEd()
+                                .format(dt['Created'].toDate())
+                                .toString()))
+                          ])
+                      ],
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      child: Text(
+                        "Total: ${fsum.length} \nAverage: ${(fsum.map((e) => e['Result']).reduce((value, element) => value + element) / fsum.length).toStringAsFixed(2)}",
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w400),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 14,
+                    ),
+                    Divider(height: 2),
+                    SizedBox(
+                      height: 14,
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      child: Text(
+                        "Formative Assessments",
+                        style: TextStyle(
+                            fontSize: 21, fontWeight: FontWeight.w800),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        for (var _comp in _bigData.keys)
+                          Column(
+                            children: [
+                              Text(
+                                _comp.toString(),
+                                style: TextStyle(
+                                    fontSize: 21, fontWeight: FontWeight.w400),
+                                textAlign: TextAlign.left,
+                              ),
+                              const SizedBox(height: 8),
+                              LegendsListWidget(
+                                legends: [
+                                  for (var i = 0;
+                                      i < _comp2cardinal[_comp]!;
+                                      i++)
+                                    Legend(
+                                        "${DateFormat.yMMMEd().format(_smallData[_comp]![i].timestampDate.toDate())}",
+                                        _leColours[i]),
+                                ],
+                              ),
+                              const SizedBox(height: 14),
+                              SizedBox(height: 16),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      left: 20, right: 20, top: 20, bottom: 20),
+                                  height: 300,
+                                  width: (_bigData[_comp]!.length * 200) +
+                                      _smallData[_comp]!.length * 15,
+                                  child: BarChart(
+                                    BarChartData(
+                                      titlesData: FlTitlesData(
+                                        bottomTitles: AxisTitles(
+                                            sideTitles: _bottomTitles),
+                                        leftTitles: AxisTitles(
+                                            sideTitles:
+                                                SideTitles(showTitles: true)),
+                                        topTitles: AxisTitles(
+                                            sideTitles:
+                                                SideTitles(showTitles: false)),
+                                        rightTitles: AxisTitles(
+                                            sideTitles:
+                                                SideTitles(showTitles: false)),
+                                      ),
+                                      gridData: FlGridData(
+                                          drawHorizontalLine: true,
+                                          drawVerticalLine: false),
+                                      maxY: 5,
+                                      minY: 0,
+                                      groupsSpace: 10,
+                                      barGroups: _bigData[_comp]
+                                          ?.map(
+                                            (dataItem) => BarChartGroupData(
+                                              x: dataItem.hash,
+                                              barRods: [
+                                                for (var ind = 0;
+                                                    ind < dataItem.y.length;
+                                                    ind++)
+                                                  BarChartRodData(
+                                                      toY: double.parse(
+                                                          dataItem.y[ind]),
+                                                      width: 15,
+                                                      color: _leColours[ind]),
+                                              ],
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                    swapAnimationDuration:
+                                        Duration(milliseconds: 150), // Optional
+                                    swapAnimationCurve:
+                                        Curves.linear, // Optional
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 32,
+                              ),
+                              Divider(
+                                thickness: 2,
+                                height: 4,
+                              ),
+                              SizedBox(
+                                height: 32,
+                              ),
+                            ],
+                          ),
+                        Column(
+                          children: [
+                            Text(
+                              "Competences Line Chart",
+                              style: TextStyle(
+                                  fontSize: 21, fontWeight: FontWeight.w400),
+                              textAlign: TextAlign.left,
+                            ),
+                            const SizedBox(height: 8),
+                            LegendsListWidget(
+                              legends: [
+                                for (var i in _smallData.keys)
+                                  Legend(i, getColourFromComp(i)),
+                              ],
+                            ),
+                            const SizedBox(height: 14),
+                            // SizedBox(height: 16),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Container(
+                                  padding: EdgeInsets.only(
+                                      left: 50,
+                                      right: 100,
+                                      top: 100,
+                                      bottom: 40),
+                                  height: 350,
+                                  width: 200 + thevalue * 100,
+                                  child: LineChart(
+                                    LineChartData(
+                                      titlesData: FlTitlesData(
+                                        bottomTitles: AxisTitles(
+                                            sideTitles:
+                                                _bottomTitlesTimestamps),
+                                        leftTitles: AxisTitles(
+                                            sideTitles:
+                                                SideTitles(showTitles: true)),
+                                        topTitles: AxisTitles(
+                                            sideTitles:
+                                                SideTitles(showTitles: false)),
+                                        rightTitles: AxisTitles(
+                                            sideTitles:
+                                                SideTitles(showTitles: false)),
+                                      ),
+                                      minY: 0,
+                                      maxY: 5,
+                                      gridData: FlGridData(
+                                          show: true,
+                                          drawHorizontalLine: true,
+                                          drawVerticalLine: true),
+                                      borderData: FlBorderData(show: true),
+                                      lineBarsData: [
+                                        for (var _comp in _smallData.keys)
+                                          LineChartBarData(
+                                            spots: _smallData[_comp]
+                                                ?.map((point) => FlSpot(
+                                                    point.index, point.value))
+                                                .toList(),
+                                            isCurved: false,
+                                            barWidth: 2,
+                                            color: getColourFromComp(_comp),
+                                          ),
+                                      ],
+                                    ),
+                                    swapAnimationDuration:
+                                        Duration(milliseconds: 150), // Optional
+                                    swapAnimationCurve:
+                                        Curves.linear, // Optional
+                                  )),
+                            ),
+                            const SizedBox(height: 16),
+                          ],
+                        ),
+                        Container(
+                            width: double.infinity,
+                            child: RawMaterialButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                          title: Text("Remove Student"),
+                                          content: Text(
+                                              'Are you sure you wish to remove this student from this class and delete all their assesments?'),
+                                          actions: [
+                                            TextButton(
+                                              style: ButtonStyle(
+                                                foregroundColor:
+                                                    MaterialStateProperty.all<
+                                                        Color>(Colors.blue),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .pop();
+                                              },
+                                              child: Text('CANCEL'),
+                                            ),
+                                            TextButton(
+                                              style: ButtonStyle(
+                                                foregroundColor:
+                                                    MaterialStateProperty.all<
+                                                        Color>(Colors.blue),
+                                              ),
+                                              onPressed: () async {
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .pop();
+                                                await FirebaseFirestore.instance
+                                                    .collection('/classes')
+                                                    .doc(widget.passedClassId)
+                                                    .get()
+                                                    .then(
+                                                  (DocumentSnapshot
+                                                      documentSnapshot) {
+                                                    if (documentSnapshot
+                                                        .exists) {
+                                                      var num = documentSnapshot[
+                                                              'NumStudents'] -
+                                                          1;
+                                                      List<dynamic> tmp =
+                                                          documentSnapshot[
+                                                              'StudentList'];
+                                                      tmp.remove(
+                                                          widget.passedEmail);
+                                                      FirebaseFirestore.instance
+                                                          .collection('classes')
+                                                          .doc(widget
+                                                              .passedClassId)
+                                                          .update({
+                                                        'StudentList': tmp
+                                                      });
+                                                      FirebaseFirestore.instance
+                                                          .collection('classes')
+                                                          .doc(widget
+                                                              .passedClassId)
+                                                          .update({
+                                                        'NumStudents': num
+                                                      });
+                                                      // Navigator.of(context)
+                                                      //     .pushReplacement(
+                                                      //   MaterialPageRoute(
+                                                      //     builder: (context) =>
+                                                      //         TurmaExemplo(
+                                                      //       widget.passedClassId
+                                                      //           .toString(),
+                                                      //     ),
+                                                      //   ),
+                                                      // );
+                                                    }
+                                                  },
+                                                );
+                                                Future.microtask(() =>
+                                                    Navigator.pop(context));
+                                              },
+                                              child: Text(
+                                                'DELETE',
+                                              ),
+                                            ),
+                                          ],
+                                        ));
+                              },
+                              child: Text(
+                                "Remove Student",
+                                style: TextStyle(
+                                    color: Colors.red, fontSize: 18.0),
+                              ),
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            }
+          },
         );
       },
     );
