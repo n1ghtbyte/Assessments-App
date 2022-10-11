@@ -398,7 +398,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                       i < _comp2cardinal[_comp]!;
                                       i++)
                                     Legend(
-                                        "${DateFormat.yMMMEd().format(_smallData[_comp]![i].timestampDate.toDate())}",
+                                        "${DateFormat.MEd().format(_smallData[_comp]![i].timestampDate.toDate())}",
                                         _leColours[i]),
                                 ],
                               ),
@@ -744,7 +744,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                       i < _comp2cardinal[_comp]!;
                                       i++)
                                     Legend(
-                                        "${DateFormat.yMMMEd().format(_smallData[_comp]![i].timestampDate.toDate())}",
+                                        "${DateFormat.MEd().format(_smallData[_comp]![i].timestampDate.toDate())}",
                                         _leColours[i]),
                                 ],
                               ),
