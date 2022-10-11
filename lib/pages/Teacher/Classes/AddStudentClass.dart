@@ -1,3 +1,4 @@
+import 'package:assessments_app/pages/Teacher/Classes/TurmaExemplo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -64,8 +65,8 @@ class _AddStudentToClassState extends State<AddStudentToClass> {
               ),
               floatingActionButton: FloatingActionButton.extended(
                 backgroundColor: const Color(0xFF29D09E),
-                onPressed: () {
-                  FirebaseFirestore.instance
+                onPressed: () async {
+                  await FirebaseFirestore.instance
                       .collection('classes')
                       .doc(widget.passedClassName)
                       .get()
@@ -85,7 +86,8 @@ class _AddStudentToClassState extends State<AddStudentToClass> {
                           .collection('classes')
                           .doc(widget.passedClassName)
                           .update({'NumStudents': (num)});
-                      Navigator.pop(context);
+
+                      Navigator.of(context).pop();
                     } else {
                       final snackBar =
                           SnackBar(content: Text('NANI KORE DAYO!?'));
