@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:assessments_app/assets/Mypluggin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -202,11 +204,13 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                   ),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      onPrimary: Colors.white,
-                      primary: Color(0xFF29D09E),
+                      foregroundColor: Colors.white,
+                      backgroundColor: Color(0xFF29D09E),
                     ),
-                    onPressed: () {
-                      addClass();
+                    onPressed: () async {
+                      await addClass();
+                      await Future.delayed(Duration(seconds: 1));
+
                       Navigator.pop(context);
                       final snackBar =
                           SnackBar(content: Text('Generating the join code'));
