@@ -3,6 +3,7 @@ import 'package:assessments_app/pages/Teacher/Classes/TurmaExemplo.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 
 class ClassesPage extends StatefulWidget {
   const ClassesPage({Key? key}) : super(key: key);
@@ -17,6 +18,7 @@ class _ClassesPageState extends State<ClassesPage> {
   final _classesStream = FirebaseFirestore.instance
       .collection('classes')
       .where('TeacherID', isEqualTo: FirebaseAuth.instance.currentUser!.email)
+      .orderBy("Created", descending: true)
       .snapshots();
 
   @override
@@ -99,7 +101,15 @@ class _ClassesPageState extends State<ClassesPage> {
                 isThreeLine: true,
                 title: Text(data['Name']),
                 subtitle: Text(
-                    "${data['NumStudents'].toString()} / ${data['MaxStudents'].toString()}\nHash: ${data['documentID'].toString()}"),
+                    "${data['NumStudents'].toString()} / ${data['MaxStudents'].toString()}\nJoin code: ${data['documentID'].toString()}"),
+                onLongPress: () async {
+                  await Clipboard.setData(
+                    ClipboardData(text: data['DocumentID'].toString()),
+                  );
+
+                  final snackBar = SnackBar(content: Text('Text copied'));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
               );
             }).toList(),
           ),
