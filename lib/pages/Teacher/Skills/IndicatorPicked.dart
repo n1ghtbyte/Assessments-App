@@ -28,6 +28,8 @@ class _IndicatorPickedState extends State<IndicatorPicked> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: Text(widget.passedList[index]),
+                    dense: false,
+                    visualDensity: VisualDensity.comfortable,
                   );
                 },
               ),
