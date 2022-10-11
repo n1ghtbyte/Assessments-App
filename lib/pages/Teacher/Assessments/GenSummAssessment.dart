@@ -1,4 +1,5 @@
 // import 'package:assessments_app/pages/Teacher/AssessReviewSolo.dart';
+
 import 'package:assessments_app/pages/Teacher/AssessmentCheck.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -53,7 +54,7 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                 .where("Target", isEqualTo: "Multiple")
                 .where("Creator", isEqualTo: currentUser.toString())
                 .where("ClassId", isEqualTo: widget.passedClassName)
-                .orderBy('Created', descending: true)
+                .orderBy('Created', descending: false)
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snp2) {
               if (snp2.hasError) {
@@ -143,16 +144,101 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                       const SizedBox(height: 16),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          onPrimary: Colors.white,
-                          primary: Color(0xFF29D09E),
+                          foregroundColor: Colors.white,
+                          backgroundColor: Color(0xFF29D09E),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
+                          var asses = [];
+                          var weigths = data['Weights'];
+
                           _isSelected.removeRange(
                               _assessmentsFormativeMultiple.length, 100);
-                          _isSelected = _isSelected.reversed.toList();
+                          // _isSelected = _isSelected.reversed.toList();
                           print(_isSelected);
+                          for (var i = 0; i < _isSelected.length; i++) {
+                            if (_isSelected[i]) {
+                              asses.add(i);
+                            }
+                          }
                           generateSummative(
                               _isSelected, _assessmentsFormativeMultiple);
+                          //Navigator.pop(context);
+                          var studs = data['StudentList'];
+                          Map<String, List<dynamic>> kiki = Map();
+                          for (var elStud in studs) {
+                            var sumativo;
+                            num result = 0;
+                            Map<String, List<dynamic>> summComp = {};
+
+                            for (var i = 0; i < asses.length; i++) {
+                              kiki[elStud] = [];
+                              print(elStud);
+                              final collRef = await db
+                                  .collection(
+                                      "classes/${widget.passedClassName}/grading/$elStud/formative")
+                                  .where("Current",
+                                      isEqualTo: asses[i].toString())
+                                  .get()
+                                  .then((value) {
+                                for (var doc in value.docs) {
+                                  print(doc.data());
+                                  kiki[elStud]?.add(doc.data());
+                                  print("--------------------");
+                                }
+                              });
+
+                              // now we have all documents of that elStudent
+                              print("Current is: " + i.toString());
+
+                              for (var doc in kiki[elStud]!) {
+                                for (var comp in doc['Competences'].keys) {
+                                  if (summComp[comp] == null) {
+                                    summComp[comp] = [];
+                                  }
+                                  for (var indvalue
+                                      in doc['Competences'][comp].values) {
+                                    print("KIKI");
+                                    print(indvalue.toString());
+                                    if (summComp[comp] != null) {
+                                      summComp[comp.toString()]
+                                          ?.add(int.parse(indvalue));
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                            print(elStud);
+                            print(summComp.entries);
+                            for (var i in summComp.keys) {
+                              num foo = 0;
+                              for (var j in summComp[i]!) {
+                                foo += j;
+                              }
+                              sumativo = foo / summComp[i]!.length;
+                              // print(sumativo);
+                              // print(weigths[i]);
+
+                              result += sumativo * (weigths[i] / 100);
+                              // print(result);
+
+                              // print(kiki['a']);
+                            } // here bellow
+                            print("here");
+                            print("result: " + result.toString());
+                            final uploadSummative = await db
+                                .collection(
+                                    "classes/${widget.passedClassName}/grading/$elStud/summative")
+                                .add({
+                              'Result': result,
+                              'Weights': weigths,
+                              'Created': FieldValue.serverTimestamp(),
+                              'Targets': 'Multiple'
+                            });
+                            summComp = {};
+
+                            result = 0;
+                            sumativo = 0;
+                          }
                           Navigator.pop(context);
                         },
                         child: Text(('Generate'),
