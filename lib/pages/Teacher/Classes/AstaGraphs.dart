@@ -643,7 +643,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
               );
             } else {
               for (var _doc in snapshotSumm.data!.docs) {
-                print("FDS");
                 fsum.add(_doc.data()! as Map<dynamic, dynamic>);
               }
 
