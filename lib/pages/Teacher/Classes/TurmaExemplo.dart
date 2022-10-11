@@ -89,9 +89,11 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                 builder: (context) => ReviewAssessments()));
                         break;
                       case _MenuValues.AddStuddent:
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (c) =>
-                                AddStudentToClass(widget.passedClassName)));
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                                builder: (c) =>
+                                    AddStudentToClass(widget.passedClassName)))
+                            .then((value) => setState(() {}));
                         break;
                       case _MenuValues.Settings:
                         Navigator.of(context).push(MaterialPageRoute(
@@ -200,12 +202,11 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                           );
                           break;
                         case _MenuValues.AddStuddent:
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (c) =>
-                                  AddStudentToClass(widget.passedClassName),
-                            ),
-                          );
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(
+                                  builder: (c) => AddStudentToClass(
+                                      widget.passedClassName)))
+                              .then((value) => setState(() {}));
                           break;
                         case _MenuValues.Settings:
                           Navigator.of(context).push(
@@ -328,6 +329,10 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                               passedEmail: studs[index],
                               passedCompetences: competences,
                             ),
+                          ),
+                        ).then(
+                          (value) => setState(
+                            () {},
                           ),
                         );
                       },
