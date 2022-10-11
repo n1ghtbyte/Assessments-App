@@ -12,9 +12,7 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   Future<FirebaseApp> _initializeFirebase() async {
-    FirebaseApp firebaseApp = await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    FirebaseApp firebaseApp = await Firebase.initializeApp();
     return firebaseApp;
   }
 
