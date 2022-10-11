@@ -1,3 +1,5 @@
+import 'package:assessments_app/pages/Teacher/Classes/ClassesPage.dart';
+import 'package:assessments_app/pages/Teacher/Classes/TurmaExemplo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -84,6 +86,12 @@ class _ClassSetupState extends State<ClassSetup> {
                       SnackBar(content: Text('The values are stored!'));
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              TurmaExemplo(widget.passedClassNameSetup)));
                   print("success");
                 } else {
                   final snackBar = SnackBar(
