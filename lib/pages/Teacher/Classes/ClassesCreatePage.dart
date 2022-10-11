@@ -1,5 +1,6 @@
 import 'dart:async';
-
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:assessments_app/pages/Teacher/Classes/ClassSetup.dart';
 import 'package:flutter/material.dart';
 import 'package:assessments_app/assets/Mypluggin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,6 +27,7 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
 
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
   String? _iD;
+  var topG; //document ID
   Future<void> addClass() {
     // Call the user's CollectionReference to add a new user
     _competences.removeWhere((key, value) => value.isEmpty);
@@ -42,6 +44,7 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
       'currAssess': 0,
     }).then((value) {
       print(value.id);
+      topG = value;
       updateClass(value.id);
     });
   }
@@ -116,112 +119,128 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
               centerTitle: true,
               backgroundColor: Color(0xFF29D09E),
             ),
-            body: SafeArea(
-              child: ListView(
-                children: [
-                  TextFormField(
-                    controller: _controllerName,
-                    keyboardType: TextInputType.name,
-                    decoration: InputDecoration(
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xff388e3c)),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xff388e3c)),
-                      ),
-                      icon: Icon(Icons.person),
-                      labelText: 'Class Name',
-                      labelStyle: TextStyle(
-                        color: Color(0xFF29D09E),
-                      ),
-                      helperText: 'Enter the name that will be displayed',
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Divider(
-                    thickness: 1,
-                    height: 1,
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  TextFormField(
-                    controller: _controllerMaxStudents,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xff388e3c)),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xff388e3c)),
-                      ),
-                      icon: Icon(Icons.group),
-                      labelText: 'Number of pupils',
-                      labelStyle: TextStyle(
-                        color: Color(0xFF29D09E),
-                      ),
-                      helperText: 'Enter the number of students',
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Divider(
-                    thickness: 5,
-                    height: 1,
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.computer),
-                    title: Text("Competences"),
-                    subtitle: Text("Choose the indicators"),
-                    enabled: true,
-                    // trailing: Icon(Icons.arrow_drop_down),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      for (var i = 0; i < actualNumberComp; i++)
-                        ParentChildCheckbox(
-                          parentCheckboxColor: Color(0xFF29D09E),
-                          childrenCheckboxColor: Color(0xff388e3c),
-                          parent: Text(
-                            _comps[i]['Name'],
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                          ),
-                          children: textify(_comps[i].keys.toList()),
+            floatingActionButton:
+                // ElevatedButton.icon(
+                //         style: ElevatedButton.styleFrom(
+                //           foregroundColor: Colors.white,
+                //           backgroundColor: Color(0xFF29D09E),
+                //       ),
+                FloatingActionButton.extended(
+              backgroundColor: Color(0xFF29D09E),
+              onPressed: () async {
+                context.loaderOverlay.show();
+
+                await addClass();
+
+                await Future.delayed(Duration(seconds: 1));
+                context.loaderOverlay.hide();
+
+                print(topG.id);
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ClassSetup(passedClassNameSetup: topG.id)));
+                final snackBar =
+                    SnackBar(content: Text('Generating the join code'));
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              },
+              // Navigator.pop(context);
+
+              label: Text('Create'),
+              icon: Icon(Icons.add, size: 18),
+            ),
+            body: LoaderOverlay(
+              child: SafeArea(
+                child: ListView(
+                  children: [
+                    TextFormField(
+                      controller: _controllerName,
+                      keyboardType: TextInputType.name,
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xff388e3c)),
                         ),
-                    ],
-                  ),
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color(0xFF29D09E),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xff388e3c)),
+                        ),
+                        icon: Icon(Icons.person),
+                        labelText: 'Class Name',
+                        labelStyle: TextStyle(
+                          color: Color(0xFF29D09E),
+                        ),
+                        helperText: 'Enter the name that will be displayed',
+                      ),
                     ),
-                    onPressed: () async {
-                      await addClass();
-                      await Future.delayed(Duration(seconds: 1));
-
-                      Navigator.pop(context);
-                      final snackBar =
-                          SnackBar(content: Text('Generating the join code'));
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    },
-                    // Navigator.pop(context);
-
-                    label: Text('Create'),
-                    icon: Icon(Icons.add, size: 18),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Divider(
+                      thickness: 1,
+                      height: 1,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    TextFormField(
+                      controller: _controllerMaxStudents,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xff388e3c)),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xff388e3c)),
+                        ),
+                        icon: Icon(Icons.group),
+                        labelText: 'Number of pupils',
+                        labelStyle: TextStyle(
+                          color: Color(0xFF29D09E),
+                        ),
+                        helperText: 'Enter the number of students',
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Divider(
+                      thickness: 5,
+                      height: 1,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.computer),
+                      title: Text("Competences"),
+                      subtitle: Text("Choose the indicators"),
+                      enabled: true,
+                      // trailing: Icon(Icons.arrow_drop_down),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (var i = 0; i < actualNumberComp; i++)
+                          ParentChildCheckbox(
+                            parentCheckboxColor: Color(0xFF29D09E),
+                            childrenCheckboxColor: Color(0xff388e3c),
+                            parent: Text(
+                              _comps[i]['Name'],
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            children: textify(_comps[i].keys.toList()),
+                          ),
+                      ],
+                    ),
+                    SizedBox(height: 64),
+                  ],
+                ),
               ),
             ),
           );
