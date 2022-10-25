@@ -61,6 +61,8 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
             leading: Icon(Icons.school),
             title: const Text('Classes'),
             onTap: () {
+              Navigator.pop(context);
+
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => ClassesPage()),
@@ -71,6 +73,8 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
             leading: Icon(Icons.menu_book),
             title: const Text('Competences'),
             onTap: () {
+              Navigator.pop(context);
+
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SkillsPage()),
@@ -87,6 +91,8 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
             leading: Icon(Icons.account_box),
             title: const Text('Account'),
             onTap: () {
+              Navigator.pop(context);
+
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => TeacherProfile()),
@@ -97,6 +103,8 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
             leading: Icon(Icons.settings),
             title: const Text('Settings'),
             onTap: () {
+              Navigator.pop(context);
+
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SettingsPage()),
