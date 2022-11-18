@@ -7,10 +7,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:assessments_app/InovWidgets/LegendWidget.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
+
+import '../Assessments/GenFormAssessment.dart';
+import '../Assessments/GenSummAssessment.dart';
 
 class AstaGraphs extends StatefulWidget {
   final String passedLegitName;
+  final String passedClassName;
   final String passedClassId;
   final Map<dynamic, dynamic> passedCompetences;
   final String passedEmail;
@@ -18,6 +23,7 @@ class AstaGraphs extends StatefulWidget {
   const AstaGraphs(
       {Key? key,
       required this.passedClassId,
+      required this.passedClassName,
       required this.passedLegitName,
       required this.passedCompetences,
       required this.passedEmail})
@@ -58,6 +64,8 @@ class PointLinex {
 }
 
 class _AstaGraphsState extends State<AstaGraphs> {
+  ValueNotifier<bool> isDialOpen = ValueNotifier(false);
+
   Map<String, List<DataItem>> _bigData = {};
   Map<String, int> _leTitles =
       {}; // Also worth to Competences... not just indicators
@@ -204,7 +212,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
     print(widget.passedEmail);
     print(widget.passedLegitName);
     return FutureBuilder<QuerySnapshot>(
-      future: _formativeCollection.orderBy('Current', descending: false).get(),
+      future: _formativeCollection.orderBy('Created', descending: false).get(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return Text("Something went wrong");
@@ -219,6 +227,8 @@ class _AstaGraphsState extends State<AstaGraphs> {
 
         print(widget.passedCompetences);
 
+        var flagCurr0 = true;
+        double fakeIndex = 0;
         for (var ini in widget.passedCompetences.keys) {
           _bigData[ini] = [];
           _smallData[ini] = [];
@@ -239,7 +249,9 @@ class _AstaGraphsState extends State<AstaGraphs> {
               // print(foo['Current']);
               // print(_ind);
               // print(foo['Competences'][comp][indicator]);
-              if (int.parse(foo['Current']) == 0) {
+              print((foo['Created'] as Timestamp).toDate());
+              // if (int.parse(foo['Current']) == 0) {
+              if (flagCurr0) {
                 _bigData[comp]?.add(DataItem(
                     index: _ind,
                     hash: indicatorToHash(indicator),
@@ -261,7 +273,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
 
             var _res = helper.average;
             _smallData[comp]?.add(PointLinex(
-                index: double.parse(foo['Current']),
+                index: fakeIndex,
                 hash: indicatorToHash(comp),
                 competence: comp,
                 value: _res,
@@ -270,6 +282,8 @@ class _AstaGraphsState extends State<AstaGraphs> {
             _ind = 0;
             helper = [];
           }
+          fakeIndex++;
+          flagCurr0 = false;
         }
         inspect(_smallData);
         inspect(_bigData);
@@ -316,6 +330,67 @@ class _AstaGraphsState extends State<AstaGraphs> {
                   title: Text('${widget.passedLegitName} data'),
                   centerTitle: true,
                   backgroundColor: Color(0xFF29D09E),
+                ),
+                floatingActionButton: SpeedDial(
+                  icon: Icons.assessment,
+                  activeIcon: Icons.arrow_back,
+                  spacing: 5,
+                  openCloseDial: isDialOpen,
+                  curve: Curves.bounceInOut,
+                  childPadding: const EdgeInsets.all(5),
+                  spaceBetweenChildren: 4,
+                  backgroundColor: Color(0xFF29D09E),
+                  foregroundColor: Color.fromARGB(255, 255, 255, 255),
+                  overlayColor: Colors.black,
+                  elevation: 8.0,
+                  onOpen: () => debugPrint('OPENING DIAL'),
+                  onClose: () => debugPrint('DIAL CLOSED'),
+                  shape: CircleBorder(),
+                  children: [
+                    SpeedDialChild(
+                      child: Icon(Icons.summarize),
+                      backgroundColor: Color(0xFF29D09E),
+                      label: 'Summative',
+                      elevation: 5.0,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                GenSummAssessment(widget.passedClassId),
+                          ),
+                        );
+                      },
+                    ),
+                    SpeedDialChild(
+                        child: Icon(Icons.self_improvement),
+                        backgroundColor: Color.fromARGB(135, 41, 208, 158),
+                        label: 'Self',
+                        elevation: 5.0),
+                    SpeedDialChild(
+                        child: Icon(Icons.group),
+                        backgroundColor: Color.fromARGB(135, 41, 208, 158),
+                        label: 'Peer',
+                        elevation: 5.0),
+                    SpeedDialChild(
+                      child: Icon(Icons.quiz),
+                      backgroundColor: Color(0xFF29D09E),
+                      label: 'Formative',
+                      elevation: 5.0,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => GenFormAssessment(
+                                widget.passedClassId,
+                                widget.passedClassName,
+                                widget.passedCompetences,
+                                widget.passedLegitName),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
                 body: ListView(
                   children: [
@@ -652,6 +727,71 @@ class _AstaGraphsState extends State<AstaGraphs> {
                   centerTitle: true,
                   backgroundColor: Color(0xFF29D09E),
                 ),
+                floatingActionButton: SpeedDial(
+                  icon: Icons.assessment,
+                  activeIcon: Icons.arrow_back,
+                  spacing: 5,
+                  openCloseDial: isDialOpen,
+                  curve: Curves.bounceInOut,
+                  childPadding: const EdgeInsets.all(5),
+                  spaceBetweenChildren: 4,
+                  backgroundColor: Color(0xFF29D09E),
+                  foregroundColor: Color.fromARGB(255, 255, 255, 255),
+                  overlayColor: Colors.black,
+                  elevation: 8.0,
+                  onOpen: () => debugPrint('OPENING DIAL'),
+                  onClose: () => debugPrint('DIAL CLOSED'),
+                  shape: CircleBorder(),
+                  children: [
+                    SpeedDialChild(
+                      child: Icon(Icons.summarize),
+                      backgroundColor: Color(0xFF29D09E),
+                      label: 'Summative',
+                      elevation: 5.0,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                GenSummAssessment(widget.passedClassId),
+                          ),
+                        );
+                      },
+                    ),
+                    SpeedDialChild(
+                        child: Icon(Icons.self_improvement),
+                        backgroundColor: Color.fromARGB(135, 41, 208, 158),
+                        label: 'Self',
+                        elevation: 5.0),
+                    SpeedDialChild(
+                        child: Icon(Icons.group),
+                        backgroundColor: Color.fromARGB(135, 41, 208, 158),
+                        label: 'Peer',
+                        elevation: 5.0),
+                    SpeedDialChild(
+                      child: Icon(Icons.quiz),
+                      backgroundColor: Color(0xFF29D09E),
+                      label: 'Formative',
+                      elevation: 5.0,
+                      onTap: () {
+                        print(widget.passedClassId);
+                        print(widget.passedLegitName);
+                        print(widget.passedCompetences);
+                        print(widget.passedEmail);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => GenFormAssessment(
+                                widget.passedClassId,
+                                widget.passedClassName,
+                                widget.passedCompetences,
+                                widget.passedLegitName),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
                 body: ListView(
                   children: [
                     SizedBox(
@@ -749,17 +889,17 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                 ],
                               ),
                               const SizedBox(height: 14),
-                              SizedBox(height: 16),
                               SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Container(
                                   padding: EdgeInsets.only(
-                                      left: 20, right: 20, top: 20, bottom: 20),
+                                      left: 20, right: 20, top: 55, bottom: 20),
                                   height: 300,
                                   width: (_bigData[_comp]!.length * 200) +
                                       _smallData[_comp]!.length * 15,
                                   child: BarChart(
                                     BarChartData(
+                                      baselineY: 0,
                                       titlesData: FlTitlesData(
                                         bottomTitles: AxisTitles(
                                             sideTitles: _bottomTitles),
@@ -788,6 +928,14 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                                     ind < dataItem.y.length;
                                                     ind++)
                                                   BarChartRodData(
+                                                      borderRadius:
+                                                          BorderRadius.zero,
+                                                      backDrawRodData:
+                                                          BackgroundBarChartRodData(
+                                                        show: true,
+                                                        toY: 0.1,
+                                                        color: _leColours[ind],
+                                                      ),
                                                       toY: double.parse(
                                                           dataItem.y[ind]),
                                                       width: 15,
