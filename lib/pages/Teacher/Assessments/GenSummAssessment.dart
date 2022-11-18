@@ -1,6 +1,6 @@
 // import 'package:assessments_app/pages/Teacher/AssessReviewSolo.dart';
 
-import 'package:assessments_app/pages/Teacher/AssessmentCheck.dart';
+import 'package:assessments_app/pages/Teacher/Assessments/AssessmentCheck.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +84,14 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                       Container(
                         padding: EdgeInsets.all(20.0),
                         child: Text(
-                          "Summative Assessment Definition !",
+                          'A summative assessement is one '
+                          '"that occurs at a point in time and is carried out to summarise achievement '
+                          'at that point in time. Often more structured than formative assessment, it provides teachers, '
+                          'students and parents with information on student progress and level of achievement. Summative '
+                          'assessments are used to evaluate student learning, skill acquisition, and academic achievement'
+                          'at the conclusion of a defined instructional period—typically at the end of a project, unit'
+                          ', course, semester, program, or school year. \n(NCVER, 2014)",',
+                          softWrap: true,
                         ),
                       ),
                       ListView.builder(
