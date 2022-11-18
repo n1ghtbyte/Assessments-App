@@ -1,5 +1,6 @@
 import 'package:assessments_app/pages/LoginScreen.dart';
 import 'package:assessments_app/pages/SettingsPage.dart';
+import 'package:assessments_app/pages/Teacher/Assessments/AssessmentsMain.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassesPage.dart';
 import 'package:assessments_app/pages/Teacher/Skills/SkillsPage.dart';
 import 'package:assessments_app/pages/Teacher/TeacherProfile.dart';
@@ -58,14 +59,14 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
             decoration: BoxDecoration(color: Color(0xFF29D09E)),
           ),
           ListTile(
-            leading: Icon(Icons.school),
-            title: const Text('Classes'),
+            leading: Icon(Icons.summarize),
+            title: const Text('Assessments'),
             onTap: () {
               Navigator.pop(context);
 
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ClassesPage()),
+                MaterialPageRoute(builder: (context) => AssessmentsMain()),
               );
             },
           ),
