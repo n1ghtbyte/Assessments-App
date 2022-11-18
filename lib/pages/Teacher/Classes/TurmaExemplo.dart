@@ -3,6 +3,7 @@ import 'package:assessments_app/pages/Teacher/Assessments/GenSummAssessment.dart
 import 'package:assessments_app/pages/Teacher/Classes/AstaGraphs.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ReviewAssessmentsClass.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AddStudentClass.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:assessments_app/pages/Teacher/Classes/AstaStats.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/GenFormAssessment.dart';
@@ -11,9 +12,13 @@ import 'package:assessments_app/pages/Teacher/Classes/ClassSetup.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassesSettingsPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../Assessments/AssessmentCheck.dart';
+import '../Assessments/AssessmentFormative.dart';
 
 enum _MenuValues {
-  ReviewAssess,
+  // ReviewAssess,
   AddStuddent,
   Setup,
   Settings,
@@ -29,11 +34,19 @@ class TurmaExemplo extends StatefulWidget {
 }
 
 class _TurmaExemploState extends State<TurmaExemplo> {
+  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  String? currentUser = FirebaseAuth.instance.currentUser!.email;
+
   @override
   Widget build(BuildContext context) {
     late CollectionReference _class =
         FirebaseFirestore.instance.collection('classes');
     Map<dynamic, dynamic> namedStuds = {};
+
+    final Query _assessClassStream = FirebaseFirestore.instance
+        .collection('assessments')
+        .where('ClassId', isEqualTo: widget.passedClassName)
+        .orderBy('Created', descending: true);
 
     ValueNotifier<bool> isDialOpen = ValueNotifier(false);
 
@@ -51,6 +64,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
             ),
           );
         }
+
         Map<String, dynamic> data =
             snapshot.data!.data() as Map<String, dynamic>;
         if (data['StudentList'].isEmpty) {
@@ -63,10 +77,10 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                 PopupMenuButton<_MenuValues>(
                   icon: Icon(Icons.more_vert),
                   itemBuilder: (BuildContext context) => [
-                    PopupMenuItem(
-                      child: Text('Review Assessments'),
-                      value: _MenuValues.AddStuddent,
-                    ),
+                    // PopupMenuItem(
+                    //   child: Text('Review Assessments'),
+                    //   value: _MenuValues.AddStuddent,
+                    // ),
                     PopupMenuItem(
                       child: Text('Add a Student'),
                       value: _MenuValues.AddStuddent,
@@ -82,12 +96,13 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                   ],
                   onSelected: (value) {
                     switch (value) {
-                      case _MenuValues.ReviewAssess:
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ReviewAssessments()));
-                        break;
+                      // case _MenuValues.ReviewAssess:
+                      //   Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) =>
+                      //               ReviewAssessments(widget.passedClassName)));
+                      //   break;
                       case _MenuValues.AddStuddent:
                         Navigator.of(context)
                             .push(MaterialPageRoute(
@@ -135,211 +150,327 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                 ),
               );
             }
-            var x = snp.data?.size;
-            List<dynamic> studs = data['StudentList'];
-            print("::::::::::::::::::");
-            print(studs);
+            return StreamBuilder<QuerySnapshot>(
+              stream: _assessClassStream.snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snpAssess) {
+                if (snpAssess.hasError) {
+                  return Text('Something went wrong');
+                }
 
-            for (var i = 0; i < x!; i++) {
-              Map<String, dynamic> foo =
-                  snp.data?.docs[i].data()! as Map<String, dynamic>;
-              print(foo);
-              if (studs.contains(foo['Email'])) {
-                print(foo);
-                print(i);
+                if (snpAssess.connectionState == ConnectionState.waiting) {
+                  return Container(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+                var x = snp.data?.size;
+                List<dynamic> studs = data['StudentList'];
+                print("::::::::::::::::::");
+                print(studs);
 
-                namedStuds[foo['Email'].toString()] =
-                    foo['FirstName'].toString() +
-                        " " +
-                        foo['LastName'].toString();
-              }
-            }
-            print(namedStuds);
-            for (var i in studs) {
-              if (!namedStuds.containsKey(i)) {
-                namedStuds[i.toString()] = i.toString();
-              }
-            }
-            studs.sort((a, b) {
-              //sorting in descending order
-              return a.compareTo(b);
-            });
-            Map competences = data['Competences'];
-            //print(data['StudentsList'].runtimeType);
-            return Scaffold(
-              appBar: AppBar(
-                title: Text("Class ${data['Name'].toString()}"),
-                centerTitle: true,
-                actions: [
-                  PopupMenuButton<_MenuValues>(
-                    icon: Icon(Icons.more_vert),
-                    itemBuilder: (BuildContext context) => [
-                      PopupMenuItem(
-                        child: Text('Review Assessments'),
-                        value: _MenuValues.ReviewAssess,
+                for (var i = 0; i < x!; i++) {
+                  Map<String, dynamic> foo =
+                      snp.data?.docs[i].data()! as Map<String, dynamic>;
+                  print(foo);
+                  if (studs.contains(foo['Email'])) {
+                    print(foo);
+                    print(i);
+
+                    namedStuds[foo['Email'].toString()] =
+                        foo['FirstName'].toString() +
+                            " " +
+                            foo['LastName'].toString();
+                  }
+                }
+                print(namedStuds);
+                for (var i in studs) {
+                  if (!namedStuds.containsKey(i)) {
+                    namedStuds[i.toString()] = i.toString();
+                  }
+                }
+                studs.sort((a, b) {
+                  //sorting in descending order
+                  return a.compareTo(b);
+                });
+                Map competences = data['Competences'];
+                //print(data['StudentsList'].runtimeType);
+                return DefaultTabController(
+                  length: 3,
+                  child: Scaffold(
+                    appBar: AppBar(
+                      bottom: const TabBar(
+                        tabs: [
+                          Tab(icon: Icon(Icons.people)),
+                          Tab(icon: Icon(Icons.school)),
+                          Tab(icon: Icon(Icons.info)),
+                        ],
                       ),
-                      PopupMenuItem(
-                        child: Text('Add a Student'),
-                        value: _MenuValues.AddStuddent,
-                      ),
-                      PopupMenuItem(
-                        child: Text('Setup'),
-                        value: _MenuValues.Setup,
-                      ),
-                      PopupMenuItem(
-                        child: Text('Settings'),
-                        value: _MenuValues.Settings,
-                      ),
-                    ],
-                    onSelected: (value) {
-                      switch (value) {
-                        case _MenuValues.ReviewAssess:
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ReviewAssessments(),
+                      title: Text("Class ${data['Name'].toString()}"),
+                      centerTitle: true,
+                      actions: [
+                        PopupMenuButton<_MenuValues>(
+                          icon: Icon(Icons.more_vert),
+                          itemBuilder: (BuildContext context) => [
+                            // PopupMenuItem(
+                            //   child: Text('Review Assessments'),
+                            //   value: _MenuValues.ReviewAssess,
+                            // ),
+                            PopupMenuItem(
+                              child: Text('Add a Student'),
+                              value: _MenuValues.AddStuddent,
                             ),
-                          );
-                          break;
-                        case _MenuValues.AddStuddent:
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(
-                                  builder: (c) => AddStudentToClass(
-                                      widget.passedClassName)))
-                              .then((value) => setState(() {}));
-                          break;
-                        case _MenuValues.Settings:
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (c) =>
-                                  ClassesSettingsPage(widget.passedClassName),
+                            PopupMenuItem(
+                              child: Text('Setup'),
+                              value: _MenuValues.Setup,
                             ),
-                          );
-                          break;
-                        case _MenuValues.Setup:
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (c) => ClassSetup(
-                                passedClassNameSetup: widget.passedClassName,
+                            PopupMenuItem(
+                              child: Text('Settings'),
+                              value: _MenuValues.Settings,
+                            ),
+                          ],
+                          onSelected: (value) {
+                            switch (value) {
+                              // case _MenuValues.ReviewAssess:
+                              //   Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (context) => ReviewAssessments(
+                              //           widget.passedClassName),
+                              //     ),
+                              //   );
+                              //   break;
+                              case _MenuValues.AddStuddent:
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(
+                                        builder: (c) => AddStudentToClass(
+                                            widget.passedClassName)))
+                                    .then((value) => setState(() {}));
+                                break;
+                              case _MenuValues.Settings:
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (c) => ClassesSettingsPage(
+                                        widget.passedClassName),
+                                  ),
+                                );
+                                break;
+                              case _MenuValues.Setup:
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (c) => ClassSetup(
+                                      passedClassNameSetup:
+                                          widget.passedClassName,
+                                    ),
+                                  ),
+                                );
+                                break;
+                            }
+                          },
+                        ),
+                      ],
+                      backgroundColor: Color(0xFF29D09E),
+                    ),
+                    floatingActionButton: SpeedDial(
+                      icon: Icons.assessment,
+                      activeIcon: Icons.arrow_back,
+                      spacing: 5,
+                      openCloseDial: isDialOpen,
+                      curve: Curves.bounceInOut,
+                      childPadding: const EdgeInsets.all(5),
+                      spaceBetweenChildren: 4,
+                      backgroundColor: Color(0xFF29D09E),
+                      foregroundColor: Color.fromARGB(255, 255, 255, 255),
+                      overlayColor: Colors.black,
+                      elevation: 8.0,
+                      onOpen: () => debugPrint('OPENING DIAL'),
+                      onClose: () => debugPrint('DIAL CLOSED'),
+                      shape: CircleBorder(),
+                      children: [
+                        SpeedDialChild(
+                          child: Icon(Icons.summarize),
+                          backgroundColor: Color(0xFF29D09E),
+                          label: 'Summative',
+                          elevation: 5.0,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    GenSummAssessment(widget.passedClassName),
                               ),
-                            ),
-                          );
-                          break;
-                      }
-                    },
-                  ),
-                ],
-                backgroundColor: Color(0xFF29D09E),
-              ),
-              floatingActionButton: SpeedDial(
-                icon: Icons.assessment,
-                activeIcon: Icons.arrow_back,
-                spacing: 5,
-                openCloseDial: isDialOpen,
-                curve: Curves.bounceInOut,
-                childPadding: const EdgeInsets.all(5),
-                spaceBetweenChildren: 4,
-                backgroundColor: Color(0xFF29D09E),
-                foregroundColor: Color.fromARGB(255, 255, 255, 255),
-                overlayColor: Colors.black,
-                elevation: 8.0,
-                onOpen: () => debugPrint('OPENING DIAL'),
-                onClose: () => debugPrint('DIAL CLOSED'),
-                shape: CircleBorder(),
-                children: [
-                  SpeedDialChild(
-                    child: Icon(Icons.summarize),
-                    backgroundColor: Color(0xFF29D09E),
-                    label: 'Summative',
-                    elevation: 5.0,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              GenSummAssessment(widget.passedClassName),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-                  SpeedDialChild(
-                      child: Icon(Icons.self_improvement),
-                      backgroundColor: Color.fromARGB(135, 41, 208, 158),
-                      label: 'Self',
-                      elevation: 5.0),
-                  SpeedDialChild(
-                      child: Icon(Icons.group),
-                      backgroundColor: Color.fromARGB(135, 41, 208, 158),
-                      label: 'Peer',
-                      elevation: 5.0),
-                  SpeedDialChild(
-                    child: Icon(Icons.quiz),
-                    backgroundColor: Color(0xFF29D09E),
-                    label: 'Formative',
-                    elevation: 5.0,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => GenFormAssessment(
-                              widget.passedClassName,
-                              data['Name'].toString(),
-                              competences,
-                              "null"),
+                        SpeedDialChild(
+                            child: Icon(Icons.self_improvement),
+                            backgroundColor: Color.fromARGB(135, 41, 208, 158),
+                            label: 'Self',
+                            elevation: 5.0),
+                        SpeedDialChild(
+                            child: Icon(Icons.group),
+                            backgroundColor: Color.fromARGB(135, 41, 208, 158),
+                            label: 'Peer',
+                            elevation: 5.0),
+                        SpeedDialChild(
+                          child: Icon(Icons.quiz),
+                          backgroundColor: Color(0xFF29D09E),
+                          label: 'Formative',
+                          elevation: 5.0,
+                          onTap: () {
+                            print(widget.passedClassName);
+                            print(data['Name']);
+                            print(competences);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => GenFormAssessment(
+                                    widget.passedClassName,
+                                    data['Name'].toString(),
+                                    competences,
+                                    "class"),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-              // floatingActionButton: FloatingActionButton(
-              //   child: Icon(Icons.assessment),
-              //   backgroundColor: Color(0xFF29D09E),
-              //   onPressed: () {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) => AssessmentsCreateTeacherPage(
-              //             widget.passedClassName,
-              //             data['Name'].toString(),
-              //             competences,
-              //             "null"),
-              //       ),
-              //     );
-              //   },
-              // ),
-              body: SafeArea(
-                child: ListView.builder(
-                  itemCount: studs.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      title:
-                          Text(namedStuds[studs[index].toString()].toString()),
-                      subtitle:
-                          studs[index] == namedStuds[studs[index].toString()]
-                              ? Text("Has no account")
-                              : Text(studs[index]),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AstaGraphs(
-                              passedClassId: data['documentID'],
-                              passedLegitName: namedStuds[studs[index]],
-                              passedEmail: studs[index],
-                              passedCompetences: competences,
+                      ],
+                    ),
+                    body: TabBarView(
+                      children: [
+                        SafeArea(
+                          child: Column(
+                            children: [
+                              Container(
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: studs.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return ListTile(
+                                      title: Text(
+                                          namedStuds[studs[index].toString()]
+                                              .toString()),
+                                      subtitle: studs[index] ==
+                                              namedStuds[
+                                                  studs[index].toString()]
+                                          ? Text("Has no account")
+                                          : Text(studs[index]),
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => AstaGraphs(
+                                              passedClassName: data['Name'],
+                                              passedClassId: data['documentID'],
+                                              passedLegitName:
+                                                  namedStuds[studs[index]],
+                                              passedEmail: studs[index],
+                                              passedCompetences: competences,
+                                            ),
+                                          ),
+                                        ).then(
+                                          (value) => setState(
+                                            () {},
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SafeArea(
+                          child: ListView(
+                            children: snpAssess.data!.docs
+                                .map((DocumentSnapshot document) {
+                              Map<String, dynamic> data =
+                                  document.data()! as Map<String, dynamic>;
+                              return ListTile(
+                                onTap: () {
+                                  if (data['Type'] == 'Formative' &&
+                                      data['DONE'] == false) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              AssessmentFormative(
+                                                passedAssessmentIdName:
+                                                    data['documentID'],
+                                              )),
+                                    );
+                                  }
+                                  if (data['Type'] == 'Formative' &&
+                                      data['DONE'] == true) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AssessmentCheck(
+                                                passedAssessmentIdName:
+                                                    data['documentID'],
+                                              )),
+                                    );
+                                  }
+                                },
+                                leading: Icon(Icons.assessment),
+                                isThreeLine: true,
+                                textColor: data['DONE'] == false
+                                    ? Color(0xFF29D09E)
+                                    : Color.fromARGB(255, 123, 123, 123),
+                                title: Text('${data['Type']} Assessment'),
+                                subtitle: data['Target'].toString() == 'Single'
+                                    ? Text(
+                                        "Student: ${data['Students'].keys.toList()[0].toString()}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}")
+                                    : Text(
+                                        "Done: ${data['Count'].toString()}/${data['Students'].values.toList().length}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}"),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                const SizedBox(height: 16),
+                                Container(
+                                  padding: EdgeInsets.all(20.0),
+                                  child: Text(
+                                    "Weights of each competence",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                ),
+                                ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount:
+                                      data['Competences'].keys.toList().length,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      title: Text(data['Competences']
+                                          .keys
+                                          .toList()[index]),
+                                      subtitle: data['Weights'] != null
+                                          ? Text(data['Weights']
+                                                  .values
+                                                  .toList()[index]
+                                                  .toString() +
+                                              " %")
+                                          : Text("Need to be defined"),
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
                           ),
-                        ).then(
-                          (value) => setState(
-                            () {},
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
             );
           },
         );
