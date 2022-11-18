@@ -200,6 +200,7 @@ class _StudentClassState extends State<StudentClass> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => AstaGraphs(
+                              passedClassName: data['Name'],
                               passedClassId: data['documentID'],
                               passedLegitName: namedStuds[studs[index]],
                               passedEmail: studs[index],
