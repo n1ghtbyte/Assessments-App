@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
+import '../../../InovWidgets/NavBarTeacher.dart';
+
 class ClassesPage extends StatefulWidget {
   const ClassesPage({Key? key}) : super(key: key);
 
@@ -39,6 +41,7 @@ class _ClassesPageState extends State<ClassesPage> {
         }
         if (snapshot.data?.size.toInt() == 0) {
           return Scaffold(
+            drawer: NavBarTeacher(),
             appBar: AppBar(
               title: Text('Classes'),
               centerTitle: true,
@@ -66,6 +69,7 @@ class _ClassesPageState extends State<ClassesPage> {
           );
         }
         return Scaffold(
+          drawer: NavBarTeacher(),
           appBar: AppBar(
             title: Text('Classes'),
             centerTitle: true,
