@@ -1,19 +1,27 @@
 import 'package:assessments_app/pages/Teacher/Classes/ReviewTheAssess.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class ReviewAssessments extends StatefulWidget {
-  ReviewAssessments({Key? key}) : super(key: key);
+  final String passedClassName;
+
+  const ReviewAssessments(this.passedClassName);
   @override
   _ReviewAssessmentsState createState() => _ReviewAssessmentsState();
 }
 
 class _ReviewAssessmentsState extends State<ReviewAssessments> {
-  final _classesStream = FirebaseFirestore.instance
-      .collection('assessments')
-      .where('Creator', isEqualTo: FirebaseAuth.instance.currentUser!.email)
-      .snapshots();
+  var _classesStream;
+
+  @override
+  void initState() {
+    super.initState();
+    print(widget.passedClassName);
+    _classesStream = FirebaseFirestore.instance
+        .collection('assessments')
+        .where('ClassId', isEqualTo: widget.passedClassName)
+        .snapshots();
+  }
 
   @override
   Widget build(BuildContext context) {
