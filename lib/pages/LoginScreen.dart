@@ -1,7 +1,8 @@
 // import 'package:assessments_app/pages/Student/StudentPage.dart';
 import 'package:assessments_app/pages/RegisterScreen.dart';
 import 'package:assessments_app/pages/Student/StudentPage.dart';
-import 'package:assessments_app/pages/Teacher/TeacherPage.dart';
+import 'package:assessments_app/pages/Teacher/Assessments/AssessmentsMain.dart';
+import 'package:assessments_app/pages/Teacher/Classes/ClassesPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -136,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           documentSnapshot['Status'] == "Teacher") {
                         Navigator.pop(context);
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => TeacherPage()));
+                            builder: (context) => ClassesPage()));
                       } else if (user != null &&
                           documentSnapshot['Status'] == 'Student') {
                         Navigator.pop(context);
