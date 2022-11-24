@@ -18,7 +18,6 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
       FirebaseFirestore.instance.collection('Competences').snapshots();
 
   final _controllerName = TextEditingController();
-  final _controllerMaxStudents = TextEditingController();
   Map<String?, List<String?>> _competences =
       ParentChildCheckbox.selectedChildrens;
 
@@ -36,7 +35,6 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
       'Name': _controllerName.text, // John Doe
       'TeacherID': currentUser,
       'NumStudents': 0,
-      'MaxStudents': _controllerMaxStudents.text, // 42
       'Competences': _competences,
       'StudentList': [],
       'documentID': _iD,
@@ -76,7 +74,6 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
   List<Map<String, dynamic>> _comps = [];
   @override
   void dispose() {
-    _controllerMaxStudents.dispose();
     _controllerName.dispose();
     super.dispose();
   }
@@ -183,43 +180,12 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                     const SizedBox(
                       height: 16,
                     ),
-                    TextFormField(
-                      controller: _controllerMaxStudents,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xff388e3c)),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xff388e3c)),
-                        ),
-                        icon: Icon(Icons.group),
-                        labelText: 'Number of pupils',
-                        labelStyle: TextStyle(
-                          color: Color(0xFF29D09E),
-                        ),
-                        helperText: 'Enter the number of students',
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Divider(
-                      thickness: 5,
-                      height: 1,
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
                     ListTile(
                       leading: Icon(Icons.computer),
                       title: Text("Competences"),
                       subtitle: Text("Choose the indicators"),
                       enabled: true,
                       // trailing: Icon(Icons.arrow_drop_down),
-                    ),
-                    const SizedBox(
-                      height: 16,
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
