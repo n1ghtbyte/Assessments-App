@@ -233,10 +233,17 @@ class _AssessReviewState extends State<AssessReview> {
                                                 RadioGroup<String>.builder(
                                                   spacebetween: 65.0,
                                                   direction: Axis.vertical,
-                                                  groupValue: _comps[x]
-                                                      ?.toList()[int.parse(
-                                                          savedGrade[k][x]) -
-                                                      1],
+                                                  groupValue: int.parse(
+                                                                  savedGrade[k]
+                                                                      [x]) -
+                                                              1 ==
+                                                          -1
+                                                      ? "out of the list..."
+                                                      : _comps[x]?.toList()[
+                                                          int.parse(
+                                                                  savedGrade[k]
+                                                                      [x]) -
+                                                              1],
                                                   horizontalAlignment:
                                                       MainAxisAlignment.start,
                                                   onChanged: (value) =>
