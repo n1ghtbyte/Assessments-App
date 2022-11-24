@@ -33,7 +33,7 @@ class SkillsPage extends StatelessWidget {
                 Map<String, dynamic> data =
                     document.data()! as Map<String, dynamic>;
                 return ListTile(
-                  visualDensity: VisualDensity.comfortable,
+                  visualDensity: VisualDensity.standard,
                   onTap: () {
                     print(data['Name']);
                     Navigator.push(

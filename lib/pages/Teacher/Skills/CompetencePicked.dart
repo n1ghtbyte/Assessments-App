@@ -63,7 +63,7 @@ class _CompetencePickedState extends State<CompetencePicked> {
                       return ListTile(
                         trailing: Icon(Icons.arrow_circle_right_rounded),
                         title: Text(data.keys.toList()[index]),
-                        visualDensity: VisualDensity.comfortable,
+                        visualDensity: VisualDensity.standard,
                         onTap: () {
                           Navigator.push(
                             context,
