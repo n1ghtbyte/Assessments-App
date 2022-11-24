@@ -36,6 +36,10 @@ class TurmaExemplo extends StatefulWidget {
 class _TurmaExemploState extends State<TurmaExemplo> {
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -150,8 +154,8 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                 ),
               );
             }
-            return StreamBuilder<QuerySnapshot>(
-              stream: _assessClassStream.snapshots(),
+            return FutureBuilder<QuerySnapshot>(
+              future: _assessClassStream.get(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snpAssess) {
                 if (snpAssess.hasError) {
@@ -159,6 +163,14 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                 }
 
                 if (snpAssess.connectionState == ConnectionState.waiting) {
+                  return Container(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+                if (snpAssess.data!.docs
+                    .any((element) => element['Created'] == null)) {
                   return Container(
                     child: Center(
                       child: CircularProgressIndicator(),
@@ -249,22 +261,26 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                     .then((value) => setState(() {}));
                                 break;
                               case _MenuValues.Settings:
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (c) => ClassesSettingsPage(
-                                        widget.passedClassName),
-                                  ),
-                                );
+                                Navigator.of(context)
+                                    .push(
+                                      MaterialPageRoute(
+                                        builder: (c) => ClassesSettingsPage(
+                                            widget.passedClassName),
+                                      ),
+                                    )
+                                    .then((value) => setState(() {}));
                                 break;
                               case _MenuValues.Setup:
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (c) => ClassSetup(
-                                      passedClassNameSetup:
-                                          widget.passedClassName,
-                                    ),
-                                  ),
-                                );
+                                Navigator.of(context)
+                                    .push(
+                                      MaterialPageRoute(
+                                        builder: (c) => ClassSetup(
+                                          passedClassNameSetup:
+                                              widget.passedClassName,
+                                        ),
+                                      ),
+                                    )
+                                    .then((value) => setState(() {}));
                                 break;
                             }
                           },
@@ -300,7 +316,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                 builder: (context) =>
                                     GenSummAssessment(widget.passedClassName),
                               ),
-                            );
+                            ).then((value) => setState(() {}));
                           },
                         ),
                         SpeedDialChild(
@@ -331,7 +347,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                     competences,
                                     "class"),
                               ),
-                            );
+                            ).then((value) => setState(() {}));
                           },
                         ),
                       ],
@@ -400,7 +416,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                                 passedAssessmentIdName:
                                                     data['documentID'],
                                               )),
-                                    );
+                                    ).then((value) => setState(() {}));
                                   }
                                   if (data['Type'] == 'Formative' &&
                                       data['DONE'] == true) {
