@@ -46,7 +46,8 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
           );
         }
 
-// snapshot.data!.docs
+        _assessmentsFormativeMultiple = snapshot.data!.docs;
+
         return Scaffold(
           appBar: AppBar(
             title: Text('Generate Summ. Assessment'),
@@ -111,49 +112,57 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
                     foregroundColor: Colors.white,
                     backgroundColor: Color(0xFF29D09E),
                   ),
-                  onPressed: () async {
+                  onPressed: () {
                     var asses = [];
 
                     final docRef =
                         db.collection("/classes").doc(widget.passedClassName);
-                    await docRef.get().then(
-                      (DocumentSnapshot doc) {
+                    docRef.get().then(
+                      (DocumentSnapshot doc) async {
                         final data = doc.data() as Map<String, dynamic>;
                         var weigths = data['Weights'];
 
                         _isSelected.removeRange(
                             _assessmentsFormativeMultiple.length, 100);
+
                         // _isSelected = _isSelected.reversed.toList();
-                        print(_isSelected);
+
                         for (var i = 0; i < _isSelected.length; i++) {
                           if (_isSelected[i]) {
                             asses.add(i);
                           }
                         }
+
                         Map<String, List<dynamic>> kiki = Map();
                         var elStud = widget.passedStudName;
                         var sumativo;
                         num result = 0;
                         Map<String, List<dynamic>> summComp = {};
 
+                        print(
+                            _assessmentsFormativeMultiple[asses[0]]['Created']);
+                        print(widget.passedClassName);
+
                         for (var i = 0; i < asses.length; i++) {
                           kiki[elStud] = [];
-                          print(elStud);
-                          final collRef = db
+                          await db
                               .collection(
                                   "classes/${widget.passedClassName}/grading/$elStud/formative")
-                              .where("Current", isEqualTo: asses[i].toString())
+                              .where('Created',
+                                  isEqualTo:
+                                      _assessmentsFormativeMultiple[asses[i]]
+                                          ['Created'])
                               .get()
                               .then((value) {
                             for (var doc in value.docs) {
                               print(doc.data());
                               kiki[elStud]?.add(doc.data());
-                              print("--------------------");
+                              print(doc.data()['Created']);
                             }
                           });
 
                           // now we have all documents of that elStudent
-                          print("Current is: " + i.toString());
+                          print("Current 'i' is : " + i.toString());
 
                           for (var doc in kiki[elStud]!) {
                             for (var comp in doc['Competences'].keys) {
@@ -190,7 +199,7 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
                         } // here bellow
                         print("here");
                         print("result: " + result.toString());
-                        final uploadSummative = db
+                        await db
                             .collection(
                                 "classes/${widget.passedClassName}/grading/$elStud/summative")
                             .add({
