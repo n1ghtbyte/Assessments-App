@@ -36,10 +36,6 @@ class TurmaExemplo extends StatefulWidget {
 class _TurmaExemploState extends State<TurmaExemplo> {
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,8 +150,8 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                 ),
               );
             }
-            return FutureBuilder<QuerySnapshot>(
-              future: _assessClassStream.get(),
+            return StreamBuilder<QuerySnapshot>(
+              stream: _assessClassStream.snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snpAssess) {
                 if (snpAssess.hasError) {
@@ -356,8 +352,17 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                       children: [
                         SafeArea(
                           child: Column(
-                            children: [
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              const SizedBox(height: 16),
                               Container(
+                                padding: EdgeInsets.all(16.0),
+                                child: Text(
+                                  "Class' students",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
+                              Expanded(
                                 child: ListView.builder(
                                   shrinkWrap: true,
                                   itemCount: studs.length,
@@ -398,52 +403,67 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                             ],
                           ),
                         ),
-                        SafeArea(
-                          child: ListView(
-                            children: snpAssess.data!.docs
-                                .map((DocumentSnapshot document) {
-                              Map<String, dynamic> data =
-                                  document.data()! as Map<String, dynamic>;
-                              return ListTile(
-                                onTap: () {
-                                  if (data['Type'] == 'Formative' &&
-                                      data['DONE'] == false) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              AssessmentFormative(
-                                                passedAssessmentIdName:
-                                                    data['documentID'],
-                                              )),
-                                    ).then((value) => setState(() {}));
-                                  }
-                                  if (data['Type'] == 'Formative' &&
-                                      data['DONE'] == true) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => AssessmentCheck(
-                                                passedAssessmentIdName:
-                                                    data['documentID'],
-                                              )),
-                                    );
-                                  }
-                                },
-                                leading: Icon(Icons.assessment),
-                                isThreeLine: true,
-                                textColor: data['DONE'] == false
-                                    ? Color(0xFF29D09E)
-                                    : Color.fromARGB(255, 123, 123, 123),
-                                title: Text('${data['Type']} Assessment'),
-                                subtitle: data['Target'].toString() == 'Single'
-                                    ? Text(
-                                        "Student: ${data['Students'].keys.toList()[0].toString()}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}")
-                                    : Text(
-                                        "Done: ${data['Count'].toString()}/${data['Students'].values.toList().length}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}"),
-                              );
-                            }).toList(),
-                          ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const SizedBox(height: 16),
+                            Container(
+                              padding: EdgeInsets.all(16.0),
+                              child: Text(
+                                "All assessments regarding this class' students",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            Expanded(
+                              child: ListView(
+                                children: snpAssess.data!.docs
+                                    .map((DocumentSnapshot document) {
+                                  Map<String, dynamic> data =
+                                      document.data()! as Map<String, dynamic>;
+                                  return ListTile(
+                                    onTap: () {
+                                      if (data['Type'] == 'Formative' &&
+                                          data['DONE'] == false) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AssessmentFormative(
+                                                    passedAssessmentIdName:
+                                                        data['documentID'],
+                                                  )),
+                                        ).then((value) => setState(() {}));
+                                      }
+                                      if (data['Type'] == 'Formative' &&
+                                          data['DONE'] == true) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AssessmentCheck(
+                                                    passedAssessmentIdName:
+                                                        data['documentID'],
+                                                  )),
+                                        );
+                                      }
+                                    },
+                                    leading: Icon(Icons.assessment),
+                                    isThreeLine: true,
+                                    textColor: data['DONE'] == false
+                                        ? Color(0xFF29D09E)
+                                        : Color.fromARGB(255, 123, 123, 123),
+                                    title: Text('${data['Type']} Assessment'),
+                                    subtitle: data['Target'].toString() ==
+                                            'Single'
+                                        ? Text(
+                                            "Student: ${data['Students'].keys.toList()[0].toString()}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}")
+                                        : Text(
+                                            "Done: ${data['Count'].toString()}/${data['Students'].values.toList().length}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}"),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
                         ),
                         SingleChildScrollView(
                           child: Column(
@@ -454,7 +474,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                 padding: EdgeInsets.all(20.0),
                                 child: Text(
                                   "Weights of each competence",
-                                  style: TextStyle(fontSize: 20),
+                                  style: TextStyle(fontSize: 16),
                                 ),
                               ),
                               ListView.builder(
