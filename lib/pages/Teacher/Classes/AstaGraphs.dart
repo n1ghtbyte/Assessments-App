@@ -11,6 +11,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
 
 import '../Assessments/GenFormAssessment.dart';
+import '../Assessments/GenSingleSummAssessment.dart';
 import '../Assessments/GenSummAssessment.dart';
 
 class AstaGraphs extends StatefulWidget {
@@ -356,8 +357,11 @@ class _AstaGraphsState extends State<AstaGraphs> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                GenSummAssessment(widget.passedClassId),
+                            builder: (context) => GenSingleSummAssessment(
+                                widget.passedClassId,
+                                widget.passedClassName,
+                                widget.passedCompetences,
+                                widget.passedLegitName),
                           ),
                         );
                       },
@@ -752,8 +756,11 @@ class _AstaGraphsState extends State<AstaGraphs> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                GenSummAssessment(widget.passedClassId),
+                            builder: (context) => GenSingleSummAssessment(
+                                widget.passedClassId,
+                                widget.passedClassName,
+                                widget.passedCompetences,
+                                widget.passedLegitName),
                           ),
                         );
                       },
