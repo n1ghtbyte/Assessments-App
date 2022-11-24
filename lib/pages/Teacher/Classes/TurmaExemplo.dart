@@ -429,41 +429,39 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                             }).toList(),
                           ),
                         ),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                const SizedBox(height: 16),
-                                Container(
-                                  padding: EdgeInsets.all(20.0),
-                                  child: Text(
-                                    "Weights of each competence",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
+                        SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              const SizedBox(height: 16),
+                              Container(
+                                padding: EdgeInsets.all(20.0),
+                                child: Text(
+                                  "Weights of each competence",
+                                  style: TextStyle(fontSize: 20),
                                 ),
-                                ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount:
-                                      data['Competences'].keys.toList().length,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      title: Text(data['Competences']
-                                          .keys
-                                          .toList()[index]),
-                                      subtitle: data['Weights'] != null
-                                          ? Text(data['Weights']
-                                                  .values
-                                                  .toList()[index]
-                                                  .toString() +
-                                              " %")
-                                          : Text("Need to be defined"),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
+                              ),
+                              ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount:
+                                    data['Competences'].keys.toList().length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    title: Text(data['Competences']
+                                        .keys
+                                        .toList()[index]),
+                                    subtitle: data['Weights'] != null
+                                        ? Text(data['Weights']
+                                                .values
+                                                .toList()[index]
+                                                .toString() +
+                                            " %")
+                                        : Text("Need to be defined"),
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         ),
                       ],
