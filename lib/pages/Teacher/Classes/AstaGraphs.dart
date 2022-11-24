@@ -1121,8 +1121,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                                     }
                                                   },
                                                 );
-                                                Future.microtask(() =>
-                                                    Navigator.pop(context));
+                                                Navigator.pop(context);
                                               },
                                               child: Text(
                                                 'DELETE',
