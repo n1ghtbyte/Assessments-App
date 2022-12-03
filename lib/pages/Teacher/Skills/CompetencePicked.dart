@@ -34,6 +34,8 @@ class _CompetencePickedState extends State<CompetencePicked> {
             ),
           );
         }
+        List<bool> _customTileExpanded = List<bool>.filled(10, false);
+
         Map<String, dynamic> data =
             snapshot.data!.data() as Map<String, dynamic>;
 
@@ -60,20 +62,44 @@ class _CompetencePickedState extends State<CompetencePicked> {
                     shrinkWrap: true,
                     itemCount: data.keys.toList().length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        trailing: Icon(Icons.arrow_circle_right_rounded),
+                      return ExpansionTile(
+                        trailing: Icon(
+                          _customTileExpanded[index]
+                              ? Icons.arrow_drop_down_circle
+                              : Icons.arrow_drop_down,
+                        ),
                         title: Text(data.keys.toList()[index]),
-                        visualDensity: VisualDensity.standard,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => IndicatorPicked(
-                                passedList: data[data.keys.toList()[index]],
-                              ),
-                            ),
-                          );
-                        },
+                        children: [
+                          ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: 5,
+                            itemBuilder: (context, xipidi) {
+                              return ListTile(
+                                title: Text(data[data.keys.toList()[index]]
+                                        [xipidi]
+                                    .substring(3)
+                                    .toString()),
+                                leading: Text(
+                                    '${data[data.keys.toList()[index]][xipidi][0]}'),
+                                dense: true,
+                                visualDensity:
+                                    VisualDensity.adaptivePlatformDensity,
+                              );
+                            },
+                          ),
+                        ],
+
+                        // onTap: () {
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => IndicatorPicked(
+                        //         passedList: data[data.keys.toList()[index]],
+                        //       ),
+                        //     ),
+                        //   );
+                        // },
                       );
                     },
                   ),
