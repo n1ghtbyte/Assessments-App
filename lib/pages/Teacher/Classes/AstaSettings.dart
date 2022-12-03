@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AstaSettings extends StatefulWidget {
-  const AstaSettings({ Key? key }) : super(key: key);
+  const AstaSettings({Key? key}) : super(key: key);
 
   @override
   _AstaSettingsState createState() => _AstaSettingsState();
@@ -40,9 +40,8 @@ class _AstaSettingsState extends State<AstaSettings> {
               title: Text("Contact"),
               subtitle: Text("Get student and his/her parent's email"),
               onTap: () {
-                final snackBar = SnackBar(
-                    content: Text(
-                        'Check your email box :)'));
+                final snackBar =
+                    SnackBar(content: Text('Check your email box :)'));
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 // Navigator.push( mostrar snackbar a avisar que o request foi feito !!!
                 //   context,
@@ -53,30 +52,27 @@ class _AstaSettingsState extends State<AstaSettings> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                onPrimary: Colors.white,
-                primary: Color(0xFF29D09E),
+                foregroundColor: Colors.white,
+                backgroundColor: Color(0xFF29D09E),
               ),
               onPressed: () {
                 Navigator.pop(context);
 
-                final snackBar = SnackBar(
-                    content: Text(
-                        'Asta name was changed to Yuno'));
+                final snackBar =
+                    SnackBar(content: Text('Asta name was changed to Yuno'));
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
               child: const Text('Save'),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                onPrimary: Colors.white,
-                primary: Color(0xFFF60000),
+                foregroundColor: Colors.white,
+                backgroundColor: Color(0xFFF60000),
               ),
               onPressed: () {
                 Navigator.pop(context);
 
-                final snackBar = SnackBar(
-                    content: Text(
-                        'Killed! ☉ ‿ ⚆'));
+                final snackBar = SnackBar(content: Text('Killed! ☉ ‿ ⚆'));
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
               child: const Text('Remove'),
