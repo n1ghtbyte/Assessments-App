@@ -18,6 +18,7 @@ class SettingsPage extends StatelessWidget {
           children: <Widget>[
             const SizedBox(height: 16),
             ListTile(
+              enabled: false,
               leading: Icon(Icons.notifications),
               title: Text("Notifications"),
               subtitle: Text("Change the occurance"),
@@ -35,6 +36,7 @@ class SettingsPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             ListTile(
+              enabled: false,
               leading: Icon(Icons.settings_display),
               title: Text("Display"),
               subtitle: Text("Dark mode, colors, navigation"),
