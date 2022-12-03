@@ -108,10 +108,11 @@ class _ClassesPageState extends State<ClassesPage> {
                     "${data['NumStudents'].toString()} / ${data['MaxStudents'].toString()}\nJoin code: ${data['documentID'].toString()}"),
                 onLongPress: () async {
                   await Clipboard.setData(
-                    ClipboardData(text: data['DocumentID'].toString()),
+                    ClipboardData(text: data['documentID'].toString()),
                   );
 
-                  final snackBar = SnackBar(content: Text('Text copied'));
+                  final snackBar =
+                      SnackBar(content: Text('Join code on clipboard'));
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
               );
