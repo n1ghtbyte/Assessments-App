@@ -1,11 +1,4 @@
-import 'package:assessments_app/pages/Teacher/Assessments/GenSummAssessment.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AstaGraphs.dart';
-import 'package:assessments_app/pages/Teacher/Classes/ReviewAssessmentsClass.dart';
-import 'package:assessments_app/pages/Teacher/Classes/AddStudentClass.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:assessments_app/pages/Teacher/Assessments/GenFormAssessment.dart';
-
-import 'package:assessments_app/pages/Teacher/Classes/ClassSetup.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassesSettingsPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -29,8 +22,6 @@ class _StudentClassState extends State<StudentClass> {
     late CollectionReference _class =
         FirebaseFirestore.instance.collection('classes');
     Map<dynamic, dynamic> namedStuds = {};
-
-    ValueNotifier<bool> isDialOpen = ValueNotifier(false);
 
     return FutureBuilder<DocumentSnapshot>(
       future: _class.doc(widget.passedClassName).get(),

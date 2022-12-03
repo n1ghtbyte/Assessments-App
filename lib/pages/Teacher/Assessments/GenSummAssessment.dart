@@ -180,7 +180,7 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                             for (var i = 0; i < asses.length; i++) {
                               kiki[elStud] = [];
                               print(elStud);
-                              final collRef = await db
+                              await db
                                   .collection(
                                       "classes/${widget.passedClassName}/grading/$elStud/formative")
                                   .where("Current",
@@ -232,7 +232,7 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                             } // here bellow
                             print("here");
                             print("result: " + result.toString());
-                            final uploadSummative = await db
+                            await db
                                 .collection(
                                     "classes/${widget.passedClassName}/grading/$elStud/summative")
                                 .add({

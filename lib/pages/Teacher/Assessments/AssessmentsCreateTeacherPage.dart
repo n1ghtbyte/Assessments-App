@@ -264,8 +264,8 @@ class _AssessmentsCreateTeacherPageState
 
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      onPrimary: Colors.white,
-                      primary: Color(0xFF29D09E),
+                      foregroundColor: Colors.white,
+                      backgroundColor: Color(0xFF29D09E),
                     ),
                     onPressed: () {
                       if (data['prevAssess'] == data['currAssess']) {

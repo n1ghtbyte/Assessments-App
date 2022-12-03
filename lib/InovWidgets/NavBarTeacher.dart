@@ -1,9 +1,8 @@
 import 'package:assessments_app/pages/LoginScreen.dart';
 import 'package:assessments_app/pages/SettingsPage.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/AssessmentsMain.dart';
-import 'package:assessments_app/pages/Teacher/Classes/ClassesPage.dart';
 import 'package:assessments_app/pages/Teacher/Skills/SkillsPage.dart';
-import 'package:assessments_app/pages/Teacher/TeacherProfile.dart';
+import 'package:assessments_app/pages/Teacher/Account/TeacherProfile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase_storage/firebase_storage.dart';

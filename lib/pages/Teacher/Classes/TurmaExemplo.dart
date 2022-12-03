@@ -1,10 +1,7 @@
-// import 'package:assessments_app/pages/Teacher/Assessments/AssessmentsCreateTeacherPage.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/GenSummAssessment.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AstaGraphs.dart';
-import 'package:assessments_app/pages/Teacher/Classes/ReviewAssessmentsClass.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AddStudentClass.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:assessments_app/pages/Teacher/Classes/AstaStats.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/GenFormAssessment.dart';
 
@@ -34,7 +31,6 @@ class TurmaExemplo extends StatefulWidget {
 }
 
 class _TurmaExemploState extends State<TurmaExemplo> {
-  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
 
   @override

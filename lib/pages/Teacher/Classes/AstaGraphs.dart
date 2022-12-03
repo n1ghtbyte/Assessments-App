@@ -12,7 +12,6 @@ import 'package:intl/intl.dart';
 
 import '../Assessments/GenFormAssessment.dart';
 import '../Assessments/GenSingleSummAssessment.dart';
-import '../Assessments/GenSummAssessment.dart';
 
 class AstaGraphs extends StatefulWidget {
   final String passedLegitName;

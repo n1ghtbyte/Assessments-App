@@ -1,9 +1,3 @@
-import 'package:assessments_app/InovWidgets/NavBarTeacher.dart';
-import 'package:assessments_app/pages/LoginScreen.dart';
-import 'package:assessments_app/pages/SettingsPage.dart';
-import 'package:assessments_app/pages/Teacher/Classes/ClassesPage.dart';
-import 'package:assessments_app/pages/Teacher/Skills/SkillsPage.dart';
-import 'package:assessments_app/pages/Teacher/TeacherProfile.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/AssessmentCheck.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/AssessmentFormative.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,7 +12,6 @@ class AssessmentsMain extends StatefulWidget {
 }
 
 class _AssessmentsMainState extends State<AssessmentsMain> {
-  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
 
   final Query _classesStream = FirebaseFirestore.instance

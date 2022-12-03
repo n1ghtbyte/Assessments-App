@@ -1,4 +1,3 @@
-import 'package:assessments_app/pages/Teacher/Skills/IndicatorPicked.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
