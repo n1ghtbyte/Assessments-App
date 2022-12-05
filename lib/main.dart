@@ -8,7 +8,12 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   Future<FirebaseApp> _initializeFirebase() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
     return firebaseApp;
@@ -23,6 +28,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Color(0xFF29D09E),
         primarySwatch: Colors.green,
+        scaffoldBackgroundColor: Colors.white,
+        backgroundColor: Colors.white,
+        pageTransitionsTheme: PageTransitionsTheme(
+          builders: Map<TargetPlatform, PageTransitionsBuilder>.fromIterable(
+            TargetPlatform.values,
+            value: (dynamic _) => const ZoomPageTransitionsBuilder(),
+          ),
+        ),
       ),
       // scaffoldBackgroundColor: Colors.grey[200]),
       home: FutureBuilder(
