@@ -45,6 +45,7 @@ dependencies:
   intl: ^0.17.0
   firebase_storage: ^10.3.7
   loader_overlay: ^2.1.0
+  shimmer: ^2.0.0
     
   
 
