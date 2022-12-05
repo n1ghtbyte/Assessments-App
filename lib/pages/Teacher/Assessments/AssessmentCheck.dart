@@ -13,7 +13,6 @@ class AssessmentCheck extends StatefulWidget {
   State<AssessmentCheck> createState() => _AssessmentCheckState();
 }
 
-final db = FirebaseFirestore.instance;
 final CollectionReference _assess =
     FirebaseFirestore.instance.collection('assessments');
 Map<dynamic, dynamic> namedStuds = {};

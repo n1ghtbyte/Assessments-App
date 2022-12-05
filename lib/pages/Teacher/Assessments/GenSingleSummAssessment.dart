@@ -25,6 +25,7 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
           '/classes/${widget.passedClassName}/grading/${widget.passedStudName}/formative');
 
   List<dynamic> _assessmentsFormativeMultiple = [];
+  final db = FirebaseFirestore.instance;
 
   List<bool> _isSelected = List<bool>.generate(100, (int index) => false,
       growable: true); // 100 assessments... TOO MUCH

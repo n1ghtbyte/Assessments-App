@@ -20,6 +20,7 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
       FirebaseFirestore.instance.collection('/assessments');
   late CollectionReference _class =
       FirebaseFirestore.instance.collection('/classes');
+  final db = FirebaseFirestore.instance;
 
   List<dynamic> _assessmentsFormativeMultiple = [];
 
