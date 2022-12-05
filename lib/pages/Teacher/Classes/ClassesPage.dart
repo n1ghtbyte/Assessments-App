@@ -105,7 +105,7 @@ class _ClassesPageState extends State<ClassesPage> {
                 isThreeLine: true,
                 title: Text(data['Name']),
                 subtitle: Text(
-                    "${data['NumStudents'].toString()} / ${data['MaxStudents'].toString()}\nJoin code: ${data['documentID'].toString()}"),
+                    "Students: ${data['NumStudents'].toString()}\nJoin code: ${data['documentID'].toString()}"),
                 onLongPress: () async {
                   await Clipboard.setData(
                     ClipboardData(text: data['documentID'].toString()),
