@@ -21,9 +21,10 @@ class MyApp extends StatelessWidget {
       // darkTheme: ThemeData.dark(),
       // themeMode: ThemeMode.dark,
       theme: ThemeData(
-          primaryColor: Color(0xFF29D09E),
-          primarySwatch: Colors.green,
-          scaffoldBackgroundColor: Colors.grey[200]),
+        primaryColor: Color(0xFF29D09E),
+        primarySwatch: Colors.green,
+      ),
+      // scaffoldBackgroundColor: Colors.grey[200]),
       home: FutureBuilder(
         future: _initializeFirebase(),
         builder: (context, snapshot) {
