@@ -1,6 +1,7 @@
 // import 'package:assessments_app/pages/Student/StudentPage.dart';
+import 'package:assessments_app/pages/Parent/ParentMain.dart';
 import 'package:assessments_app/pages/RegisterScreen.dart';
-import 'package:assessments_app/pages/Student/StudentPage.dart';
+import 'package:assessments_app/pages/Student/Classes/StudentClasses.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassesPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -140,16 +141,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       } else if (user != null &&
                           documentSnapshot['Status'] == 'Student') {
                         Navigator.pop(context);
-
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => StudentPage()));
+                            builder: (context) => StudClassesMain()));
                       } else if (user != null &&
                           documentSnapshot['Status'] == 'Parent') {
                         Navigator.pop(context);
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => ParentMainScreen()));
 
                         final snackBar = SnackBar(
-                            content:
-                                Text('Parent interface still in development'));
+                            content: Text(
+                                'Parent interface still in early development...'));
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         // Navigator.of(context).pushReplacement(MaterialPageRoute(
                         //     builder: (context) => StudentPage()));
