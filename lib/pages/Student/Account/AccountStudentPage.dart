@@ -1,63 +1,77 @@
-import 'package:assessments_app/utils/UserPrefs.dart';
-import 'package:assessments_app/model/Student.dart';
-import 'package:assessments_app/InovWidgets/ProfileWidget.dart';
-import 'package:assessments_app/InovWidgets/StatsWidget.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class AccountStudentPage extends StatelessWidget {
+class StudentProfile extends StatefulWidget {
+  @override
+  _StudentProfileState createState() => _StudentProfileState();
+}
+
+class _StudentProfileState extends State<StudentProfile> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  final db = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
-    final student = UserPrefs.myUser;
+    db.settings = const Settings(
+      persistenceEnabled: true,
+      cacheSizeBytes: 2048576,
+    );
+    var teacherDoc = db.collection('users');
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Account'),
-        centerTitle: true,
-        backgroundColor: Color(0xFF29D09E),
-      ),
-      body: ListView(
-        children: [
-          ProfileWidget(imagePath: student.imagePath, onClicked: () async {}),
-          const SizedBox(height: 24),
-          buildName(student),
-          const SizedBox(height: 24),
-          StatsWidget(),
-        ],
-      ),
+    String? currentUser = FirebaseAuth.instance.currentUser!.email;
+
+    return FutureBuilder<DocumentSnapshot>(
+      future: teacherDoc.doc(currentUser).get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text("Something went wrong");
+        }
+        if (!snapshot.hasData) {
+          return Container(
+            child: Center(
+                // child: CircularProgressIndicator(),
+                ),
+          );
+        }
+        print(snapshot.data?.data());
+        Map<String, dynamic> data =
+            snapshot.data!.data() as Map<String, dynamic>;
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Color(0xFF29D09E),
+            title: Text('Student\'s Account'),
+            centerTitle: true,
+          ),
+          body: Column(
+            children: [
+              ListTile(
+                title: Text("Account Type"),
+                subtitle: Text("Student"),
+              ),
+              ListTile(
+                title: Text("Email"),
+                subtitle: Text(data['Email']),
+              ),
+              ListTile(
+                title: Text("Name"),
+                subtitle: Text(data['FirstName'] + ' ' + data['LastName']),
+              ),
+              ListTile(
+                title: Text("Since"),
+                subtitle: Text(DateFormat('yyyy-MM-dd')
+                    .format((data['Created'] as Timestamp).toDate())),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }
-
-//       body: Stack(
-//         children: <Widget>[
-//          ListView(
-//            ProfileWidget(
-//             imagePath: student.imagePath,
-//             onClicked: () async {}
-//             ),
-//           const SizedBox(height: 24),
-//           buildName(student),
-//           const SizedBox(height: 24),
-//           StatsWidget(),
-//          )
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-Widget buildName(Student user) => Column(
-      children: [
-        Text(
-          user.name + ', on the ' + user.grade,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          user.email,
-          style: TextStyle(color: Colors.grey),
-        ),
-        const SizedBox(height: 4),
-      ],
-    );
