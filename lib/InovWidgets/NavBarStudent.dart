@@ -1,10 +1,12 @@
 import 'package:assessments_app/pages/Student/Account/AccountStudentPage.dart';
-import 'package:assessments_app/pages/Student/Classes/Classes.dart';
+import 'package:assessments_app/pages/Student/AssessmentsStudent.dart';
 import 'package:assessments_app/pages/SettingsPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../pages/LoginScreen.dart';
+import '../pages/Student/Parents/ChildParentDash.dart';
+import '../pages/Teacher/Skills/SkillsPage.dart';
 
 class NavBarStudent extends StatefulWidget {
   const NavBarStudent({Key? key}) : super(key: key);
@@ -38,36 +40,55 @@ class _NavBarStudentState extends State<NavBarStudent> {
             ),
             decoration: BoxDecoration(color: Color(0xFF29D09E)),
           ),
-          // ListTile(
-          //   leading: Icon(Icons.assessment),
-          //   title: const Text('Assessments'),
-          //   onTap: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //           builder: (context) => AssessmentsStudentPage()),
-          //     );
-          //   },
-          // ),
           ListTile(
-            leading: Icon(Icons.school),
-            title: const Text('Classes'),
+            leading: Icon(Icons.summarize),
+            title: const Text('Assessments'),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => StudendClasses()),
+                MaterialPageRoute(
+                    builder: (context) => AssessmentsStudentAll()),
               );
             },
           ),
           const SizedBox(height: 16),
+          ListTile(
+            leading: Icon(Icons.menu_book),
+            title: const Text('Competences'),
+            onTap: () {
+              Navigator.pop(context);
 
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SkillsPage()),
+              );
+            },
+          ),
+          const SizedBox(height: 16),
+          ListTile(
+            leading: Icon(Icons.family_restroom),
+            title: const Text('Parents'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ChildParentDash()),
+              );
+            },
+          ),
+          const SizedBox(height: 16),
+          Divider(
+            thickness: 1,
+            height: 1,
+          ),
+          const SizedBox(height: 16),
           ListTile(
             leading: Icon(Icons.account_box),
             title: const Text('Account'),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AccountStudentPage()),
+                MaterialPageRoute(builder: (context) => StudentProfile()),
               );
             },
           ),
