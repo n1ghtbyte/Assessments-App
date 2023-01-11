@@ -29,6 +29,13 @@
             {
               "client_id": "154364759188-nt4oakubt3rgt3v11sm4kv99on5mjjd8.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "154364759188-r7lfq7lca4os74hiqt62cs7brks8emk2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.assessmentsApp"
+              }
             }
           ]
         }
