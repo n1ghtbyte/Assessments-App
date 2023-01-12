@@ -480,7 +480,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                         Column(
                           children: [
                             Text(
-                              "Competences Line Chart",
+                              "Student Progression",
                               style: TextStyle(
                                   fontSize: 21, fontWeight: FontWeight.w400),
                               textAlign: TextAlign.left,
@@ -834,7 +834,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                         Column(
                           children: [
                             Text(
-                              "Competences Line Chart",
+                              "Student Progression",
                               style: TextStyle(
                                   fontSize: 21, fontWeight: FontWeight.w400),
                               textAlign: TextAlign.left,
