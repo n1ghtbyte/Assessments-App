@@ -1,6 +1,5 @@
 import 'package:assessments_app/InovWidgets/NavBarParent.dart';
 import 'package:assessments_app/pages/Parent/Student/ChildClasses.dart';
-import 'package:assessments_app/pages/Student/Classes/StudentClassInside.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,8 +13,6 @@ class ParentMainScreen extends StatefulWidget {
 
 class _ParentMainScreenState extends State<ParentMainScreen> {
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
-
-  final _classesStream = FirebaseFirestore.instance.collection('users');
 
   @override
   Widget build(BuildContext context) {
