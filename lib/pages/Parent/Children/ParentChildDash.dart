@@ -57,9 +57,33 @@ class _ParentChildDashState extends State<ParentChildDash> {
               onPressed: () {
                 FirebaseFirestore.instance
                     .collection('users')
-                    .doc(FirebaseAuth.instance.currentUser?.email.toString())
-                    .update({
-                  "children": FieldValue.arrayUnion([_controllerParent.text]),
+                    .doc(_controllerParent.text)
+                    .get()
+                    .then((DocumentSnapshot documentSnapshot) {
+                  if (documentSnapshot.exists) {
+                    if (documentSnapshot['Parents']
+                        .contains(currentUser.toString())) {
+                      FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(FirebaseAuth.instance.currentUser?.email
+                              .toString())
+                          .update({
+                        "children":
+                            FieldValue.arrayUnion([_controllerParent.text]),
+                      });
+                    }
+                    // childred did not insert parent email
+                    else {
+                      final snackBar = SnackBar(
+                          content: Text(
+                              'The student did not mention you in his account....'));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+                  } else {
+                    final snackBar = SnackBar(
+                        content: Text('The student does not exist ?!?!(...)'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
                 });
 
                 Navigator.pop(context);
@@ -167,9 +191,33 @@ class _ParentChildDashState extends State<ParentChildDash> {
               onPressed: () {
                 FirebaseFirestore.instance
                     .collection('users')
-                    .doc(FirebaseAuth.instance.currentUser?.email.toString())
-                    .update({
-                  "children": FieldValue.arrayUnion([_controllerParent.text]),
+                    .doc(_controllerParent.text)
+                    .get()
+                    .then((DocumentSnapshot documentSnapshot) {
+                  if (documentSnapshot.exists) {
+                    if (documentSnapshot['Parents']
+                        .contains(currentUser.toString())) {
+                      FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(FirebaseAuth.instance.currentUser?.email
+                              .toString())
+                          .update({
+                        "children":
+                            FieldValue.arrayUnion([_controllerParent.text]),
+                      });
+                    }
+                    // childred did not insert parent email
+                    else {
+                      final snackBar = SnackBar(
+                          content: Text(
+                              'The student did not mention you in his account....'));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+                  } else {
+                    final snackBar = SnackBar(
+                        content: Text('The student does not exist ?!?!(...)'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
                 });
 
                 Navigator.pop(context);
