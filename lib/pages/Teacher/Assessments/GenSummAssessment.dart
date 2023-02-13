@@ -120,10 +120,8 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                         itemCount: _assessmentsFormativeMultiple.length,
                         itemBuilder: (context, index) {
                           return LinkedLabelCheckbox(
-                            label: "Formative Assessment " +
-                                (_assessmentsFormativeMultiple[index]
-                                            .data()['currentNumber'] +
-                                        1)
+                            label: (_assessmentsFormativeMultiple[index]
+                                        .data()['Name'])
                                     .toString() +
                                 "\n" +
                                 DateFormat('yyyy-MM-dd')
@@ -177,6 +175,7 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                             var sumativo;
                             num result = 0;
                             Map<String, List<dynamic>> summComp = {};
+                            var selectedAssessUpload = [];
 
                             for (var i = 0; i < asses.length; i++) {
                               kiki[elStud] = [];
@@ -191,6 +190,9 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                                 for (var doc in value.docs) {
                                   print(doc.data());
                                   kiki[elStud]?.add(doc.data());
+                                  selectedAssessUpload
+                                      .add(doc.data()['AssessID']);
+
                                   print("--------------------");
                                 }
                               });
@@ -237,16 +239,19 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                                 .collection(
                                     "classes/${widget.passedClassName}/grading/$elStud/summative")
                                 .add({
+                              'Formatives': selectedAssessUpload,
                               'Result': result,
                               'Weights': weigths,
                               'Created': FieldValue.serverTimestamp(),
-                              'Targets': 'Multiple'
+                              'Targets': 'Class'
                             });
+
                             summComp = {};
 
                             result = 0;
                             sumativo = 0;
                           }
+
                           Navigator.pop(context);
                         },
                         child: Text(('Generate'),
