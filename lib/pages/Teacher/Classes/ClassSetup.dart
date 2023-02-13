@@ -84,9 +84,8 @@ class _ClassSetupState extends State<ClassSetup> {
                   final snackBar =
                       SnackBar(content: Text('The values are stored!'));
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.push(
+
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
