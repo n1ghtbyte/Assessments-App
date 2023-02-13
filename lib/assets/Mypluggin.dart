@@ -11,12 +11,11 @@ class ParentChildCheckbox extends StatefulWidget {
 
   ///Color of Parent CheckBox
   ///
-  ///Defaults to [ThemeData.toggleableActiveColor].
+
   final Color? parentCheckboxColor;
 
   ///Color of Parent CheckBox
   ///
-  ///Defaults to [ThemeData.toggleableActiveColor].
   final Color? childrenCheckboxColor;
 
   ///Default constructor of ParentChildCheckbox
