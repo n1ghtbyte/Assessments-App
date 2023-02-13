@@ -33,8 +33,10 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
 
   Widget build(BuildContext context) {
-    return FutureBuilder<QuerySnapshot>(
-      future: _formativeCollection.orderBy('Created', descending: false).get(),
+    return StreamBuilder<QuerySnapshot>(
+      stream: _formativeCollection
+          .orderBy('Created', descending: false)
+          .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return Text("Something went wrong");
@@ -114,7 +116,8 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
                     backgroundColor: Color(0xFF29D09E),
                   ),
                   onPressed: () {
-                    var asses = [];
+                    List<dynamic> asses = [];
+                    List<dynamic> assessToUpload = [];
 
                     final docRef =
                         db.collection("/classes").doc(widget.passedClassName);
@@ -134,25 +137,34 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
                           }
                         }
 
+                        print(
+                            "INICIONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
+                        print(asses);
+
                         Map<String, List<dynamic>> kiki = Map();
                         var elStud = widget.passedStudName;
                         var sumativo;
                         num result = 0;
                         Map<String, List<dynamic>> summComp = {};
 
-                        print(
-                            _assessmentsFormativeMultiple[asses[0]]['Created']);
                         print(widget.passedClassName);
 
                         for (var i = 0; i < asses.length; i++) {
+                          print(_assessmentsFormativeMultiple[asses[i]]
+                              ['AssessID']);
+                          assessToUpload.add(
+                              _assessmentsFormativeMultiple[asses[i]]
+                                  ['AssessID']);
+
                           kiki[elStud] = [];
                           await db
                               .collection(
                                   "classes/${widget.passedClassName}/grading/$elStud/formative")
-                              .where('Created',
+                              .where('AssessID',
                                   isEqualTo:
                                       _assessmentsFormativeMultiple[asses[i]]
-                                          ['Created'])
+                                              ['AssessID']
+                                          .toString())
                               .get()
                               .then((value) {
                             for (var doc in value.docs) {
@@ -203,16 +215,20 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
                         await db
                             .collection(
                                 "classes/${widget.passedClassName}/grading/$elStud/summative")
-                            .add({
-                          'Result': result,
-                          'Weights': weigths,
-                          'Created': FieldValue.serverTimestamp(),
-                          'Targets': 'Multiple'
-                        });
+                            .add(
+                          {
+                            'Created': FieldValue.serverTimestamp(),
+                            'Formatives': assessToUpload,
+                            'Result': result,
+                            'Weights': weigths,
+                            'Targets': 'Single'
+                          },
+                        );
                         summComp = {};
 
                         result = 0;
                         sumativo = 0;
+                        print("FIIIIIIIIIIIIIIIIIIIIIIIIIIIIM");
                       },
                       onError: (e) => print("Error getting document: $e"),
                     );
