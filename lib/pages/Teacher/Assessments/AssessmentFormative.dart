@@ -99,16 +99,9 @@ class _AssessmentFormativeState extends State<AssessmentFormative> {
                     ),
                   );
                 }
-
+                //Competencias default
                 Map<String, List<dynamic>> _comps = {};
-                //  print("dados da snap" + snp.data!.docs.length.toString());
                 for (var i = 0; i < 11; i++) {
-                  // print("pppppppppppppppppppppppppppppppppppppppppp");
-                  // print(i);
-
-                  //print(_comps);
-                  // print(snp.data?.docs[i].data().runtimeType);
-
                   Map<String, dynamic> foo =
                       snp.data?.docs[i].data()! as Map<String, dynamic>;
                   for (var f in foo.keys) {
@@ -118,292 +111,340 @@ class _AssessmentFormativeState extends State<AssessmentFormative> {
                   }
                 }
 
-                List studsToAssess = [];
+                return StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(currentUser)
+                        .collection('PrivateCompetences')
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshotprivate) {
+                      if (snapshotprivate.hasError) {
+                        return Text("Something went wrong");
+                      }
+                      if (!snapshotprivate.hasData) {
+                        return Container(
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
 
-                Map studs = data['Students'];
-                var assesId = data['documentID'];
+                      for (var i = 0;
+                          i < snapshotprivate.data!.docs.length;
+                          i++) {
+                        Map<String, dynamic> foo = snapshotprivate.data?.docs[i]
+                            .data()! as Map<String, dynamic>;
+                        for (var f in foo.keys) {
+                          if (f.toString() != "Name") {
+                            _comps[f.toString()] = foo[f.toString()];
+                          }
+                        }
+                      }
 
-                studs.forEach((key, value) {
-                  if (value == false) studsToAssess.add(key);
-                });
+                      List studsToAssess = [];
 
-                var currentStudent = studsToAssess[0];
+                      Map studs = data['Students'];
+                      var assesId = data['documentID'];
 
-                //List<bool> isChecked = List<bool>.filled(50, false);
-                var _indicators = [];
-                List<String> namesC = [];
-                List<String> allIndicators = [];
+                      studs.forEach((key, value) {
+                        if (value == false) studsToAssess.add(key);
+                      });
 
-                var namesComp = data['Competences'].keys;
-                for (var t in namesComp) {
-                  namesC.add(t);
-                }
+                      var currentStudent = studsToAssess[0];
 
-                for (var x in data['Competences'].values) {
-                  _indicators.add(x);
-                }
+                      //List<bool> isChecked = List<bool>.filled(50, false);
+                      var _indicators = [];
+                      List<String> namesC = [];
+                      List<String> allIndicators = [];
 
-                for (var i in _indicators) {
-                  for (var j in i) {
-                    allIndicators.add(j);
-                  }
-                }
+                      var namesComp = data['Competences'].keys;
+                      for (var t in namesComp) {
+                        namesC.add(t);
+                      }
 
-                return Scaffold(
-                  appBar: AppBar(
-                    title: Text(currentStudent.toString()),
-                    centerTitle: true,
-                    backgroundColor: Color(0xFF29D09E),
-                  ),
-                  floatingActionButton: Padding(
-                    padding: const EdgeInsets.only(left: 30),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        FloatingActionButton(
-                          heroTag: "btn1",
-                          onPressed: () {
-                            print(_mapao.toString());
-                            print(_mapinha.toString());
-                            for (var foo in _mapao.keys) {
-                              _mapao[foo] = {};
-                            }
-                            _mapinha = {};
-                            setState(
-                              () {},
-                            );
+                      for (var x in data['Competences'].values) {
+                        _indicators.add(x);
+                      }
 
-                            print(_mapao.toString());
-                            print(_mapinha.toString());
-                          },
-                          child: Icon(Icons.clear),
+                      for (var i in _indicators) {
+                        for (var j in i) {
+                          allIndicators.add(j);
+                        }
+                      }
+
+                      return Scaffold(
+                        appBar: AppBar(
+                          title: Text(currentStudent.toString()),
+                          centerTitle: true,
                           backgroundColor: Color(0xFF29D09E),
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(child: Container()),
-                        FloatingActionButton.extended(
-                          backgroundColor: const Color(0xFF29D09E),
-                          heroTag: "btn2",
-                          onPressed: () {
-                            for (var ent in _mapinha.keys) {
-                              _mapinha[ent] =
-                                  _mapinha[ent].toString().substring(0, 1);
-                            }
-                            print("-----------------------------------------");
-                            for (var skill in _mapao.keys) {
-                              _mapao[skill]?.updateAll(((key, value) =>
-                                  value = value.substring(0, 1)));
-                            }
-                            if (_mapinha.values.length ==
-                                allIndicators.length) {
-                              print(_mapao.keys.length);
-                              print(allIndicators.length);
-                              studs[currentStudent] = true;
-                              print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        floatingActionButton: Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              FloatingActionButton(
+                                heroTag: "btn1",
+                                onPressed: () {
+                                  print(_mapao.toString());
+                                  print(_mapinha.toString());
+                                  for (var foo in _mapao.keys) {
+                                    _mapao[foo] = {};
+                                  }
+                                  _mapinha = {};
+                                  setState(
+                                    () {},
+                                  );
 
-                              // print(uploadComps);
-                              addGrade(
-                                  currentStudent,
-                                  _mapao,
-                                  data['currentNumber'].toString(),
-                                  data,
-                                  assesId);
-                              bool x = true;
-                              for (var k in studs.values) {
-                                if (k == false) x = false;
-                              }
-                              updateAssessment(widget.passedAssessmentIdName,
-                                  studs, data, x);
-                              if (x == true) {
-                                FirebaseFirestore.instance
-                                    .collection('classes')
-                                    .doc(data['ClassId'])
-                                    .update({
-                                  'prevAssess': FieldValue.increment(1)
-                                });
-                                Navigator.pop(context);
-                              } else {
-                                print(studs);
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            super.widget));
-                              }
-                            } else {
-                              print("DSDS");
-                              print(_mapinha.values.length);
+                                  print(_mapao.toString());
+                                  print(_mapinha.toString());
+                                },
+                                child: Icon(Icons.clear),
+                                backgroundColor: Color(0xFF29D09E),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(child: Container()),
+                              FloatingActionButton.extended(
+                                backgroundColor: const Color(0xFF29D09E),
+                                heroTag: "btn2",
+                                onPressed: () {
+                                  for (var ent in _mapinha.keys) {
+                                    _mapinha[ent] = _mapinha[ent]
+                                        .toString()
+                                        .substring(0, 1);
+                                  }
+                                  print(
+                                      "-----------------------------------------");
+                                  for (var skill in _mapao.keys) {
+                                    _mapao[skill]?.updateAll(((key, value) =>
+                                        value = value.substring(0, 1)));
+                                  }
+                                  if (_mapinha.values.length ==
+                                      allIndicators.length) {
+                                    print(_mapao.keys.length);
+                                    print(allIndicators.length);
+                                    studs[currentStudent] = true;
+                                    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-                              print(allIndicators.length);
-                              final snackBar = SnackBar(
-                                  content: Text(
-                                      'You forgot to evaluate the student in some indicator(s)'));
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                            }
-                          },
-                          icon: Icon(Icons.skip_next),
-                          label: Text('Next'),
-                        ),
-                      ],
-                    ),
-                  ),
-                  body: SafeArea(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(20.0),
-                            child: Text(
-                              "Student: $currentStudent\nClass:${data['ClassName']}\nCount:${data['Count']}/${studs.length}\n",
-                              style: TextStyle(fontSize: 26),
-                            ),
+                                    // print(uploadComps);
+                                    addGrade(
+                                        currentStudent,
+                                        _mapao,
+                                        data['currentNumber'].toString(),
+                                        data,
+                                        assesId);
+                                    bool x = true;
+                                    for (var k in studs.values) {
+                                      if (k == false) x = false;
+                                    }
+                                    updateAssessment(
+                                        widget.passedAssessmentIdName,
+                                        studs,
+                                        data,
+                                        x);
+                                    if (x == true) {
+                                      FirebaseFirestore.instance
+                                          .collection('classes')
+                                          .doc(data['ClassId'])
+                                          .update({
+                                        'prevAssess': FieldValue.increment(1)
+                                      });
+                                      Navigator.pop(context);
+                                    } else {
+                                      print(studs);
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  super.widget));
+                                    }
+                                  } else {
+                                    print("DSDS");
+                                    print(_mapinha.values.length);
+
+                                    print(allIndicators.length);
+                                    final snackBar = SnackBar(
+                                        content: Text(
+                                            'You forgot to evaluate the student in some indicator(s)'));
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                  }
+                                },
+                                icon: Icon(Icons.skip_next),
+                                label: Text('Next'),
+                              ),
+                            ],
                           ),
-                          ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.red),
-                            ),
-                            onPressed: () {
-                              for (var comp in namesC) {
-                                _mapao[comp] = {};
-                                for (var ind in data['Competences'][comp]) {
-                                  print(ind);
-                                  _mapao[comp]![ind] = "0";
-                                }
+                        ),
+                        body: SafeArea(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Container(
+                                  padding: EdgeInsets.all(20.0),
+                                  child: Text(
+                                    "Student: $currentStudent\nClass:${data['ClassName']}\nCount:${data['Count']}/${studs.length}\n",
+                                    style: TextStyle(fontSize: 26),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all(Colors.red),
+                                  ),
+                                  onPressed: () {
+                                    for (var comp in namesC) {
+                                      _mapao[comp] = {};
+                                      for (var ind in data['Competences']
+                                          [comp]) {
+                                        print(ind);
+                                        _mapao[comp]![ind] = "0";
+                                      }
 
-                                final snackBar = SnackBar(
-                                    content: Text(
-                                        'This student was given 0 in all indicators'));
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
-                              }
-                              print(_mapao);
-                              studs[currentStudent] = true;
+                                      final snackBar = SnackBar(
+                                          content: Text(
+                                              'This student was given 0 in all indicators'));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
+                                    }
+                                    print(_mapao);
+                                    studs[currentStudent] = true;
 
-                              addGrade(
-                                  currentStudent,
-                                  _mapao,
-                                  data['currentNumber'].toString(),
-                                  data,
-                                  assesId);
-                              bool x = true;
-                              for (var k in studs.values) {
-                                if (k == false) x = false;
-                              }
-                              updateAssessment(widget.passedAssessmentIdName,
-                                  studs, data, x);
-                              if (x == true) {
-                                FirebaseFirestore.instance
-                                    .collection('classes')
-                                    .doc(data['ClassId'])
-                                    .update({
-                                  'prevAssess': FieldValue.increment(1)
-                                });
-                                Navigator.pop(context);
-                              } else {
-                                print(studs);
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            super.widget));
-                              }
-                            },
-                            child: const Text('Do not assess this student'),
-                          ),
-                          for (var k in namesC)
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Divider(
-                                      height: 20,
-                                      thickness: 4,
-                                    ),
-                                    SizedBox(
-                                      height: 40,
-                                    ),
-                                    Text(
-                                      k,
-                                      style: TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    for (String x in List<String>.from(
-                                        data['Competences'][k] as List))
-                                      Padding(
-                                        padding: EdgeInsets.all(16.0),
-                                        child: Column(children: <Widget>[
+                                    addGrade(
+                                        currentStudent,
+                                        _mapao,
+                                        data['currentNumber'].toString(),
+                                        data,
+                                        assesId);
+                                    bool x = true;
+                                    for (var k in studs.values) {
+                                      if (k == false) x = false;
+                                    }
+                                    updateAssessment(
+                                        widget.passedAssessmentIdName,
+                                        studs,
+                                        data,
+                                        x);
+                                    if (x == true) {
+                                      FirebaseFirestore.instance
+                                          .collection('classes')
+                                          .doc(data['ClassId'])
+                                          .update({
+                                        'prevAssess': FieldValue.increment(1)
+                                      });
+                                      Navigator.pop(context);
+                                    } else {
+                                      print(studs);
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  super.widget));
+                                    }
+                                  },
+                                  child:
+                                      const Text('Do not assess this student'),
+                                ),
+                                for (var k in namesC)
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
                                           Divider(
-                                            height: 4,
-                                          ),
-                                          Text(
-                                            x,
-                                            style: TextStyle(fontSize: 18),
+                                            height: 20,
+                                            thickness: 4,
                                           ),
                                           SizedBox(
-                                            height: 12,
+                                            height: 40,
                                           ),
-                                          RadioGroup<String>.builder(
-                                            spacebetween: 65.0,
-                                            direction: Axis.vertical,
-                                            groupValue: _mapinha[x.toString()]
-                                                .toString(),
-                                            horizontalAlignment:
-                                                MainAxisAlignment.start,
-                                            onChanged: (value) {
-                                              setState(
-                                                () {
-                                                  _mapinha[x.toString()] =
-                                                      value.toString();
-                                                  if (_mapao[k.toString()] !=
-                                                      null) {
-                                                    _mapao[k.toString()]![
-                                                            x.toString()] =
-                                                        value.toString();
-                                                  } else {
-                                                    _mapao[k.toString()] =
-                                                        Map();
-                                                  }
-                                                  _mapao[k.toString()]![
-                                                          x.toString()] =
-                                                      value.toString();
+                                          Text(
+                                            k,
+                                            style: TextStyle(
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          for (String x in List<String>.from(
+                                              data['Competences'][k] as List))
+                                            Padding(
+                                              padding: EdgeInsets.all(16.0),
+                                              child: Column(children: <Widget>[
+                                                Divider(
+                                                  height: 4,
+                                                ),
+                                                Text(
+                                                  x,
+                                                  style:
+                                                      TextStyle(fontSize: 18),
+                                                ),
+                                                SizedBox(
+                                                  height: 12,
+                                                ),
+                                                RadioGroup<String>.builder(
+                                                  spacebetween: 65.0,
+                                                  direction: Axis.vertical,
+                                                  groupValue:
+                                                      _mapinha[x.toString()]
+                                                          .toString(),
+                                                  horizontalAlignment:
+                                                      MainAxisAlignment.start,
+                                                  onChanged: (value) {
+                                                    setState(
+                                                      () {
+                                                        _mapinha[x.toString()] =
+                                                            value.toString();
+                                                        if (_mapao[
+                                                                k.toString()] !=
+                                                            null) {
+                                                          _mapao[k.toString()]![
+                                                                  x.toString()] =
+                                                              value.toString();
+                                                        } else {
+                                                          _mapao[k.toString()] =
+                                                              Map();
+                                                        }
+                                                        _mapao[k.toString()]![
+                                                                x.toString()] =
+                                                            value.toString();
 
-                                                  print(_mapao.toString());
-                                                },
-                                              );
-                                            },
-                                            activeColor: Color(0xFF29D09E),
-                                            items: textifier(_comps[x]),
-                                            textStyle: TextStyle(
-                                              fontSize: 14,
-                                            ),
-                                            itemBuilder: (item) =>
-                                                RadioButtonBuilder(
-                                                    item.toString(),
-                                                    textPosition:
-                                                        RadioButtonTextPosition
-                                                            .left),
-                                          ),
+                                                        print(
+                                                            _mapao.toString());
+                                                      },
+                                                    );
+                                                  },
+                                                  activeColor:
+                                                      Color(0xFF29D09E),
+                                                  items: textifier(_comps[x]),
+                                                  textStyle: TextStyle(
+                                                    fontSize: 14,
+                                                  ),
+                                                  itemBuilder: (item) =>
+                                                      RadioButtonBuilder(
+                                                          item.toString(),
+                                                          textPosition:
+                                                              RadioButtonTextPosition
+                                                                  .left),
+                                                ),
+                                              ]),
+                                            )
                                         ]),
-                                      )
-                                  ]),
+                                  ),
+                                SizedBox(
+                                  height: 32,
+                                ),
+                              ],
                             ),
-                          SizedBox(
-                            height: 32,
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
+                        ),
+                      );
+                    });
               });
         });
   }
