@@ -81,135 +81,172 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: _stream,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Text('Something went wrong');
-          }
+      stream: _stream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text('Something went wrong');
+        }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-          print("--------------------------------------------");
-          // print(snapshot.data!.docs[0].data()?.toString());
-          int actualNumberComp = snapshot.data!.docs.length;
-          for (var i = 0; i < actualNumberComp; i++) {
-            // print("pppppppppppppppppppppppppppppppppppppppppp");
-            // print(i);
-
-            //print(_comps);
-
-            Map<String, dynamic> foo =
-                snapshot.data?.docs[i].data()! as Map<String, dynamic>;
-            _comps.add(foo);
-            // print(foo['Name']);
-          }
-          print(_competences);
-
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Create a Class'),
-              centerTitle: true,
-              backgroundColor: Color(0xFF29D09E),
-            ),
-            floatingActionButton:
-                // ElevatedButton.icon(
-                //         style: ElevatedButton.styleFrom(
-                //           foregroundColor: Colors.white,
-                //           backgroundColor: Color(0xFF29D09E),
-                //       ),
-                FloatingActionButton.extended(
-              backgroundColor: Color(0xFF29D09E),
-              onPressed: () async {
-                context.loaderOverlay.show();
-
-                await addClass();
-
-                await Future.delayed(Duration(seconds: 1));
-                context.loaderOverlay.hide();
-
-                print(topG.id);
-
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            ClassSetup(passedClassNameSetup: topG.id)));
-                final snackBar =
-                    SnackBar(content: Text('Generating the join code'));
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              },
-              // Navigator.pop(context);
-
-              label: Text('Create'),
-              icon: Icon(Icons.add, size: 18),
-            ),
-            body: LoaderOverlay(
-              child: SafeArea(
-                child: ListView(
-                  children: [
-                    TextFormField(
-                      controller: _controllerName,
-                      keyboardType: TextInputType.name,
-                      decoration: InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xff388e3c)),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xff388e3c)),
-                        ),
-                        icon: Icon(Icons.person),
-                        labelText: 'Class Name',
-                        labelStyle: TextStyle(
-                          color: Color(0xFF29D09E),
-                        ),
-                        helperText: 'Enter the name that will be displayed',
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Divider(
-                      thickness: 1,
-                      height: 1,
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.computer),
-                      title: Text("Competences"),
-                      subtitle: Text("Choose the indicators"),
-                      enabled: true,
-                      // trailing: Icon(Icons.arrow_drop_down),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        for (var i = 0; i < actualNumberComp; i++)
-                          ParentChildCheckbox(
-                            parentCheckboxColor: Color(0xFF29D09E),
-                            childrenCheckboxColor: Color(0xff388e3c),
-                            parent: Text(
-                              _comps[i]['Name'],
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                            children: textify(_comps[i].keys.toList()),
-                          ),
-                      ],
-                    ),
-                    SizedBox(height: 64),
-                  ],
-                ),
-              ),
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(),
             ),
           );
-        });
+        }
+        print("--------------------------------------------");
+        // print(snapshot.data!.docs[0].data()?.toString());
+        int actualNumberComp = snapshot.data!.docs.length;
+        for (var i = 0; i < actualNumberComp; i++) {
+          // print("pppppppppppppppppppppppppppppppppppppppppp");
+          // print(i);
+
+          //print(_comps);
+
+          Map<String, dynamic> foo1 =
+              snapshot.data?.docs[i].data()! as Map<String, dynamic>;
+          _comps.add(foo1);
+          // print(foo['Name']);
+        }
+        print(_competences);
+
+        return StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('users')
+              .doc(currentUser)
+              .collection('PrivateCompetences')
+              .snapshots(),
+          builder: (BuildContext context,
+              AsyncSnapshot<QuerySnapshot> snapshotprivate) {
+            if (snapshotprivate.hasError) {
+              return Text("Something went wrong");
+            }
+            if (!snapshotprivate.hasData) {
+              return Container(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+
+            int actualNumberCompPrivate = snapshotprivate.data!.docs.length;
+            for (var i = 0; i < actualNumberCompPrivate; i++) {
+              Map<String, dynamic> foo2 =
+                  snapshotprivate.data?.docs[i].data()! as Map<String, dynamic>;
+              _comps.add(foo2);
+              print(foo2['Name']);
+            }
+            print("*************************************");
+            print(_comps);
+
+            return Scaffold(
+              appBar: AppBar(
+                title: Text('Create a Class'),
+                centerTitle: true,
+                backgroundColor: Color(0xFF29D09E),
+              ),
+              floatingActionButton:
+                  // ElevatedButton.icon(
+                  //         style: ElevatedButton.styleFrom(
+                  //           foregroundColor: Colors.white,
+                  //           backgroundColor: Color(0xFF29D09E),
+                  //       ),
+                  FloatingActionButton.extended(
+                backgroundColor: Color(0xFF29D09E),
+                onPressed: () async {
+                  context.loaderOverlay.show();
+
+                  await addClass();
+
+                  await Future.delayed(Duration(seconds: 1));
+                  context.loaderOverlay.hide();
+
+                  print(topG.id);
+
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ClassSetup(passedClassNameSetup: topG.id),
+                    ),
+                  );
+                  final snackBar = SnackBar(
+                    content: Text('Generating the join code'),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
+                // Navigator.pop(context);
+
+                label: Text('Create'),
+                icon: Icon(Icons.add, size: 18),
+              ),
+              body: LoaderOverlay(
+                child: SafeArea(
+                  child: ListView(
+                    children: [
+                      TextFormField(
+                        controller: _controllerName,
+                        keyboardType: TextInputType.name,
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xff388e3c)),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xff388e3c)),
+                          ),
+                          icon: Icon(Icons.person),
+                          labelText: 'Class Name',
+                          labelStyle: TextStyle(
+                            color: Color(0xFF29D09E),
+                          ),
+                          helperText: 'Enter the name that will be displayed',
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      Divider(
+                        thickness: 1,
+                        height: 1,
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.computer),
+                        title: Text("Competences"),
+                        subtitle: Text("Choose the indicators"),
+                        enabled: true,
+                        // trailing: Icon(Icons.arrow_drop_down),
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (var i = 0;
+                              i < actualNumberComp + actualNumberCompPrivate;
+                              i++)
+                            ParentChildCheckbox(
+                              parentCheckboxColor: Color(0xFF29D09E),
+                              childrenCheckboxColor: Color(0xff388e3c),
+                              parent: Text(
+                                _comps[i]['Name'],
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                              children: textify(_comps[i].keys.toList()),
+                            ),
+                        ],
+                      ),
+                      SizedBox(height: 64),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }
