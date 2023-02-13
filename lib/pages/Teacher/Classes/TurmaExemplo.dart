@@ -1,4 +1,5 @@
 import 'package:assessments_app/pages/Teacher/Assessments/GenSummAssessment.dart';
+import 'package:assessments_app/pages/Teacher/Classes/AddCompToClass.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AstaGraphs.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AddStudentClass.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,6 +17,7 @@ import '../Assessments/AssessmentFormative.dart';
 
 enum _MenuValues {
   // ReviewAssess,
+  CompetenceAdd,
   AddStuddent,
   Setup,
   Settings,
@@ -41,11 +43,11 @@ class _TurmaExemploState extends State<TurmaExemplo> {
   ValueNotifier<bool> isDialOpen = ValueNotifier(false);
   @override
   Widget build(BuildContext context) {
-    db.settings = const Settings(
-      persistenceEnabled: true,
-      cacheSizeBytes: 2048576,
-    );
-    final Query _assessClassStream = db
+    // db.settings = const Settings(
+    //   persistenceEnabled: true,
+    //   cacheSizeBytes: 2048576,
+    // );
+    final _assessClassStream = db
         .collection('assessments')
         .where('ClassId', isEqualTo: widget.passedClassName)
         .orderBy('Created', descending: true);
@@ -67,6 +69,8 @@ class _TurmaExemploState extends State<TurmaExemplo> {
 
         Map<String, dynamic> data =
             snapshot.data!.data() as Map<String, dynamic>;
+        Map competences = data['Competences'];
+
         if (data['StudentList'].isEmpty) {
           return Scaffold(
             appBar: AppBar(
@@ -103,6 +107,13 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                       //           builder: (context) =>
                       //               ReviewAssessments(widget.passedClassName)));
                       //   break;
+                      case _MenuValues.CompetenceAdd:
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                                builder: (c) => AddCompToClass(
+                                    widget.passedClassName, competences)))
+                            .then((value) => setState(() {}));
+                        break;
                       case _MenuValues.AddStuddent:
                         Navigator.of(context)
                             .push(MaterialPageRoute(
@@ -116,7 +127,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                 ClassesSettingsPage(widget.passedClassName)));
                         break;
                       case _MenuValues.Setup:
-                        Navigator.of(context).push(MaterialPageRoute(
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (c) => ClassSetup(
                                   passedClassNameSetup: widget.passedClassName,
                                 )));
@@ -219,6 +230,10 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                 value: _MenuValues.AddStuddent,
                               ),
                               PopupMenuItem(
+                                child: Text('Add Competences'),
+                                value: _MenuValues.CompetenceAdd,
+                              ),
+                              PopupMenuItem(
                                 child: Text('Setup'),
                                 value: _MenuValues.Setup,
                               ),
@@ -238,6 +253,14 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                 //     ),
                                 //   );
                                 //   break;
+                                case _MenuValues.CompetenceAdd:
+                                  Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                          builder: (c) => AddCompToClass(
+                                              widget.passedClassName,
+                                              competences)))
+                                      .then((value) => setState(() {}));
+                                  break;
                                 case _MenuValues.AddStuddent:
                                   Navigator.of(context)
                                       .push(MaterialPageRoute(
@@ -257,7 +280,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                   break;
                                 case _MenuValues.Setup:
                                   Navigator.of(context)
-                                      .push(
+                                      .pushReplacement(
                                         MaterialPageRoute(
                                           builder: (c) => ClassSetup(
                                             passedClassNameSetup:
@@ -444,7 +467,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                       textColor: data['DONE'] == false
                                           ? Color(0xFF29D09E)
                                           : Color.fromARGB(255, 123, 123, 123),
-                                      title: Text('${data['Type']} Assessment'),
+                                      title: Text('${data['Name']}'),
                                       subtitle: data['Target'].toString() ==
                                               'Single'
                                           ? Text(
@@ -476,16 +499,27 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                       data['Competences'].keys.toList().length,
                                   itemBuilder: (context, index) {
                                     return ListTile(
-                                      title: Text(data['Competences']
-                                          .keys
-                                          .toList()[index]),
-                                      subtitle: data['Weights'] != null
-                                          ? Text(data['Weights']
-                                                  .values
-                                                  .toList()[index]
-                                                  .toString() +
-                                              " %")
-                                          : Text("Need to be defined"),
+                                      title:
+                                          // data['Weights']
+                                          //         .keys
+                                          //         .toList()
+                                          //         .contains(data['Competences']
+                                          //             .keys
+                                          //             .toList()[index])
+                                          // ?
+                                          Text(
+                                        data['Competences']
+                                            .keys
+                                            .toList()[index],
+                                      ),
+                                      // : Text("Need to be defined"),
+                                      subtitle: Text(
+                                        data['Weights'][data['Competences']
+                                                    .keys
+                                                    .toList()[index]]
+                                                .toString() +
+                                            " %",
+                                      ),
                                     );
                                   },
                                 ),
@@ -504,4 +538,10 @@ class _TurmaExemploState extends State<TurmaExemplo> {
       },
     );
   }
+}
+
+bool isNumericRegex(String string) {
+  final numericRegex = RegExp(r'^-?(([0-9]*)|(([0-9]*)\.([0-9]*)))$');
+
+  return numericRegex.hasMatch(string);
 }
