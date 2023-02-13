@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "ASSESS APP",
+              "ASSESS APP v3.5",
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 28.0,
@@ -119,6 +119,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   borderRadius: BorderRadius.circular(12.0),
                 ),
                 onPressed: () async {
+                  if (!_emailController.text.contains("@")) {
+                    _emailController.text =
+                        _emailController.text + "@projectassess.eu";
+                  }
                   showLoaderDialog(context);
                   User? user = await loginUsingEmailPassword(
                       email: _emailController.text,
@@ -149,10 +153,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => ParentMainScreen()));
 
-                        final snackBar = SnackBar(
-                            content: Text(
-                                'Parent interface still in early development...'));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        // final snackBar = SnackBar(
+                        //     content: Text(
+                        //         'Parent interface still in early development...'));
+                        // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         // Navigator.of(context).pushReplacement(MaterialPageRoute(
                         //     builder: (context) => StudentPage()));
                       }
