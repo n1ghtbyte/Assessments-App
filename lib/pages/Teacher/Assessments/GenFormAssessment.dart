@@ -1,3 +1,4 @@
+import 'package:assessments_app/pages/Teacher/Assessments/AssessmentFormative.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +18,12 @@ class GenFormAssessment extends StatefulWidget {
 class _GenFormAssessmentState extends State<GenFormAssessment> {
   late String _typeAssess;
   late List<String?> _competencesAssess = [];
+  late String docID;
 
   late CollectionReference assessments =
       FirebaseFirestore.instance.collection('assessments');
+
+  TextEditingController _controllerName = TextEditingController();
 
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
 
@@ -37,9 +41,11 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
         'Students': {widget.passedStudName: false},
         'DONE': false,
         'Count': 0,
-        'documentID': _iD
+        'documentID': _iD,
+        'Name': _controllerName.text
       }).then((value) {
         print(value.id);
+        docID = value.id;
         updateAssessment(value.id);
       });
     } else {
@@ -56,9 +62,11 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
         'DONE': false,
         'Count': 0,
         'currentNumber': curr,
-        'documentID': _iD
+        'documentID': _iD,
+        'Name': _controllerName.text
       }).then((value) {
         print(value.id);
+        docID = value.id;
         updateAssessment(value.id);
       });
     }
@@ -135,7 +143,24 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
                       softWrap: true,
                     ),
                   ),
-
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    child: TextFormField(
+                      maxLength: 30,
+                      controller: _controllerName,
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.comment),
+                        labelText: 'Assessment name',
+                        labelStyle: TextStyle(
+                          color: Color(0xFF29D09E),
+                        ),
+                        helperText: 'What is the name of the assessment?',
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF29D09E)),
+                        ),
+                      ),
+                    ),
+                  ),
                   Container(
                     padding: EdgeInsets.all(20.0),
                     child: Text("Choose the Competences to take into account",
@@ -170,7 +195,7 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
                       foregroundColor: Colors.white,
                       backgroundColor: Color(0xFF29D09E),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (data['prevAssess'] == data['currAssess']) {
                         FirebaseFirestore.instance
                             .collection('classes')
@@ -191,13 +216,21 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
                             competencesFirebase[x.key] = x.value;
                           }
                         }
-                        addAssessment(
+                        await addAssessment(
                             resultMap, competencesFirebase, data['currAssess']);
+                        print(docID);
                         final snackBar = SnackBar(
                             content: Text(
                                 'The assessment has been issued to this Class :)'));
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AssessmentFormative(
+                                    passedAssessmentIdName: docID,
+                                  )),
+                        );
                       } else {
                         final snackBar = SnackBar(
                             content: Text(
