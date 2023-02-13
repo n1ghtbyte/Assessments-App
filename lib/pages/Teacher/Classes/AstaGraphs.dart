@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:developer';
+import 'package:assessments_app/pages/Teacher/Classes/AstaSubGraph.dart';
 import 'package:collection/collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -211,8 +212,10 @@ class _AstaGraphsState extends State<AstaGraphs> {
     print(widget.passedClassId);
     print(widget.passedEmail);
     print(widget.passedLegitName);
-    return FutureBuilder<QuerySnapshot>(
-      future: _formativeCollection.orderBy('Created', descending: false).get(),
+    return StreamBuilder<QuerySnapshot>(
+      stream: _formativeCollection
+          .orderBy('Created', descending: false)
+          .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return Text("Something went wrong");
@@ -244,13 +247,9 @@ class _AstaGraphsState extends State<AstaGraphs> {
               print(foo['Competences'][comp][indicator]);
 
               helper.add(double.parse(foo['Competences'][comp][indicator]));
-              // for each indicator in that compentence
-              // print('ola');
-              // print(foo['Current']);
-              // print(_ind);
-              // print(foo['Competences'][comp][indicator]);
+
               print((foo['Created'] as Timestamp).toDate());
-              // if (int.parse(foo['Current']) == 0) {
+
               if (flagCurr0) {
                 _bigData[comp]?.add(DataItem(
                     index: _ind,
@@ -258,15 +257,15 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     x: indicator,
                     y: [foo['Competences'][comp][indicator]]));
               } else {
-                // print(_ind);
-                // print("next");
                 for (var i = 0; i < _bigData[comp]!.length; i++) {
                   if (_bigData[comp]![i].x == indicator) {
                     var tempora = _bigData[comp]![i].y;
+                    print(tempora);
                     tempora.add(foo['Competences'][comp][indicator]);
                     _bigData[comp]![i].y = tempora;
                   }
                 }
+                flagCurr0 = false;
               }
               _ind++;
             }
@@ -283,8 +282,8 @@ class _AstaGraphsState extends State<AstaGraphs> {
             helper = [];
           }
           fakeIndex++;
-          flagCurr0 = false;
         }
+
         inspect(_smallData);
         inspect(_bigData);
         var thevalue = 0;
@@ -307,9 +306,10 @@ class _AstaGraphsState extends State<AstaGraphs> {
         inspect(_comp2cardinal);
 
         //Fetch summative data
-        return FutureBuilder<QuerySnapshot>(
-          future:
-              _summativeCollection.orderBy('Created', descending: false).get(),
+        return StreamBuilder<QuerySnapshot>(
+          stream: _summativeCollection
+              .orderBy('Created', descending: false)
+              .snapshots(),
           builder: (BuildContext context,
               AsyncSnapshot<QuerySnapshot> snapshotSumm) {
             if (snapshotSumm.hasError) {
@@ -416,20 +416,26 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     DataTable(
                       columns: [
                         DataColumn(
-                            label: Text('Grade',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold))),
+                          label: Text(
+                            'Grade',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
                         DataColumn(
-                            label: Text('Target',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold))),
+                          label: Text(
+                            'Target',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
                         DataColumn(
-                            label: Text('Date',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold))),
+                          label: Text(
+                            'Date',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ],
                       rows: [],
                     ),
@@ -817,6 +823,8 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     //   height: 24,
                     // ),
                     DataTable(
+                      showCheckboxColumn: false, // <-- this is important
+
                       columns: [
                         DataColumn(
                             label: Text('Grade',
@@ -836,15 +844,115 @@ class _AstaGraphsState extends State<AstaGraphs> {
                       ],
                       rows: [
                         for (var dt in fsum)
-                          DataRow(cells: [
-                            DataCell(Text(dt['Result'].toStringAsFixed(2))),
-                            DataCell(dt['Targets'].toString() == "Multiple"
-                                ? Text("Class")
-                                : Text("Student")),
-                            DataCell(Text(DateFormat.yMMMEd()
-                                .format(dt['Created'].toDate())
-                                .toString()))
-                          ])
+                          DataRow(
+                            cells: [
+                              DataCell(Text(dt['Result'].toStringAsFixed(2))),
+                              DataCell(dt['Targets'].toString() == "Multiple"
+                                  ? Text("Class")
+                                  : Text("Student")),
+                              DataCell(Text(DateFormat.yMMMEd()
+                                  .format(dt['Created'].toDate())
+                                  .toString()))
+                            ],
+                            onSelectChanged: (newValue) {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => AstaSubGraph(
+                                    passedClassId: widget.passedClassId,
+                                    passedClassName: widget.passedClassName,
+                                    passedCompetences: widget.passedCompetences,
+                                    passedEmail: widget.passedEmail,
+                                    passedFromatives: dt['Formatives'],
+                                    passedLegitName: widget.passedLegitName,
+                                  ),
+                                ),
+                              );
+                            },
+                            onLongPress: () => showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  Dialog.fullscreen(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      padding: EdgeInsets.all(14),
+                                      child: Text(
+                                        "Formative Assessments used to compute this summative",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w800),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    StreamBuilder<QuerySnapshot>(
+                                      stream: FirebaseFirestore.instance
+                                          .collection("assessments")
+                                          .where('documentID',
+                                              whereIn: dt['Formatives'])
+                                          .snapshots(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<QuerySnapshot>
+                                              snapshot) {
+                                        if (!snapshot.hasData)
+                                          return const Text('Connecting...');
+                                        var assessForms = snapshot.data?.docs;
+                                        return ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: assessForms?.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return ListTile(
+                                              title: Text(
+                                                  "Name: ${assessForms![index]['Name'].toString()}"),
+                                              subtitle: Text(
+                                                  "Date: ${DateFormat('yyyy-MM-dd').format((assessForms[index]['Created'] as Timestamp).toDate())}"),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Container(
+                                      padding: EdgeInsets.all(14),
+                                      child: Text(
+                                        "Weights used to compute this summative",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w800),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount:
+                                          dt['Weights'].keys.toList().length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        String key = dt['Weights']
+                                            .keys
+                                            .toList()
+                                            .elementAt(index);
+                                        return ListTile(
+                                          title: Text("$key"),
+                                          subtitle: Text(
+                                              "Weight: ${dt['Weights'][key]} %"),
+                                        );
+                                      },
+                                    ),
+                                    const SizedBox(height: 15),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('Close'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                     Container(
