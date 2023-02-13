@@ -1,5 +1,10 @@
 import 'package:assessments_app/firebase_options.dart';
 import 'package:assessments_app/pages/LoginScreen.dart';
+import 'package:assessments_app/pages/Parent/ParentMain.dart';
+import 'package:assessments_app/pages/Student/Classes/StudentClasses.dart';
+import 'package:assessments_app/pages/Teacher/Classes/ClassesPage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +14,11 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MyApp());
+}
+
+Future<FirebaseApp> _initializeFirebase() async {
+  FirebaseApp firebaseApp = await Firebase.initializeApp();
+  return firebaseApp;
 }
 
 class MyApp extends StatefulWidget {
@@ -22,9 +32,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: Color(0xFF29D09E),
-        primarySwatch: Colors.green,
         scaffoldBackgroundColor: Colors.white,
-        backgroundColor: Colors.white,
         pageTransitionsTheme: PageTransitionsTheme(
           builders: Map<TargetPlatform, PageTransitionsBuilder>.fromIterable(
             TargetPlatform.values,
@@ -32,8 +40,43 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green)
+            .copyWith(background: Colors.white),
       ),
-      home: LoginScreen(),
+      home: FutureBuilder(
+        future: _initializeFirebase(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            FirebaseAuth.instance.authStateChanges().listen((User? user) {
+              if (user != null) {
+                FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(user.email)
+                    .get()
+                    .then((DocumentSnapshot documentSnapshot) {
+                  if (documentSnapshot.exists) {
+                    print('Document data: ${documentSnapshot['Status']}');
+                    if (documentSnapshot['Status'] == "Teacher") {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => ClassesPage()));
+                    } else if (documentSnapshot['Status'] == 'Student') {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => StudClassesMain()));
+                    } else if (documentSnapshot['Status'] == 'Parent') {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => ParentMainScreen()));
+                    }
+                  }
+                });
+              }
+            });
+            return LoginScreen();
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
     );
   }
 }
