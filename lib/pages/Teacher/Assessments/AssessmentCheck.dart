@@ -96,7 +96,7 @@ class _AssessmentCheckState extends State<AssessmentCheck> {
                         Container(
                           padding: EdgeInsets.all(14.0),
                           child: Text(
-                            "Class: ${data['ClassName']}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}",
+                            "Name: ${data['Name']}\nClass: ${data['ClassName']}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}",
                             style: TextStyle(fontSize: 20),
                           ),
                         ),
