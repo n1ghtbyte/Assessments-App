@@ -5,7 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:assessments_app/assets/src/LinkedLabelCheckbox.dart';
-import 'package:intl/intl.dart'; // From the docs
+import 'package:intl/intl.dart';
+import 'package:readmore/readmore.dart'; // From the docs
 
 class GenSummAssessment extends StatefulWidget {
   final String passedClassName;
@@ -21,6 +22,9 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
   late CollectionReference _class =
       FirebaseFirestore.instance.collection('/classes');
   final db = FirebaseFirestore.instance;
+
+  final String content =
+      'A summative assessement is one "that occurs at a point in time and is carried out to summarise achievement at that point in time. Often more structured than formative assessment, it provides teachers, students and parents with information on student progress and level of achievement. Summative assessments are used to evaluate student learning, skill acquisition, and academic achievement at the conclusion of a defined instructional period—typically at the end of a project, unit, course, semester, program, or school year. \n(NCVER, 2014)';
 
   List<dynamic> _assessmentsFormativeMultiple = [];
 
@@ -84,15 +88,19 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                       const SizedBox(height: 16),
                       Container(
                         padding: EdgeInsets.all(20.0),
-                        child: Text(
-                          'A summative assessement is one '
-                          '"that occurs at a point in time and is carried out to summarise achievement '
-                          'at that point in time. Often more structured than formative assessment, it provides teachers, '
-                          'students and parents with information on student progress and level of achievement. Summative '
-                          'assessments are used to evaluate student learning, skill acquisition, and academic achievement'
-                          'at the conclusion of a defined instructional period—typically at the end of a project, unit'
-                          ', course, semester, program, or school year. \n(NCVER, 2014)",',
-                          softWrap: true,
+                        child: ReadMoreText(
+                          content,
+                          trimLength: 4,
+                          textAlign: TextAlign.justify,
+                          trimMode: TrimMode.Line,
+                          trimCollapsedText: " Show More ",
+                          trimExpandedText: " Show less ",
+                          lessStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF29D09E)),
+                          moreStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF29D09E)),
                         ),
                       ),
                       ListView.builder(
@@ -186,16 +194,18 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                                   .where("Current",
                                       isEqualTo: asses[i].toString())
                                   .get()
-                                  .then((value) {
-                                for (var doc in value.docs) {
-                                  print(doc.data());
-                                  kiki[elStud]?.add(doc.data());
-                                  selectedAssessUpload
-                                      .add(doc.data()['AssessID']);
+                                  .then(
+                                (value) {
+                                  for (var doc in value.docs) {
+                                    print(doc.data());
+                                    kiki[elStud]?.add(doc.data());
+                                    selectedAssessUpload
+                                        .add(doc.data()['AssessID']);
 
-                                  print("--------------------");
-                                }
-                              });
+                                    print("--------------------");
+                                  }
+                                },
+                              );
 
                               // now we have all documents of that elStudent
                               print("Current is: " + i.toString());
@@ -238,13 +248,15 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                             await db
                                 .collection(
                                     "classes/${widget.passedClassName}/grading/$elStud/summative")
-                                .add({
-                              'Formatives': selectedAssessUpload,
-                              'Result': result,
-                              'Weights': weigths,
-                              'Created': FieldValue.serverTimestamp(),
-                              'Targets': 'Class'
-                            });
+                                .add(
+                              {
+                                'Formatives': selectedAssessUpload,
+                                'Result': result,
+                                'Weights': weigths,
+                                'Created': FieldValue.serverTimestamp(),
+                                'Targets': 'Class'
+                              },
+                            );
 
                             summComp = {};
 
