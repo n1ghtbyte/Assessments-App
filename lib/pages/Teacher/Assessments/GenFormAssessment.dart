@@ -2,6 +2,7 @@ import 'package:assessments_app/pages/Teacher/Assessments/AssessmentFormative.da
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:readmore/readmore.dart';
 
 class GenFormAssessment extends StatefulWidget {
   final String passedClassName; //Class ID
@@ -19,6 +20,9 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
   late String _typeAssess;
   late List<String?> _competencesAssess = [];
   late String docID;
+
+  final String content =
+      'A formative assessement is "the process of providing feedback to students during the learning process.  These are often low stakes activities that allow the instructor to check student work and provide feedback. Formative assessment refers to a wide variety of methods that teachersuse to conduct in-process evaluations of student comprehension, learning needs, and academic progress during a lesson, unit, or course. Formative assessments help teachers identify concepts that students are struggling to understand, skills they are having difficulty acquiring, or learning standards they have not yet achieved so that adjustments can be made to lessons, instructional techniques, and academic support.\nThe general goal of formative assessment is to collect detailed information that can be used to improve instruction and student learning while it’s happening. What makes an assessment “formative” is not the design of a test, technique, or self-evaluation, per se, but the way it is used—i.e., to inform in-process teaching and learning modifications."\n (Weimer, 2013)';
 
   late CollectionReference assessments =
       FirebaseFirestore.instance.collection('assessments');
@@ -124,23 +128,19 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
                   const SizedBox(height: 16),
                   Container(
                     padding: EdgeInsets.all(20.0),
-                    child: Text(
-                      'A formative assessement is '
-                      '"the process of providing feedback to students '
-                      'during the learning process.  These are often low stakes activities that'
-                      ' allow the instructor to check student work and provide feedback.'
-                      'Formative assessment refers to a wide variety of methods that teachers'
-                      'use to conduct in-process evaluations of student comprehension, '
-                      'learning needs, and academic progress during a lesson, unit, or course.'
-                      'Formative assessments help teachers identify concepts that students are'
-                      'struggling to understand, skills they are having difficulty acquiring,'
-                      'or learning standards they have not yet achieved so that adjustments'
-                      'can be made to lessons, instructional techniques, and academic support.'
-                      '\nThe general goal of formative assessment is to collect detailed information'
-                      'that can be used to improve instruction and student learning while it’s happening. '
-                      ' What makes an assessment “formative” is not the design of a test, technique, or self-evaluation, '
-                      'per se, but the way it is used—i.e., to inform in-process teaching and learning modifications."\n (Weimer, 2013)',
-                      softWrap: true,
+                    child: ReadMoreText(
+                      content,
+                      trimLength: 4,
+                      textAlign: TextAlign.justify,
+                      trimMode: TrimMode.Line,
+                      trimCollapsedText: " Show More ",
+                      trimExpandedText: " Show less",
+                      lessStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF29D09E)),
+                      moreStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF29D09E)),
                     ),
                   ),
                   Container(
