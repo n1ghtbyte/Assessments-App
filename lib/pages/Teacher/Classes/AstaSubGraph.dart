@@ -203,7 +203,6 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
                     _bigData[comp]![i].y = tempora;
                   }
                 }
-                flagCurr0 = false;
               }
               _ind++;
             }
@@ -220,6 +219,7 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
             helper = [];
           }
           fakeIndex++;
+          flagCurr0 = false;
         }
 
         inspect(_smallData);
