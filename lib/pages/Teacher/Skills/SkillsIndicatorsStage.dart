@@ -19,6 +19,13 @@ class _SkillsIndicatorsStage extends State<SkillsIndicatorsStage> {
   List<List<TextEditingController>> _descriptionComp = List.generate(
       5, (index) => List.generate(6, (index) => TextEditingController()));
 
+  // Create a global key that uniquely identifies the Form widget
+  // and allows validation of the form.
+  //
+  // Note: This is a `GlobalKey<FormState>`,
+  // not a GlobalKey<MyCustomFormState>.
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,9 +35,16 @@ class _SkillsIndicatorsStage extends State<SkillsIndicatorsStage> {
         backgroundColor: Color(0xFF29D09E),
       ),
       floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.check),
-          backgroundColor: Color(0xFF29D09E),
-          onPressed: () {
+        child: Icon(Icons.check),
+        backgroundColor: Color(0xFF29D09E),
+        onPressed: () {
+          // Validate returns true if the form is valid, or false otherwise.
+          if (_formKey.currentState!.validate()) {
+            // If the form is valid, display a snackbar. In the real world,
+            // you'd often call a server or save the information in a database.
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Competence created')),
+            );
             Map<String, dynamic> data = Map();
             data['Name'] = widget.passedCompetenceName;
             for (var i = 0; i < widget.passedNumIndicator; i++) {
@@ -58,63 +72,84 @@ class _SkillsIndicatorsStage extends State<SkillsIndicatorsStage> {
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
             Navigator.of(context).pop();
             Navigator.of(context).pop();
-          }),
-      body: ListView(
-        scrollDirection: Axis.vertical,
-        children: [
-          Column(
-            children: [
-              for (var ind = 0; ind < widget.passedNumIndicator; ind++)
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextFormField(
-                      controller: _descriptionComp[ind][0],
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.comment),
-                        labelText: 'Indicator ${ind + 1}',
-                        labelStyle: TextStyle(
-                          color: Color(0xFF29D09E),
-                        ),
-                        helperText: 'Indicator ${ind + 1} name',
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF29D09E)),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: 30, top: 0, right: 0, bottom: 15),
-                      child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: 5,
-                        itemBuilder: (context, index2) {
-                          return TextFormField(
-                            controller: _descriptionComp[ind][index2 + 1],
-                            decoration: InputDecoration(
-                              icon: Icon(Icons.comment),
-                              labelText: 'Descriptor ${index2 + 1}',
-                              labelStyle: TextStyle(
-                                color: Color(0xFF29D09E),
-                              ),
-                              helperText:
-                                  'Describe asserting a ${index2 + 1} score',
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Color(0xFF29D09E)),
-                              ),
-                            ),
-                          );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Some fields are missing')),
+            );
+          }
+        },
+      ),
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          children: [
+            Column(
+              children: [
+                for (var ind = 0; ind < widget.passedNumIndicator; ind++)
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        controller: _descriptionComp[ind][0],
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          return null;
                         },
+                        decoration: InputDecoration(
+                          icon: Icon(Icons.comment),
+                          labelText: 'Indicator ${ind + 1}',
+                          labelStyle: TextStyle(
+                            color: Color(0xFF29D09E),
+                          ),
+                          helperText: 'Indicator ${ind + 1} name',
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF29D09E)),
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-            ],
-          ),
-        ],
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: 30, top: 0, right: 0, bottom: 15),
+                        child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: 5,
+                          itemBuilder: (context, index2) {
+                            return TextFormField(
+                              controller: _descriptionComp[ind][index2 + 1],
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter some text';
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.comment),
+                                labelText: 'Descriptor ${index2 + 1}',
+                                labelStyle: TextStyle(
+                                  color: Color(0xFF29D09E),
+                                ),
+                                helperText:
+                                    'Describe asserting a ${index2 + 1} score',
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Color(0xFF29D09E)),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
