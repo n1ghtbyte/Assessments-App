@@ -17,26 +17,9 @@ class NavBarTeacher extends StatefulWidget {
 class _NavBarTeacherState extends State<NavBarTeacher> {
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
-  // String path = "rip";
-
-  // Future<String> function() async {
-  //   final storage = FirebaseStorage.instanceFor(
-  //       bucket: "gs://assessments-app-o3.appspot.com");
-  //   String k = await storage
-  //       .ref()
-  //       // .child('images/profilepic/${currentUser.toString()}')
-  //       .child('images/profilepic/pepepiramid.jpg')
-  //       .getDownloadURL();
-  //   print("DS");
-  //   return k;
-  // }
 
   @override
   Widget build(BuildContext context) {
-    // return FutureBuilder(
-    // future: function(),
-    // builder: (BuildContext context, AsyncSnapshot<String> text) {
-    //   if (text.data != null) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -47,7 +30,6 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.network(
-                  // text.data!,
                   'https://www.cvexpres.com/teaching-jobs-schools/wp-content/uploads/2021/03/convocatoria-bolsa-docente-maestros-infantil-y-primaria-2.jpg',
                   width: 100,
                   height: 100,
@@ -74,7 +56,6 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
             title: const Text('Competences'),
             onTap: () {
               Navigator.pop(context);
-
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SkillsPage()),
@@ -92,7 +73,6 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
             title: const Text('Account'),
             onTap: () {
               Navigator.pop(context);
-
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => TeacherProfile()),
@@ -104,7 +84,6 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
             title: const Text('Settings'),
             onTap: () {
               Navigator.pop(context);
-
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SettingsPage()),
