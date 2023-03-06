@@ -28,7 +28,7 @@ class _SkillsIndicatorsStage extends State<SkillsIndicatorsStage> {
         backgroundColor: Color(0xFF29D09E),
       ),
       floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
+          child: Icon(Icons.check),
           backgroundColor: Color(0xFF29D09E),
           onPressed: () {
             Map<String, dynamic> data = Map();
@@ -53,6 +53,11 @@ class _SkillsIndicatorsStage extends State<SkillsIndicatorsStage> {
                 .doc(widget.passedCompetenceName.toString())
                 .set(data)
                 .onError((e, _) => print("Error writing document: $e"));
+            final snackBar =
+                SnackBar(content: Text('The competence is created!'));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
           }),
       body: ListView(
         scrollDirection: Axis.vertical,
