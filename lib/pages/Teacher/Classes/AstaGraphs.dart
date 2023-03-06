@@ -265,7 +265,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     _bigData[comp]![i].y = tempora;
                   }
                 }
-                flagCurr0 = false;
               }
               _ind++;
             }
@@ -282,6 +281,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
             helper = [];
           }
           fakeIndex++;
+          flagCurr0 = false;
         }
 
         inspect(_smallData);
@@ -855,7 +855,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                   .toString()))
                             ],
                             onSelectChanged: (newValue) {
-                              Navigator.of(context).pushReplacement(
+                              Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => AstaSubGraph(
                                     passedClassId: widget.passedClassId,
