@@ -69,7 +69,7 @@ class _SkillsPageState extends State<SkillsPage> {
               ),
               body: SafeArea(
                 child: ListView(
-                  children: snapshot.data!.docs.map(
+                  children: snapshotprivate.data!.docs.map(
                         (DocumentSnapshot document) {
                           Map<String, dynamic> data =
                               document.data()! as Map<String, dynamic>;
@@ -94,7 +94,7 @@ class _SkillsPageState extends State<SkillsPage> {
                           );
                         },
                       ).toList() +
-                      snapshotprivate.data!.docs.map(
+                      snapshot.data!.docs.map(
                         (DocumentSnapshot document) {
                           Map<String, dynamic> data =
                               document.data()! as Map<String, dynamic>;
