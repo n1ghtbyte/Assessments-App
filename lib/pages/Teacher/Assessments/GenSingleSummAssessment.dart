@@ -5,7 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:assessments_app/assets/src/LinkedLabelCheckbox.dart';
-import 'package:intl/intl.dart'; // From the docs
+import 'package:intl/intl.dart';
+import 'package:readmore/readmore.dart'; // From the docs
 
 class GenSingleSummAssessment extends StatefulWidget {
   final String passedClassName; //Class ID
@@ -20,17 +21,18 @@ class GenSingleSummAssessment extends StatefulWidget {
 }
 
 class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
+  final String content =
+      'A summative assessement is one "that occurs at a point in time and is carried out to summarise achievement at that point in time. Often more structured than formative assessment, it provides teachers, students and parents with information on student progress and level of achievement. Summative assessments are used to evaluate student learning, skill acquisition, and academic achievement at the conclusion of a defined instructional period—typically at the end of a project, unit, course, semester, program, or school year. \n(NCVER, 2014)';
+
+  final db = FirebaseFirestore.instance;
   late CollectionReference _formativeCollection = FirebaseFirestore.instance
       .collection(
           '/classes/${widget.passedClassName}/grading/${widget.passedStudName}/formative');
+  String? currentUser = FirebaseAuth.instance.currentUser!.email;
 
   List<dynamic> _assessmentsFormativeMultiple = [];
-  final db = FirebaseFirestore.instance;
-
   List<bool> _isSelected = List<bool>.generate(100, (int index) => false,
       growable: true); // 100 assessments... TOO MUCH
-
-  String? currentUser = FirebaseAuth.instance.currentUser!.email;
 
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -64,16 +66,17 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
                 const SizedBox(height: 16),
                 Container(
                   padding: EdgeInsets.all(20.0),
-                  child: Text(
-                    """A summative assessement is one 
-                    that occurs at a point in time and is carried out to summarise achievement 
-                    at that point in time. Often more structured than formative assessment, it provides teachers, 
-                    students and parents with information on student progress and level of achievement. Summative 
-                    assessments are used to evaluate student learning, skill acquisition, and academic achievement
-                    at the conclusion of a defined instructional period—typically at the end of a project, unit
-                    , course, semester, program, or school year. \n(NCVER, 2014)""",
-                    softWrap: true,
-                    textAlign: TextAlign.left,
+                  child: ReadMoreText(
+                    content,
+                    trimLength: 4,
+                    textAlign: TextAlign.justify,
+                    trimMode: TrimMode.Line,
+                    trimCollapsedText: " Show More ",
+                    trimExpandedText: " Show less ",
+                    lessStyle: TextStyle(
+                        fontWeight: FontWeight.bold, color: Color(0xFF29D09E)),
+                    moreStyle: TextStyle(
+                        fontWeight: FontWeight.bold, color: Color(0xFF29D09E)),
                   ),
                 ),
                 Container(
@@ -167,13 +170,15 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
                                               ['AssessID']
                                           .toString())
                               .get()
-                              .then((value) {
-                            for (var doc in value.docs) {
-                              print(doc.data());
-                              kiki[elStud]?.add(doc.data());
-                              print(doc.data()['Created']);
-                            }
-                          });
+                              .then(
+                            (value) {
+                              for (var doc in value.docs) {
+                                print(doc.data());
+                                kiki[elStud]?.add(doc.data());
+                                print(doc.data()['Created']);
+                              }
+                            },
+                          );
 
                           // now we have all documents of that elStudent
                           print("Current 'i' is : " + i.toString());
