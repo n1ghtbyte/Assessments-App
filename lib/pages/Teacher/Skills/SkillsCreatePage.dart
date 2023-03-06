@@ -11,11 +11,6 @@ class SkillsCreatePage extends StatefulWidget {
 class _SkillsCreatePageState extends State<SkillsCreatePage> {
   double _sliderDiscreteValue = 2;
   final _competenceName = TextEditingController();
-  // @override
-  // void dispose() {
-  //   _competenceName.dispose();
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -42,23 +37,24 @@ class _SkillsCreatePageState extends State<SkillsCreatePage> {
         label: Text('Next'),
       ),
       body: Column(children: [
-        const SizedBox(height: 16),
-        TextFormField(
-          maxLength: 20,
-          controller: _competenceName,
-          decoration: InputDecoration(
-            icon: Icon(Icons.comment),
-            labelText: 'Competence name',
-            labelStyle: TextStyle(
-              color: Color(0xFF29D09E),
-            ),
-            helperText: 'What is the name of the competence?',
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFF29D09E)),
+        Container(
+          padding: EdgeInsets.all(20),
+          child: TextFormField(
+            maxLength: 20,
+            controller: _competenceName,
+            decoration: InputDecoration(
+              icon: Icon(Icons.comment),
+              labelText: 'Competence name',
+              labelStyle: TextStyle(
+                color: Color(0xFF29D09E),
+              ),
+              helperText: 'What is the name of the competence?',
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFF29D09E)),
+              ),
             ),
           ),
         ),
-        const SizedBox(height: 16),
         Divider(),
         const SizedBox(height: 16),
         ListTile(
