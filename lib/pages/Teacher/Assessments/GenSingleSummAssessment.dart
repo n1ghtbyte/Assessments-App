@@ -65,14 +65,15 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
                 Container(
                   padding: EdgeInsets.all(20.0),
                   child: Text(
-                    'A summative assessement is one '
-                    '"that occurs at a point in time and is carried out to summarise achievement '
-                    'at that point in time. Often more structured than formative assessment, it provides teachers, '
-                    'students and parents with information on student progress and level of achievement. Summative '
-                    'assessments are used to evaluate student learning, skill acquisition, and academic achievement'
-                    'at the conclusion of a defined instructional period—typically at the end of a project, unit'
-                    ', course, semester, program, or school year. \n(NCVER, 2014)",',
+                    """A summative assessement is one 
+                    that occurs at a point in time and is carried out to summarise achievement 
+                    at that point in time. Often more structured than formative assessment, it provides teachers, 
+                    students and parents with information on student progress and level of achievement. Summative 
+                    assessments are used to evaluate student learning, skill acquisition, and academic achievement
+                    at the conclusion of a defined instructional period—typically at the end of a project, unit
+                    , course, semester, program, or school year. \n(NCVER, 2014)""",
                     softWrap: true,
+                    textAlign: TextAlign.left,
                   ),
                 ),
                 Container(
