@@ -33,6 +33,7 @@ class _AssessmentFormativeState extends State<AssessmentFormative> {
       'Type': "Formative",
       'Competences': comp,
       'AssessID': _id,
+      'Name': assessinfo['Name'],
     }).then((value) {
       print(value.id);
     });
