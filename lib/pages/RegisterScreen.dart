@@ -23,21 +23,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  // String? get _errorText {
-  //   // at any time, we can get the text from _controller.value.text
-  //   final text = _passwordController.value.text;
-  //   // Note: you can do your own custom validation here
-  //   // Move this logic this outside the widget for more testable code
-  //   if (text.isEmpty) {
-  //     return 'Can\'t be empty';
-  //   }
-  //   if (text.length < 5) {
-  //     return 'Too short';
-  //   }
-  //   // return null if the text is valid
-  //   return null;
-
-  // }
   @override
   void dispose() {
     _firstName.dispose();
@@ -63,30 +48,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
   }
-
-  // static Future<User?> registerUsingEmailPassword(
-  //     {required String email,
-  //     required String password,
-  //     required BuildContext context}) async {
-  //   User? user;
-  //   try {
-  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //       email: email,
-  //       password: password,
-  //     );
-  //   } on FirebaseAuthException catch (e) {
-  //     if (e.code == 'weak-password') {
-  //       print('The password provided is too weak.');
-  //     } else if (e.code == 'email-already-in-use') {
-  //       print('The account already exists for that email.');
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //   return user;
-  // }
-
-  // ^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!&$%&? "]).*$
 
   @override
   Widget build(BuildContext context) {
