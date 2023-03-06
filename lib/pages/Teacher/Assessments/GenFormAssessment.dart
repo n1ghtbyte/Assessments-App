@@ -22,7 +22,7 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
   late String docID;
 
   final String content =
-      'A formative assessement is "the process of providing feedback to students during the learning process.  These are often low stakes activities that allow the instructor to check student work and provide feedback. Formative assessment refers to a wide variety of methods that teachersuse to conduct in-process evaluations of student comprehension, learning needs, and academic progress during a lesson, unit, or course. Formative assessments help teachers identify concepts that students are struggling to understand, skills they are having difficulty acquiring, or learning standards they have not yet achieved so that adjustments can be made to lessons, instructional techniques, and academic support.\nThe general goal of formative assessment is to collect detailed information that can be used to improve instruction and student learning while it’s happening. What makes an assessment “formative” is not the design of a test, technique, or self-evaluation, per se, but the way it is used—i.e., to inform in-process teaching and learning modifications."\n (Weimer, 2013)';
+      'A formative assessement is: "the process of providing feedback to students during the learning process.  These are often low stakes activities that allow the instructor to check student work and provide feedback. Formative assessment refers to a wide variety of methods that teachersuse to conduct in-process evaluations of student comprehension, learning needs, and academic progress during a lesson, unit, or course. Formative assessments help teachers identify concepts that students are struggling to understand, skills they are having difficulty acquiring, or learning standards they have not yet achieved so that adjustments can be made to lessons, instructional techniques, and academic support.\nThe general goal of formative assessment is to collect detailed information that can be used to improve instruction and student learning while it’s happening. What makes an assessment “formative” is not the design of a test, technique, or self-evaluation, per se, but the way it is used—i.e., to inform in-process teaching and learning modifications."\n (Weimer, 2013)';
 
   late CollectionReference assessments =
       FirebaseFirestore.instance.collection('assessments');
@@ -93,157 +93,157 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
     late CollectionReference _class =
         FirebaseFirestore.instance.collection('classes');
     return FutureBuilder<DocumentSnapshot>(
-        future: _class.doc(widget.passedClassName).get(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Text("Something went wrong");
-          }
-          if (!snapshot.hasData) {
-            return Container(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-
-          Map<String, dynamic> data =
-              snapshot.data!.data() as Map<String, dynamic>;
-          var comp = data['Competences'];
-          List<String?> list = [];
-          comp.entries.forEach((e) => list.add(e.key));
-          var studsList = data['StudentList'];
-          var resultMap = {for (var v in studsList) v: false};
-
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Generate F.Assessment'),
-              centerTitle: true,
-              backgroundColor: Color(0xFF29D09E),
+      future: _class.doc(widget.passedClassName).get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text("Something went wrong");
+        }
+        if (!snapshot.hasData) {
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(),
             ),
-            body: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(height: 16),
-                  Container(
-                    padding: EdgeInsets.all(20.0),
-                    child: ReadMoreText(
-                      content,
-                      trimLength: 4,
-                      textAlign: TextAlign.justify,
-                      trimMode: TrimMode.Line,
-                      trimCollapsedText: " Show More ",
-                      trimExpandedText: " Show less",
-                      lessStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF29D09E)),
-                      moreStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF29D09E)),
-                    ),
+          );
+        }
+
+        Map<String, dynamic> data =
+            snapshot.data!.data() as Map<String, dynamic>;
+        var comp = data['Competences'];
+        List<String?> list = [];
+        comp.entries.forEach((e) => list.add(e.key));
+        var studsList = data['StudentList'];
+        var resultMap = {for (var v in studsList) v: false};
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Generate F.Assessment'),
+            centerTitle: true,
+            backgroundColor: Color(0xFF29D09E),
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                const SizedBox(height: 16),
+                Container(
+                  padding: EdgeInsets.all(20.0),
+                  child: ReadMoreText(
+                    content,
+                    trimLength: 4,
+                    textAlign: TextAlign.justify,
+                    trimMode: TrimMode.Line,
+                    trimCollapsedText: " Show More ",
+                    trimExpandedText: " Show less ",
+                    lessStyle: TextStyle(
+                        fontWeight: FontWeight.bold, color: Color(0xFF29D09E)),
+                    moreStyle: TextStyle(
+                        fontWeight: FontWeight.bold, color: Color(0xFF29D09E)),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    child: TextFormField(
-                      maxLength: 30,
-                      controller: _controllerName,
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.comment),
-                        labelText: 'Assessment name',
-                        labelStyle: TextStyle(
-                          color: Color(0xFF29D09E),
-                        ),
-                        helperText: 'What is the name of the assessment?',
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF29D09E)),
-                        ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(20),
+                  child: TextFormField(
+                    maxLength: 30,
+                    controller: _controllerName,
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.comment),
+                      labelText: 'Assessment name',
+                      labelStyle: TextStyle(
+                        color: Color(0xFF29D09E),
+                      ),
+                      helperText: 'What is the name of the assessment?',
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFF29D09E)),
                       ),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(20.0),
-                    child: Text("Choose the Competences to take into account",
-                        style: TextStyle(fontSize: 18.0)),
+                ),
+                Container(
+                  padding: EdgeInsets.all(20.0),
+                  child: Text("Choose the Competences to take into account",
+                      style: TextStyle(fontSize: 18.0)),
+                ),
+                //Start Populator
+                ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: list.length,
+                  itemBuilder: (context, index) {
+                    return CheckboxListTile(
+                      activeColor: Color(0xFF29D09E),
+                      title: Text("${list[index]}"),
+                      value: isChecked[index],
+                      onChanged: (value) {
+                        setState(() {
+                          isChecked[index] = value!;
+                        });
+                      },
+                      controlAffinity: ListTileControlAffinity.leading,
+                    );
+                  },
+                ),
+
+                //End Populator
+
+                const SizedBox(height: 16),
+
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Color(0xFF29D09E),
                   ),
-                  //Start Populator
-                  ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: list.length,
-                    itemBuilder: (context, index) {
-                      return CheckboxListTile(
-                        activeColor: Color(0xFF29D09E),
-                        title: Text("${list[index]}"),
-                        value: isChecked[index],
-                        onChanged: (value) {
-                          setState(() {
-                            isChecked[index] = value!;
-                          });
-                        },
-                        controlAffinity: ListTileControlAffinity.leading,
-                      );
-                    },
-                  ),
-
-                  //End Populator
-
-                  const SizedBox(height: 16),
-
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color(0xFF29D09E),
-                    ),
-                    onPressed: () async {
-                      if (data['prevAssess'] == data['currAssess']) {
-                        FirebaseFirestore.instance
-                            .collection('classes')
-                            .doc(widget.passedClassName)
-                            .update({'currAssess': FieldValue.increment(1)});
-                        _competencesAssess = [];
-                        _typeAssess = "Formative";
-                        for (int i = 0; i < list.length; i++) {
-                          if (isChecked[i] == true) {
-                            _competencesAssess.add(list[i]);
-                          }
+                  onPressed: () async {
+                    if (data['prevAssess'] == data['currAssess']) {
+                      FirebaseFirestore.instance
+                          .collection('classes')
+                          .doc(widget.passedClassName)
+                          .update({'currAssess': FieldValue.increment(1)});
+                      _competencesAssess = [];
+                      _typeAssess = "Formative";
+                      for (int i = 0; i < list.length; i++) {
+                        if (isChecked[i] == true) {
+                          _competencesAssess.add(list[i]);
                         }
-
-                        Map<String, dynamic> competencesFirebase = {};
-                        for (var x in widget.passedCompetences.entries) {
-                          if (_competencesAssess.contains(x.key.toString()) ==
-                              true) {
-                            competencesFirebase[x.key] = x.value;
-                          }
-                        }
-                        await addAssessment(
-                            resultMap, competencesFirebase, data['currAssess']);
-                        print(docID);
-                        final snackBar = SnackBar(
-                            content: Text(
-                                'The assessment has been issued to this Class :)'));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AssessmentFormative(
-                                    passedAssessmentIdName: docID,
-                                  )),
-                        );
-                      } else {
-                        final snackBar = SnackBar(
-                            content: Text(
-                                'You must finish the assessment that you assigned to this class first!'));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       }
-                    },
-                    child: Text(('Create'), style: new TextStyle(fontSize: 18)),
-                  ),
-                ],
-              ),
+
+                      Map<String, dynamic> competencesFirebase = {};
+                      for (var x in widget.passedCompetences.entries) {
+                        if (_competencesAssess.contains(x.key.toString()) ==
+                            true) {
+                          competencesFirebase[x.key] = x.value;
+                        }
+                      }
+                      await addAssessment(
+                          resultMap, competencesFirebase, data['currAssess']);
+                      print(docID);
+                      final snackBar = SnackBar(
+                          content: Text(
+                              'The assessment has been issued to this Class :)'));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AssessmentFormative(
+                            passedAssessmentIdName: docID,
+                          ),
+                        ),
+                      );
+                    } else {
+                      final snackBar = SnackBar(
+                          content: Text(
+                              'You must finish the assessment that you assigned to this class first!'));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+                  },
+                  child: Text(('Create'), style: new TextStyle(fontSize: 18)),
+                ),
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
