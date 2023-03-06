@@ -60,7 +60,7 @@ class SettingsPage extends StatelessWidget {
               onTap: () {
                 final snackBar = SnackBar(
                     content: Text(
-                        'You have send a request to the InovLabs HQ, wait until we reach you.'));
+                        'You have sent a request to the InovLabs HQ, wait until we reach you.'));
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 // Navigator.push( mostrar snackbar a avisar que o request foi feito !!!
                 //   context,
