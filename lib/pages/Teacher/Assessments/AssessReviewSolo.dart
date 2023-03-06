@@ -222,11 +222,14 @@ class _AssessReviewState extends State<AssessReview> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.max,
                                     children: <Widget>[
+                                      SizedBox(
+                                        height: 20,
+                                      ),
                                       Container(
-                                        padding: EdgeInsets.all(20.0),
+                                        padding: EdgeInsets.all(15.0),
                                         child: Text(
-                                          "Student: ${widget.passedStudName}\nClass:${data['ClassName']}\n",
-                                          style: TextStyle(fontSize: 26),
+                                          "Student: ${widget.passedStudName}\nAssessment: ${data['Name']}\nClass: ${data['ClassName']}\n",
+                                          style: TextStyle(fontSize: 20),
                                         ),
                                       ),
                                       for (var k in namesC)
@@ -242,7 +245,7 @@ class _AssessReviewState extends State<AssessReview> {
                                                   thickness: 4,
                                                 ),
                                                 SizedBox(
-                                                  height: 40,
+                                                  height: 20,
                                                 ),
                                                 Text(
                                                   k,
