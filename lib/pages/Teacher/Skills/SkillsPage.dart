@@ -74,6 +74,7 @@ class _SkillsPageState extends State<SkillsPage> {
                           Map<String, dynamic> data =
                               document.data()! as Map<String, dynamic>;
                           return ListTile(
+                            textColor: Color(0xFF29D09E),
                             visualDensity: VisualDensity.standard,
                             onTap: () {
                               print(data);
