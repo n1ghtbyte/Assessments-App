@@ -27,16 +27,6 @@ class _NavBarParentState extends State<NavBarParent> {
           UserAccountsDrawerHeader(
             accountName: Text('Parent'),
             accountEmail: Text(currentUser!),
-            currentAccountPicture: CircleAvatar(
-              child: ClipOval(
-                child: Image.network(
-                  'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwallsdesk.com%2Fwp-content%2Fuploads%2F2017%2F01%2FMonkey-full-HD.jpg&f=1&nofb=1&ipt=57018b07fe12ad8a6f80e410bb382c90681c5a3877a6b6c6dbc213fe37c571d9&ipo=images',
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
             decoration: BoxDecoration(color: Color(0xFF29D09E)),
           ),
           ListTile(

@@ -28,16 +28,6 @@ class _NavBarStudentState extends State<NavBarStudent> {
           UserAccountsDrawerHeader(
             accountName: Text('Student'),
             accountEmail: Text(currentUser!),
-            currentAccountPicture: CircleAvatar(
-              child: ClipOval(
-                child: Image.network(
-                  'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fassets.rebelmouse.io%2FeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFnZSI6Imh0dHBzOi8vbWVkaWEucmJsLm1zL2ltYWdlP3U9JTJGZmlsZXMlMkYyMDE2JTJGMDElMkYzMCUyRjYzNTg5Nzg0OTYwNTk3MjY4NTY4MDg3NDcyOF9ocWRlZmF1bHQuanBnJmhvPWh0dHAlM0ElMkYlMkZjZG4xLnRoZW9keXNzZXlvbmxpbmUuY29tJnM9MjY2Jmg9Mzc5MTBkZGUwZjJlOGY0NTgzNWFlMmMzY2YxY2M0ZWJkNjE0OGRjNDNhNTQ0ZmJkOTJiOGIwOWY2MTFjMTNmNiZzaXplPTk4MHgmYz0xMzkwMTc3OTI0IiwiZXhwaXJlc19hdCI6MTYzNTc3Njk1OH0.HaupP3FySlrtGGcpppHs91IZBjNLhPoVabuCOwfGEnA%2Fimg.jpg%3Fwidth%3D1200%26height%3D628&f=1&nofb=1',
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
             decoration: BoxDecoration(color: Color(0xFF29D09E)),
           ),
           ListTile(

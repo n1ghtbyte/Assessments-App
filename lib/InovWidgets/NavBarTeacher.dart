@@ -27,16 +27,6 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
           UserAccountsDrawerHeader(
             accountName: Text('Teacher'),
             accountEmail: Text(currentUser!),
-            currentAccountPicture: CircleAvatar(
-              child: ClipOval(
-                child: Image.network(
-                  'https://www.cvexpres.com/teaching-jobs-schools/wp-content/uploads/2021/03/convocatoria-bolsa-docente-maestros-infantil-y-primaria-2.jpg',
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
             decoration: BoxDecoration(color: Color(0xFF29D09E)),
           ),
           ListTile(
