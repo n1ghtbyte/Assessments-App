@@ -133,6 +133,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         const EdgeInsets.only(bottom: 15, left: 10, right: 10),
                     child: TextFormField(
                       controller: _passwordController,
+                      obscureText: true,
+
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         hintText: "Password",
