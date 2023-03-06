@@ -90,7 +90,9 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     return LinkedLabelCheckbox(
-                      label: "Formative Assessment " +
+                      label: (snapshot.data!.docs[index].data()
+                                  as Map<dynamic, dynamic>)['Name']
+                              .toString() +
                           "\n" +
                           DateFormat('yyyy-MM-dd')
                               .format(((snapshot.data!.docs[index].data()
