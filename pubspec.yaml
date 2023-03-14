@@ -49,6 +49,7 @@ dependencies:
   email_validator: ^2.1.17
   shared_preferences: ^2.0.17
   readmore: ^2.2.0
+  firebase_crashlytics: ^3.0.16
     
   
 
