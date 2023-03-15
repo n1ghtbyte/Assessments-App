@@ -55,6 +55,19 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green)
             .copyWith(background: Colors.white),
       ),
+      // darkTheme: ThemeData(
+      //   primaryColor: Color(0xFF29D09E),
+      //   scaffoldBackgroundColor: Colors.black87,
+      //   pageTransitionsTheme: PageTransitionsTheme(
+      //     builders: Map<TargetPlatform, PageTransitionsBuilder>.fromIterable(
+      //       TargetPlatform.values,
+      //       value: (dynamic _) => const ZoomPageTransitionsBuilder(),
+      //     ),
+      //   ),
+      //   visualDensity: VisualDensity.adaptivePlatformDensity,
+      //   colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green)
+      //       .copyWith(background: Colors.black),
+      // ),
       home: FutureBuilder(
         future: _initializeFirebase(),
         builder: (context, snapshot) {
