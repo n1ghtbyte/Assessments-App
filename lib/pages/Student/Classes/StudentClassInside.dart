@@ -220,7 +220,6 @@ class _StudentClassInsideState extends State<StudentClassInside> {
 
         print(widget.passedCompetences);
 
-        var flagCurr0 = true;
         double fakeIndex = 0;
         for (var ini in widget.passedCompetences.keys) {
           _bigData[ini] = [];
@@ -244,7 +243,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
               // print(foo['Competences'][comp][indicator]);
               print((foo['Created'] as Timestamp).toDate());
               // if (int.parse(foo['Current']) == 0) {
-              if (flagCurr0) {
+              if (_bigData[comp]!.isEmpty) {
                 _bigData[comp]?.add(DataItem(
                     index: _ind,
                     hash: indicatorToHash(indicator),
@@ -276,7 +275,6 @@ class _StudentClassInsideState extends State<StudentClassInside> {
             helper = [];
           }
           fakeIndex++;
-          flagCurr0 = false;
         }
         inspect(_smallData);
         inspect(_bigData);
@@ -415,12 +413,14 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                                 scrollDirection: Axis.horizontal,
                                 child: Container(
                                   padding: EdgeInsets.only(
-                                      left: 20, right: 20, top: 20, bottom: 20),
+                                      left: 20, right: 20, top: 55, bottom: 20),
                                   height: 300,
-                                  width: (_bigData[_comp]!.length * 200) +
+                                  width: 100 +
+                                      (_bigData[_comp]!.length * 200) +
                                       _smallData[_comp]!.length * 15,
                                   child: BarChart(
                                     BarChartData(
+                                      baselineY: 0,
                                       titlesData: FlTitlesData(
                                         bottomTitles: AxisTitles(
                                             sideTitles: _bottomTitles),
@@ -449,6 +449,14 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                                                     ind < dataItem.y.length;
                                                     ind++)
                                                   BarChartRodData(
+                                                      borderRadius:
+                                                          BorderRadius.zero,
+                                                      backDrawRodData:
+                                                          BackgroundBarChartRodData(
+                                                        show: true,
+                                                        toY: 0.1,
+                                                        color: _leColours[ind],
+                                                      ),
                                                       toY: double.parse(
                                                           dataItem.y[ind]),
                                                       width: 15,
@@ -762,7 +770,8 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                                   padding: EdgeInsets.only(
                                       left: 20, right: 20, top: 55, bottom: 20),
                                   height: 300,
-                                  width: (_bigData[_comp]!.length * 200) +
+                                  width: 100 +
+                                      (_bigData[_comp]!.length * 200) +
                                       _smallData[_comp]!.length * 15,
                                   child: BarChart(
                                     BarChartData(
