@@ -13,6 +13,9 @@ class ClassesSettingsPage extends StatefulWidget {
 
 class _ClassesSettingsPageState extends State<ClassesSettingsPage> {
   final nameController = TextEditingController();
+  final collectionClasses = FirebaseFirestore.instance.collection('/classes');
+  final collectionAssessments =
+      FirebaseFirestore.instance.collection('/assessments');
 
   @override
   void dispose() {
@@ -98,19 +101,40 @@ class _ClassesSettingsPageState extends State<ClassesSettingsPage> {
                                         MaterialStateProperty.all<Color>(
                                             Colors.blue),
                                   ),
-                                  onPressed: () {
+                                  onPressed: () async {
                                     Navigator.of(context, rootNavigator: true)
                                         .pop();
-                                    final collection = FirebaseFirestore
-                                        .instance
-                                        .collection('/classes');
-                                    collection
+
+                                    // Delete the class from /classes
+                                    // This does not removed subcollections
+
+                                    await collectionClasses
                                         .doc(widget
                                             .passedClassName) // <-- Doc ID to be deleted.
                                         .delete() // <-- Delete
                                         .then((_) => print('Deleted'))
                                         .catchError((error) =>
                                             print('Delete failed: $error'));
+
+                                    // Delete assessments in /assessments
+
+                                    await collectionAssessments
+                                        .where("ClassId",
+                                            isEqualTo: widget.passedClassName
+                                                .toString())
+                                        .get()
+                                        .then(
+                                      (querySnapshot) {
+                                        querySnapshot.docs.forEach(
+                                          (doc) {
+                                            doc.reference.delete();
+                                          },
+                                        );
+                                      },
+                                      onError: (e) =>
+                                          print("Error deleting: $e"),
+                                    );
+
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
