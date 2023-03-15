@@ -1,10 +1,10 @@
 import 'package:assessments_app/pages/Student/Account/AccountStudentPage.dart';
 import 'package:assessments_app/pages/Student/AssessmentsStudent.dart';
-import 'package:assessments_app/pages/SettingsPage.dart';
+import 'package:assessments_app/pages/Settings/SettingsPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../pages/LoginScreen.dart';
+import '../pages/Auth/LoginScreen.dart';
 import '../pages/Student/Parents/ChildParentDash.dart';
 import '../pages/Teacher/Skills/SkillsPage.dart';
 

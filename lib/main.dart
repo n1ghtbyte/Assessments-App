@@ -1,5 +1,5 @@
 import 'package:assessments_app/firebase_options.dart';
-import 'package:assessments_app/pages/LoginScreen.dart';
+import 'package:assessments_app/pages/Auth/LoginScreen.dart';
 import 'package:assessments_app/pages/Parent/ParentMain.dart';
 import 'package:assessments_app/pages/Student/Classes/StudentClasses.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassesPage.dart';

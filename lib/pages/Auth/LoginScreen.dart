@@ -1,6 +1,6 @@
 // import 'package:assessments_app/pages/Student/StudentPage.dart';
 import 'package:assessments_app/pages/Parent/ParentMain.dart';
-import 'package:assessments_app/pages/RegisterScreen.dart';
+import 'package:assessments_app/pages/Auth/RegisterScreen.dart';
 import 'package:assessments_app/pages/Student/Classes/StudentClasses.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassesPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
