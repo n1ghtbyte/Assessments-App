@@ -209,6 +209,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                     child: Scaffold(
                       appBar: AppBar(
                         bottom: const TabBar(
+                          indicatorColor: Colors.green,
                           tabs: [
                             Tab(icon: Icon(Icons.people)),
                             Tab(icon: Icon(Icons.school)),
