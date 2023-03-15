@@ -230,7 +230,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
 
         print(widget.passedCompetences);
 
-        var flagCurr0 = true;
         double fakeIndex = 0;
         for (var ini in widget.passedCompetences.keys) {
           _bigData[ini] = [];
@@ -240,9 +239,12 @@ class _AstaGraphsState extends State<AstaGraphs> {
           var foo = _doc.data()! as Map<dynamic, dynamic>;
           print("HAKI");
           List<double> helper = [];
+          // for each competence in a given assessment
+
           for (var comp in foo['Competences'].keys) {
-            getColourFromComp(comp);
-            // for each competence in a given assessment
+            // getColourFromComp(comp);
+            // for each indicator in a given competence
+
             for (var indicator in foo['Competences'][comp].keys) {
               print(foo['Competences'][comp][indicator]);
 
@@ -250,7 +252,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
 
               print((foo['Created'] as Timestamp).toDate());
 
-              if (flagCurr0) {
+              if (_bigData[comp]!.isEmpty) {
                 _bigData[comp]?.add(DataItem(
                     index: _ind,
                     hash: indicatorToHash(indicator),
@@ -281,7 +283,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
             helper = [];
           }
           fakeIndex++;
-          flagCurr0 = false;
         }
 
         inspect(_smallData);
@@ -494,10 +495,12 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                   padding: EdgeInsets.only(
                                       left: 20, right: 20, top: 20, bottom: 20),
                                   height: 300,
-                                  width: (_bigData[_comp]!.length * 200) +
+                                  width: 100 +
+                                      (_bigData[_comp]!.length * 200) +
                                       _smallData[_comp]!.length * 15,
                                   child: BarChart(
                                     BarChartData(
+                                      baselineY: 0,
                                       titlesData: FlTitlesData(
                                         bottomTitles: AxisTitles(
                                             sideTitles: _bottomTitles),
@@ -526,6 +529,14 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                                     ind < dataItem.y.length;
                                                     ind++)
                                                   BarChartRodData(
+                                                      borderRadius:
+                                                          BorderRadius.zero,
+                                                      backDrawRodData:
+                                                          BackgroundBarChartRodData(
+                                                        show: true,
+                                                        toY: 0.1,
+                                                        color: _leColours[ind],
+                                                      ),
                                                       toY: double.parse(
                                                           dataItem.y[ind]),
                                                       width: 15,
@@ -1009,7 +1020,8 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                   padding: EdgeInsets.only(
                                       left: 20, right: 20, top: 55, bottom: 20),
                                   height: 300,
-                                  width: (_bigData[_comp]!.length * 200) +
+                                  width: 100 +
+                                      (_bigData[_comp]!.length * 200) +
                                       _smallData[_comp]!.length * 15,
                                   child: BarChart(
                                     BarChartData(
