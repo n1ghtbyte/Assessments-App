@@ -139,7 +139,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
             ),
             body: Center(
               child: Text(
-                "Your students will appear here, once they have joined this class\n Do not forget to setup the weights of each competence!\nyou can also add your students manually”. (Pro tip: up right corner)",
+                "Your students will appear here, once they have joined this class.\n You can also add your students manually. (Pro tip: up right corner)",
                 style: TextStyle(fontStyle: FontStyle.italic),
                 textAlign: TextAlign.center,
               ),
