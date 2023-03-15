@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "ASSESS APP v3.5",
+              "ASSESS APP v4.0",
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 28.0,
@@ -152,13 +152,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.pop(context);
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => ParentMainScreen()));
-
-                        // final snackBar = SnackBar(
-                        //     content: Text(
-                        //         'Parent interface still in early development...'));
-                        // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        //     builder: (context) => StudentPage()));
                       }
                     } else {
                       Navigator.pop(context);
