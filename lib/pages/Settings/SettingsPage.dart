@@ -20,24 +20,6 @@ class SettingsPage extends StatelessWidget {
             const SizedBox(height: 16),
             ListTile(
               enabled: false,
-              leading: Icon(Icons.notifications),
-              title: Text("Notifications"),
-              subtitle: Text("Change the occurance"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingsNotifPage()),
-                );
-              },
-            ),
-            const SizedBox(height: 16),
-            Divider(
-              thickness: 1,
-              height: 1,
-            ),
-            const SizedBox(height: 16),
-            ListTile(
-              enabled: false,
               leading: Icon(Icons.settings_display),
               title: Text("Display"),
               subtitle: Text("Dark mode, colors, navigation"),
