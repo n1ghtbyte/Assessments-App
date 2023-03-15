@@ -8,6 +8,7 @@ import 'package:assessments_app/InovWidgets/LegendWidget.dart';
 import 'package:intl/intl.dart';
 
 class AstaSubGraph extends StatefulWidget {
+  final Timestamp passedSummDate;
   final String passedLegitName;
   final String passedClassName;
   final String passedClassId;
@@ -17,6 +18,7 @@ class AstaSubGraph extends StatefulWidget {
 
   const AstaSubGraph(
       {Key? key,
+      required this.passedSummDate,
       required this.passedClassId,
       required this.passedClassName,
       required this.passedLegitName,
@@ -168,7 +170,6 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
 
         print(widget.passedCompetences);
 
-        var flagCurr0 = true;
         double fakeIndex = 0;
         for (var ini in widget.passedCompetences.keys) {
           _bigData[ini] = [];
@@ -188,7 +189,7 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
 
               print((foo['Created'] as Timestamp).toDate());
 
-              if (flagCurr0) {
+              if (_bigData[comp]!.isEmpty) {
                 _bigData[comp]?.add(DataItem(
                     index: _ind,
                     hash: indicatorToHash(indicator),
@@ -219,7 +220,6 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
             helper = [];
           }
           fakeIndex++;
-          flagCurr0 = false;
         }
 
         inspect(_smallData);
@@ -254,11 +254,11 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
           body: ListView(
             children: [
               Container(
-                padding: EdgeInsets.all(20),
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(14.0),
                 child: Text(
-                  "Formative Assessments",
-                  style: TextStyle(fontSize: 21, fontWeight: FontWeight.w800),
-                  textAlign: TextAlign.center,
+                  "Student: ${widget.passedLegitName}\nDate: ${DateFormat('yyyy-MM-dd').format((widget.passedSummDate).toDate())}",
+                  style: TextStyle(fontSize: 20),
                 ),
               ),
               Column(
@@ -286,9 +286,10 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
                           scrollDirection: Axis.horizontal,
                           child: Container(
                             padding: EdgeInsets.only(
-                                left: 20, right: 20, top: 55, bottom: 20),
+                                left: 20, right: 20, top: 20, bottom: 20),
                             height: 300,
-                            width: (_bigData[_comp]!.length * 200) +
+                            width: 100 +
+                                (_bigData[_comp]!.length * 200) +
                                 _smallData[_comp]!.length * 15,
                             child: BarChart(
                               BarChartData(
