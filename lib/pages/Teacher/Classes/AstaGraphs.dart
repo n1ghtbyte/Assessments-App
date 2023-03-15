@@ -869,6 +869,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => AstaSubGraph(
+                                    passedSummDate: dt['Created'] as Timestamp,
                                     passedClassId: widget.passedClassId,
                                     passedClassName: widget.passedClassName,
                                     passedCompetences: widget.passedCompetences,
