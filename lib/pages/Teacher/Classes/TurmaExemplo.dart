@@ -90,6 +90,10 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                       value: _MenuValues.AddStuddent,
                     ),
                     PopupMenuItem(
+                      child: Text('Add Competences'),
+                      value: _MenuValues.CompetenceAdd,
+                    ),
+                    PopupMenuItem(
                       child: Text('Setup'),
                       value: _MenuValues.Setup,
                     ),
