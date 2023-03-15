@@ -14,6 +14,13 @@ class ClassesCreatePage extends StatefulWidget {
 }
 
 class _ClassesCreatePageState extends State<ClassesCreatePage> {
+  // Create a global key that uniquely identifies the Form widget
+  // and allows validation of the form.
+  //
+  // Note: This is a `GlobalKey<FormState>`,
+  // not a GlobalKey<MyCustomFormState>.
+  final _formKey = GlobalKey<FormState>();
+
   late Stream<QuerySnapshot> _stream =
       FirebaseFirestore.instance.collection('Competences').snapshots();
 
@@ -145,38 +152,40 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                 centerTitle: true,
                 backgroundColor: Color(0xFF29D09E),
               ),
-              floatingActionButton:
-                  // ElevatedButton.icon(
-                  //         style: ElevatedButton.styleFrom(
-                  //           foregroundColor: Colors.white,
-                  //           backgroundColor: Color(0xFF29D09E),
-                  //       ),
-                  FloatingActionButton.extended(
+              floatingActionButton: FloatingActionButton.extended(
                 backgroundColor: Color(0xFF29D09E),
                 onPressed: () async {
-                  context.loaderOverlay.show();
+                  // Validate returns true if the form is valid, or false otherwise.
+                  if (_formKey.currentState!.validate()) {
+                    // If the form is valid, display a snackbar. In the real world,
+                    // you'd often call a server or save the information in a database.
 
-                  await addClass();
+                    context.loaderOverlay.show();
 
-                  await Future.delayed(Duration(seconds: 1));
-                  context.loaderOverlay.hide();
+                    await addClass();
 
-                  print(topG.id);
+                    await Future.delayed(Duration(seconds: 1));
+                    context.loaderOverlay.hide();
 
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ClassSetup(passedClassNameSetup: topG.id),
-                    ),
-                  );
-                  final snackBar = SnackBar(
-                    content: Text('Generating the join code'),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    print(topG.id);
+
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ClassSetup(passedClassNameSetup: topG.id),
+                      ),
+                    );
+                    final snackBar = SnackBar(
+                      content: Text('Generating the join code'),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Enter the class name')),
+                    );
+                  }
                 },
-                // Navigator.pop(context);
-
                 label: Text('Create'),
                 icon: Icon(Icons.add, size: 18),
               ),
@@ -184,22 +193,31 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                 child: SafeArea(
                   child: ListView(
                     children: [
-                      TextFormField(
-                        controller: _controllerName,
-                        keyboardType: TextInputType.name,
-                        decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff388e3c)),
+                      Form(
+                        key: _formKey,
+                        child: TextFormField(
+                          controller: _controllerName,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                          keyboardType: TextInputType.name,
+                          decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xff388e3c)),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xff388e3c)),
+                            ),
+                            icon: Icon(Icons.person),
+                            labelText: 'Class Name',
+                            labelStyle: TextStyle(
+                              color: Color(0xFF29D09E),
+                            ),
+                            helperText: 'Enter the name that will be displayed',
                           ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff388e3c)),
-                          ),
-                          icon: Icon(Icons.person),
-                          labelText: 'Class Name',
-                          labelStyle: TextStyle(
-                            color: Color(0xFF29D09E),
-                          ),
-                          helperText: 'Enter the name that will be displayed',
                         ),
                       ),
                       const SizedBox(
