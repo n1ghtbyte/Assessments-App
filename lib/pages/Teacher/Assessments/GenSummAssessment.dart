@@ -250,10 +250,10 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                                     "classes/${widget.passedClassName}/grading/$elStud/summative")
                                 .add(
                               {
+                                'Created': FieldValue.serverTimestamp(),
                                 'Formatives': selectedAssessUpload,
                                 'Result': result,
                                 'Weights': weigths,
-                                'Created': FieldValue.serverTimestamp(),
                                 'Targets': 'Class'
                               },
                             );

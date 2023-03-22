@@ -29,9 +29,9 @@ class _AssessmentsCreateTeacherPageState
   Future<void> addAssessment(Map X, Map comp, var curr) {
     if (widget.passedStudName.contains("@")) {
       return assessments.add({
+        'Created': FieldValue.serverTimestamp(),
         'ClassId': widget.passedClassName,
         'ClassName': widget.passedName,
-        'Created': FieldValue.serverTimestamp(),
         'Creator': currentUser,
         'Type': _typeAssess,
         'Target': "Single",
@@ -47,9 +47,9 @@ class _AssessmentsCreateTeacherPageState
     } else {
       // Call the user's CollectionReference to add a new assessment
       return assessments.add({
+        'Created': FieldValue.serverTimestamp(),
         'ClassId': widget.passedClassName,
         'ClassName': widget.passedName,
-        'Created': FieldValue.serverTimestamp(),
         'Creator': currentUser,
         'Type': _typeAssess,
         'Target': "Multiple",

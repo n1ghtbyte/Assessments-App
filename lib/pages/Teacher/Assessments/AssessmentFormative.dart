@@ -26,8 +26,8 @@ class _AssessmentFormativeState extends State<AssessmentFormative> {
 
     // Call the user's CollectionReference to add a new assessment
     return assessments.add({
-      'ClassName': assessinfo['ClassId'],
       'Created': FieldValue.serverTimestamp(),
+      'ClassName': assessinfo['ClassId'],
       'Creator': currentUser,
       'Current': currAssess,
       'Type': "Formative",

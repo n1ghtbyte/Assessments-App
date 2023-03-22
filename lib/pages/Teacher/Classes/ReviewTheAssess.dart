@@ -25,8 +25,8 @@ class _ReviewAssessmentState extends State<ReviewAssessment> {
 
     // Call the user's CollectionReference to add a new assessment
     return assessments.add({
-      'ClassName': assessinfo['ClassId'],
       'Created': FieldValue.serverTimestamp(),
+      'ClassName': assessinfo['ClassId'],
       'Creator': currentUser,
       'Type': "Formative",
       'Competences': comp,
