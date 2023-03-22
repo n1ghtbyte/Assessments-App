@@ -27,6 +27,7 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
       'A summative assessement is one "that occurs at a point in time and is carried out to summarise achievement at that point in time. Often more structured than formative assessment, it provides teachers, students and parents with information on student progress and level of achievement. Summative assessments are used to evaluate student learning, skill acquisition, and academic achievement at the conclusion of a defined instructional period—typically at the end of a project, unit, course, semester, program, or school year. \n(NCVER, 2014)';
 
   List<dynamic> _assessmentsFormativeMultiple = [];
+  var asses = [];
 
   List<bool> _isSelected = List<bool>.generate(100, (int index) => false,
       growable: true); // 100 assessments... TOO MUCH
@@ -149,6 +150,19 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                               setState(
                                 () {
                                   _isSelected[index] = newValue;
+                                  if (newValue) {
+                                    asses.add(
+                                        _assessmentsFormativeMultiple[index]
+                                            .data()['documentID']);
+                                  } else {
+                                    if (asses.contains(
+                                        _assessmentsFormativeMultiple[index]
+                                            .data()['documentID'])) {
+                                      asses.remove(
+                                          _assessmentsFormativeMultiple[index]
+                                              .data()['documentID']);
+                                    }
+                                  }
                                 },
                               );
                             },
@@ -162,20 +176,8 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                           backgroundColor: Color(0xFF29D09E),
                         ),
                         onPressed: () async {
-                          var asses = [];
                           var weigths = data['Weights'];
 
-                          _isSelected.removeRange(
-                              _assessmentsFormativeMultiple.length, 100);
-                          // _isSelected = _isSelected.reversed.toList();
-                          print(_isSelected);
-                          for (var i = 0; i < _isSelected.length; i++) {
-                            if (_isSelected[i]) {
-                              asses.add(i);
-                            }
-                          }
-                          generateSummative(
-                              _isSelected, _assessmentsFormativeMultiple);
                           //Navigator.pop(context);
                           var studs = data['StudentList'];
                           Map<String, List<dynamic>> kiki = Map();
@@ -191,8 +193,7 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                               await db
                                   .collection(
                                       "classes/${widget.passedClassName}/grading/$elStud/formative")
-                                  .where("Current",
-                                      isEqualTo: asses[i].toString())
+                                  .where("AssessID", isEqualTo: asses[i])
                                   .get()
                                   .then(
                                 (value) {
