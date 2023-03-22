@@ -868,9 +868,11 @@ class _AstaGraphsState extends State<AstaGraphs> {
                               DataCell(dt['Targets'].toString() == "Multiple"
                                   ? Text("Class")
                                   : Text("Student")),
-                              DataCell(Text(DateFormat.yMMMEd()
-                                  .format(dt['Created'].toDate())
-                                  .toString()))
+                              DataCell(dt['Created'] == null
+                                  ? Text("Loading")
+                                  : Text(DateFormat.yMMMEd()
+                                      .format(dt['Created'].toDate())
+                                      .toString()))
                             ],
                             onSelectChanged: (newValue) {
                               Navigator.of(context).push(
