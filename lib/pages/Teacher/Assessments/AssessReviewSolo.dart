@@ -295,50 +295,73 @@ class _AssessReviewState extends State<AssessReview> {
                                                             MainAxisAlignment
                                                                 .start,
                                                         onChanged: (value) =>
-                                                            setState(() {
-                                                          var docId =
-                                                              formativenp
-                                                                  .data!
-                                                                  .docs[0]
-                                                                  .reference
-                                                                  .id
-                                                                  .toString();
-                                                          print(k);
-                                                          print(x);
-                                                          print(value
-                                                              .toString()
-                                                              .substring(0, 1));
-                                                          print(savedGrade
-                                                              .toString());
-                                                          _formative
-                                                              .doc(widget
-                                                                  .passedClassName)
-                                                              .collection(
-                                                                  'grading')
-                                                              .doc(widget
-                                                                  .passedStudName)
-                                                              .collection(
-                                                                  'formative')
-                                                              .doc(docId)
-                                                              .update({
-                                                            "Competences.$k.$x":
-                                                                value
-                                                                    .toString()
-                                                                    .substring(
-                                                                        0, 1)
-                                                          }).then((value) {
-                                                            print(
-                                                                "DocumentSnapshot successfully updated!");
-                                                            print(docId);
+                                                            setState(
+                                                          () {
+                                                            var docId =
+                                                                formativenp
+                                                                    .data!
+                                                                    .docs[0]
+                                                                    .reference
+                                                                    .id
+                                                                    .toString();
+                                                            var indicatorPath =
+                                                                FieldPath(
+                                                              [
+                                                                "Competences",
+                                                                k,
+                                                                x,
+                                                              ],
+                                                            );
+
+                                                            print(k);
+                                                            print(x);
+                                                            print("PATH: " +
+                                                                "Competences.$k.$x");
+                                                            print(value
+                                                                .toString()
+                                                                .substring(
+                                                                    0, 1));
                                                             print(savedGrade
                                                                 .toString());
-                                                            print(
-                                                                "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                                            _formative
+                                                                .doc(widget
+                                                                    .passedClassName)
+                                                                .collection(
+                                                                    'grading')
+                                                                .doc(widget
+                                                                    .passedStudName)
+                                                                .collection(
+                                                                    'formative')
+                                                                .doc(docId)
+                                                                .update(
+                                                              {
+                                                                "Competences": {
+                                                                  k: {
+                                                                    x: value
+                                                                        .toString()
+                                                                        .substring(
+                                                                            0,
+                                                                            1)
+                                                                  },
+                                                                },
+                                                              },
+                                                            ).then(
+                                                              (value) {
+                                                                print(
+                                                                    "DocumentSnapshot successfully updated!");
+                                                                print(docId);
+                                                                print(
+                                                                  savedGrade
+                                                                      .toString(),
+                                                                );
+                                                                print(
+                                                                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                                              },
+                                                              onError: (e) => print(
+                                                                  "Error updating document $e"),
+                                                            );
                                                           },
-                                                                  onError: (e) =>
-                                                                      print(
-                                                                          "Error updating document $e"));
-                                                        }),
+                                                        ),
                                                         activeColor:
                                                             Color(0xFF29D09E),
                                                         items: textifier(
