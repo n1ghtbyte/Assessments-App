@@ -348,11 +348,6 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold))),
                         DataColumn(
-                            label: Text('Target',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold))),
-                        DataColumn(
                             label: Text('Date',
                                 style: TextStyle(
                                     fontSize: 18,
@@ -693,11 +688,6 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold))),
                         DataColumn(
-                            label: Text('Target',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold))),
-                        DataColumn(
                             label: Text('Date',
                                 style: TextStyle(
                                     fontSize: 18,
@@ -707,9 +697,6 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                         for (var dt in fsum)
                           DataRow(cells: [
                             DataCell(Text(dt['Result'].toStringAsFixed(2))),
-                            DataCell(dt['Targets'].toString() == "Multiple"
-                                ? Text("Class")
-                                : Text("Student")),
                             DataCell(Text(DateFormat.yMMMEd()
                                 .format(dt['Created'].toDate())
                                 .toString()))
