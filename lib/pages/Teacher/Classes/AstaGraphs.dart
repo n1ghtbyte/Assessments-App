@@ -250,7 +250,14 @@ class _AstaGraphsState extends State<AstaGraphs> {
 
               helper.add(double.parse(foo['Competences'][comp][indicator]));
 
-              print((foo['Created'] as Timestamp).toDate());
+              // print((foo['Created'] as Timestamp).toDate());
+              if (foo['Created'] == null) {
+                return Container(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
 
               if (_bigData[comp]!.isEmpty) {
                 _bigData[comp]?.add(DataItem(
