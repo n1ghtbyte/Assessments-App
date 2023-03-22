@@ -44,16 +44,17 @@ class SettingsPage extends StatelessWidget {
                 String subject =
                     Uri.encodeComponent("ASSESSMENTS App report from user");
                 String body = Uri.encodeComponent(
-                    "Hi! I'm testing the wonderfull assessments app from Inovlabs\n I would like to say ");
+                    "Hi! I'm testing the wonderfull assessments app from Inovlabs\n I would like to say that: ");
                 print(subject);
                 Uri mail =
                     Uri.parse("mailto:$email?subject=$subject&body=$body");
-                if (await launchUrl(mail)) {
+                if (await canLaunchUrl(mail)) {
+                  launchUrl(mail);
                   //email app opened
                 } else {
                   final snackBar = SnackBar(
                       content: Text(
-                          'You must download an email app to send some feedback'));
+                          'You must download an email app in order to send some feedback, thanks.'));
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
               },
