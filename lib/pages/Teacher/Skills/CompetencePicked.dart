@@ -1,10 +1,15 @@
+import 'package:assessments_app/pages/Teacher/Skills/SkillEdit.dart';
 import 'package:flutter/material.dart';
 
 class CompetencePicked extends StatefulWidget {
   final Map passedComp;
-  final String name;
+  final String passedName;
+  final bool editable;
   const CompetencePicked(
-      {Key? key, required this.passedComp, required this.name})
+      {Key? key,
+      required this.passedComp,
+      required this.passedName,
+      required this.editable})
       : super(key: key);
   @override
   _CompetencePickedState createState() => _CompetencePickedState();
@@ -28,10 +33,28 @@ class _CompetencePickedState extends State<CompetencePicked> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.name),
+        title: Text(widget.passedName),
         centerTitle: true,
         backgroundColor: Color(0xFF29D09E),
       ),
+      floatingActionButton: widget.editable
+          ? FloatingActionButton(
+              child: Icon(Icons.edit),
+              backgroundColor: Color(0xFF29D09E),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SkillEdit(
+                      name: widget.passedName,
+                      passedComp: widget.passedComp,
+                      passedIndNumber: noDamage.keys.toList().length,
+                    ),
+                  ),
+                );
+              },
+            )
+          : null,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

@@ -83,7 +83,8 @@ class _SkillsPageState extends State<SkillsPage> {
                                 MaterialPageRoute(
                                   builder: (context) => CompetencePicked(
                                     passedComp: data,
-                                    name: data['Name'],
+                                    passedName: data['Name'],
+                                    editable: true,
                                   ),
                                 ),
                               );
@@ -108,7 +109,8 @@ class _SkillsPageState extends State<SkillsPage> {
                                 MaterialPageRoute(
                                   builder: (context) => CompetencePicked(
                                     passedComp: data,
-                                    name: data['Name'],
+                                    passedName: data['Name'],
+                                    editable: false,
                                   ),
                                 ),
                               );
