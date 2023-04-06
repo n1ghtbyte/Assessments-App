@@ -65,7 +65,7 @@ class _ClassSetupState extends State<ClassSetup> {
               backgroundColor: Color(0xFF29D09E),
             ),
             floatingActionButton: FloatingActionButton(
-              child: Icon(Icons.save_alt),
+              child: Icon(Icons.check),
               onPressed: () {
                 Map<String?, int> map1 = {};
                 int sum = 0;
