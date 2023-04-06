@@ -24,7 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   firebase_core: ^2.4.1
-  fl_chart: ^0.60.0
+  fl_chart: ^0.61.0
     
   
 
