@@ -97,26 +97,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 prefixIcon: Icon(Icons.lock, color: Colors.black),
               ),
             ),
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => RegisterScreen()));
-                },
-                child: Text(
-                  "Register",
-                  style: TextStyle(color: Color.fromARGB(255, 21, 78, 54)),
-                )),
             SizedBox(
-              height: 8.0,
+              height: 18.0,
             ),
             Container(
               width: double.infinity,
               child: RawMaterialButton(
                 fillColor: Color(0xFF29D09E),
                 elevation: 0.0,
-                padding: EdgeInsets.symmetric(vertical: 20.0),
+                padding: EdgeInsets.symmetric(vertical: 16.0),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
+                  borderRadius: BorderRadius.circular(18.0),
                 ),
                 onPressed: () async {
                   if (!_emailController.text.contains("@")) {
@@ -165,10 +156,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 child: Text(
                   "Login",
-                  style: TextStyle(color: Colors.white, fontSize: 18.0),
+                  style: TextStyle(color: Colors.white, fontSize: 20.0),
                 ),
               ),
-            )
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                  foregroundColor: Color(0xFF29D09E),
+                  padding: const EdgeInsets.all(20.0),
+                  textStyle: const TextStyle(fontSize: 20.0)),
+              onPressed: () {},
+              child: const Text("New user? Register here"),
+            ),
           ],
         ),
       ),
