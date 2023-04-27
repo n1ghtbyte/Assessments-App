@@ -432,13 +432,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
                         ),
                         DataColumn(
                           label: Text(
-                            'Target',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Text(
                             'Date',
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
@@ -756,11 +749,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold))),
                         DataColumn(
-                            label: Text('Target',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold))),
-                        DataColumn(
                             label: Text('Date',
                                 style: TextStyle(
                                     fontSize: 18,
@@ -771,9 +759,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
                           DataRow(
                             cells: [
                               DataCell(Text(dt['Result'].toStringAsFixed(2))),
-                              DataCell(dt['Targets'].toString() == "Multiple"
-                                  ? Text("Class")
-                                  : Text("Student")),
                               DataCell(dt['Created'] == null
                                   ? Text("Loading")
                                   : Text(DateFormat.yMMMEd()
