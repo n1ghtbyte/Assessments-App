@@ -68,6 +68,7 @@ class _ChildClassesState extends State<ChildClasses> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => StudentClassInside(
+                              passedWeights: data['Weights'],
                               passedClassId: data['documentID'].toString(),
                               passedClassName: data['Name'].toString(),
                               passedEmail: widget.passedEmail.toString(),

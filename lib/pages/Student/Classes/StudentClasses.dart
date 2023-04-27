@@ -99,6 +99,7 @@ class _StudClassesMainState extends State<StudClassesMain> {
                             passedClassId: data['documentID'].toString(),
                             passedClassName: data['Name'].toString(),
                             passedEmail: currentUser.toString(),
+                            passedWeights: data['Weights'],
                             passedCompetences: data['Competences'])),
                   );
                 },
@@ -106,7 +107,7 @@ class _StudClassesMainState extends State<StudClassesMain> {
                 isThreeLine: true,
                 title: Text(data['Name']),
                 subtitle: Text(
-                    "${data['NumStudents'].toString()} / ${data['MaxStudents'].toString()}\Class Code: ${data['documentID'].toString()}"),
+                    "Students: ${data['NumStudents'].toString()} \nClass Code: ${data['documentID'].toString()}"),
               );
             }).toList(),
           ),
