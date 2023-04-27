@@ -14,13 +14,15 @@ class StudentClassInside extends StatefulWidget {
   final String passedClassId;
   final Map<dynamic, dynamic> passedCompetences;
   final String passedEmail;
+  final Map<dynamic, dynamic> passedWeights;
 
   const StudentClassInside(
       {Key? key,
       required this.passedClassId,
       required this.passedClassName,
       required this.passedCompetences,
-      required this.passedEmail})
+      required this.passedEmail,
+      required this.passedWeights})
       : super(key: key);
 
   @override
@@ -58,8 +60,6 @@ class PointLinex {
 }
 
 class _StudentClassInsideState extends State<StudentClassInside> {
-  ValueNotifier<bool> isDialOpen = ValueNotifier(false);
-
   Map<String, List<DataItem>> _bigData = {};
   Map<String, int> _leTitles =
       {}; // Also worth to Competences... not just indicators
@@ -324,6 +324,43 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                 ),
                 body: ListView(
                   children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        const SizedBox(height: 16),
+                        Container(
+                          padding: EdgeInsets.all(20.0),
+                          child: Text(
+                            "Weights of each competence",
+                            style: TextStyle(
+                                fontSize: 21, fontWeight: FontWeight.w800),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount:
+                              widget.passedCompetences.keys.toList().length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(
+                                widget.passedCompetences.keys.toList()[index],
+                              ),
+                              // : Text("Need to be defined"),
+                              subtitle: Text(
+                                widget.passedWeights[widget
+                                            .passedCompetences.keys
+                                            .toList()[index]]
+                                        .toString() +
+                                    " %",
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    Divider(),
                     SizedBox(
                       height: 6,
                     ),
@@ -552,100 +589,6 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                             const SizedBox(height: 16),
                           ],
                         ),
-                        Container(
-                            width: double.infinity,
-                            child: RawMaterialButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (_) => AlertDialog(
-                                          title: Text("Remove Student"),
-                                          content: Text(
-                                              'Are you sure you wish to remove this student from this class and delete all their assesments?'),
-                                          actions: [
-                                            TextButton(
-                                              style: ButtonStyle(
-                                                foregroundColor:
-                                                    MaterialStateProperty.all<
-                                                        Color>(Colors.blue),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.of(context,
-                                                        rootNavigator: true)
-                                                    .pop();
-                                              },
-                                              child: Text('CANCEL'),
-                                            ),
-                                            TextButton(
-                                              style: ButtonStyle(
-                                                foregroundColor:
-                                                    MaterialStateProperty.all<
-                                                        Color>(Colors.blue),
-                                              ),
-                                              onPressed: () async {
-                                                Navigator.of(context,
-                                                        rootNavigator: true)
-                                                    .pop();
-                                                await FirebaseFirestore.instance
-                                                    .collection('/classes')
-                                                    .doc(widget.passedClassId)
-                                                    .get()
-                                                    .then(
-                                                  (DocumentSnapshot
-                                                      documentSnapshot) {
-                                                    if (documentSnapshot
-                                                        .exists) {
-                                                      var num = documentSnapshot[
-                                                              'NumStudents'] -
-                                                          1;
-                                                      List<dynamic> tmp =
-                                                          documentSnapshot[
-                                                              'StudentList'];
-                                                      tmp.remove(
-                                                          widget.passedEmail);
-                                                      FirebaseFirestore.instance
-                                                          .collection('classes')
-                                                          .doc(widget
-                                                              .passedClassId)
-                                                          .update({
-                                                        'StudentList': tmp
-                                                      });
-                                                      FirebaseFirestore.instance
-                                                          .collection('classes')
-                                                          .doc(widget
-                                                              .passedClassId)
-                                                          .update({
-                                                        'NumStudents': num
-                                                      });
-                                                      // Navigator.of(context)
-                                                      //     .pushReplacement(
-                                                      //   MaterialPageRoute(
-                                                      //     builder: (context) =>
-                                                      //         TurmaExemplo(
-                                                      //       widget.passedClassId
-                                                      //           .toString(),
-                                                      //     ),
-                                                      //   ),
-                                                      // );
-                                                    }
-                                                  },
-                                                );
-                                                Future.microtask(() =>
-                                                    Navigator.pop(context));
-                                              },
-                                              child: Text(
-                                                'DELETE',
-                                              ),
-                                            ),
-                                          ],
-                                        ));
-                              },
-                              child: Text(
-                                "Remove Student",
-                                style: TextStyle(
-                                    color: Colors.red, fontSize: 18.0),
-                              ),
-                            )),
                       ],
                     ),
                   ],
@@ -655,15 +598,51 @@ class _StudentClassInsideState extends State<StudentClassInside> {
               for (var _doc in snapshotSumm.data!.docs) {
                 fsum.add(_doc.data()! as Map<dynamic, dynamic>);
               }
-
               return Scaffold(
                 appBar: AppBar(
-                  title: Text('Graphs'),
+                  title: Text(widget.passedClassName),
                   centerTitle: true,
                   backgroundColor: Color(0xFF29D09E),
                 ),
                 body: ListView(
                   children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        const SizedBox(height: 16),
+                        Container(
+                          padding: EdgeInsets.all(20.0),
+                          child: Text(
+                            "Weights of each competence",
+                            style: TextStyle(
+                                fontSize: 21, fontWeight: FontWeight.w800),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount:
+                              widget.passedCompetences.keys.toList().length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(
+                                widget.passedCompetences.keys.toList()[index],
+                              ),
+                              // : Text("Need to be defined"),
+                              subtitle: Text(
+                                widget.passedWeights[widget
+                                            .passedCompetences.keys
+                                            .toList()[index]]
+                                        .toString() +
+                                    " %",
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    Divider(),
                     SizedBox(
                       height: 6,
                     ),
