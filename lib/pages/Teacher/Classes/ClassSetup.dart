@@ -125,7 +125,8 @@ class _ClassSetupState extends State<ClassSetup> {
                             labelStyle: TextStyle(
                               color: Color(0xFF29D09E),
                             ),
-                            hintText: '0% to 100%',
+                            hintText: 'for example, ${100 ~/ list.length}',
+                            counterText: "percentage",
                             helperText: '${list[index]} weight ',
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Color(0xFF29D09E)),

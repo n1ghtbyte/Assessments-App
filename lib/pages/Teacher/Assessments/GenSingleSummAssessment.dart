@@ -240,6 +240,9 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
                       },
                       onError: (e) => print("Error getting document: $e"),
                     );
+                    SnackBar(
+                        content: Text(
+                            'The summative assessment has been issued to this Class :)'));
 
                     Navigator.pop(context);
                   },

@@ -264,6 +264,9 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                             result = 0;
                             sumativo = 0;
                           }
+                          final snackBar = SnackBar(
+                              content: Text(
+                                  'The assessment has been issued to this Class :)'));
 
                           Navigator.pop(context);
                         },
