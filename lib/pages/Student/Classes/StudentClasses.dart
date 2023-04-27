@@ -106,7 +106,7 @@ class _StudClassesMainState extends State<StudClassesMain> {
                 isThreeLine: true,
                 title: Text(data['Name']),
                 subtitle: Text(
-                    "${data['NumStudents'].toString()} / ${data['MaxStudents'].toString()}\nHash: ${data['documentID'].toString()}"),
+                    "${data['NumStudents'].toString()} / ${data['MaxStudents'].toString()}\Class Code: ${data['documentID'].toString()}"),
               );
             }).toList(),
           ),
