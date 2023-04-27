@@ -165,7 +165,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   foregroundColor: Color(0xFF29D09E),
                   padding: const EdgeInsets.all(20.0),
                   textStyle: const TextStyle(fontSize: 20.0)),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => RegisterScreen()));
+              },
               child: const Text("New user? Register here"),
             ),
           ],
