@@ -59,30 +59,30 @@ class _StudentAddClassState extends State<StudentAddClass> {
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
           });
-          // Navigator.pop(context);
-          // Respond to button press
         },
-        icon: Icon(Icons.create),
-        label: Text('Create'),
+        icon: Icon(Icons.next_plan),
+        label: Text('Join'),
       ),
       body: SafeArea(
-        child: ListView(
-          children: [
-            TextFormField(
-              controller: _controllerJoin,
-              decoration: InputDecoration(
-                icon: Icon(Icons.class_),
-                labelStyle: TextStyle(
-                  color: Color(0xFF29D09E),
-                ),
-                helperText: 'Enter the class\'s join code',
-                suffixIcon: Icon(Icons.check_circle),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF29D09E)),
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: ListView(
+            children: [
+              TextFormField(
+                controller: _controllerJoin,
+                decoration: InputDecoration(
+                  icon: Icon(Icons.class_),
+                  labelStyle: TextStyle(
+                    color: Color(0xFF29D09E),
+                  ),
+                  helperText: 'Enter the class\'s join code',
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF29D09E)),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
