@@ -52,7 +52,7 @@ class _ClassSetupState extends State<ClassSetup> {
 
           return Scaffold(
             appBar: AppBar(
-              title: Text("Class ${data['Name'].toString()} Setup"),
+              title: Text("Setup the weights"),
               centerTitle: true,
               actions: [
                 // IconButton(icon: new Icon(Icons.more_vert), onPressed:  () {
@@ -99,31 +99,43 @@ class _ClassSetupState extends State<ClassSetup> {
               },
               backgroundColor: Color(0xFF29D09E),
             ),
-            body: ListView.builder(
-                shrinkWrap: true,
-                physics: ScrollPhysics(),
-                itemCount: numComp,
-                itemBuilder: (BuildContext context, int index) {
-                  _controllers.add(new TextEditingController());
-                  return Container(
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      controller: _controllers[index],
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.assessment),
-                        labelText: list[index],
-                        labelStyle: TextStyle(
-                          color: Color(0xFF29D09E),
+            body: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(20),
+                  child: Text(
+                    "Please attribute ths desired weight to your competences",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                ListView.builder(
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    itemCount: numComp,
+                    itemBuilder: (BuildContext context, int index) {
+                      _controllers.add(new TextEditingController());
+                      return Container(
+                        padding: EdgeInsets.all(16),
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          controller: _controllers[index],
+                          decoration: InputDecoration(
+                            labelText: list[index],
+                            labelStyle: TextStyle(
+                              color: Color(0xFF29D09E),
+                            ),
+                            hintText: '0% to 100%',
+                            helperText: '${list[index]} weight ',
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFF29D09E)),
+                            ),
+                          ),
                         ),
-                        hintText: '[0-100]',
-                        helperText: 'Competence\'s weight ',
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF29D09E)),
-                        ),
-                      ),
-                    ),
-                  );
-                }),
+                      );
+                    }),
+              ],
+            ),
           );
         });
   }

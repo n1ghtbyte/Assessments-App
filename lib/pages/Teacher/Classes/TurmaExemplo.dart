@@ -94,7 +94,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                       value: _MenuValues.CompetenceAdd,
                     ),
                     PopupMenuItem(
-                      child: Text('Setup'),
+                      child: Text('Setup the weights'),
                       value: _MenuValues.Setup,
                     ),
                     PopupMenuItem(
@@ -239,7 +239,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                 value: _MenuValues.CompetenceAdd,
                               ),
                               PopupMenuItem(
-                                child: Text('Setup'),
+                                child: Text('Setup the weights'),
                                 value: _MenuValues.Setup,
                               ),
                               PopupMenuItem(
@@ -249,15 +249,6 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                             ],
                             onSelected: (value) {
                               switch (value) {
-                                // case _MenuValues.ReviewAssess:
-                                //   Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //       builder: (context) => ReviewAssessments(
-                                //           widget.passedClassName),
-                                //     ),
-                                //   );
-                                //   break;
                                 case _MenuValues.CompetenceAdd:
                                   Navigator.of(context)
                                       .push(MaterialPageRoute(
