@@ -106,7 +106,7 @@ class _AddStudentToClassState extends State<AddCompToClass> {
                 for (var i = 0; i < actualNumberCompPrivate; i++) {
                   Map<String, dynamic> foo2 = snapshotprivate.data?.docs[i]
                       .data()! as Map<String, dynamic>;
-                  _comps.add(foo2);
+                  _comps.insert(0, foo2);
                   print(foo2['Name']);
                 }
                 print("*************************************");
