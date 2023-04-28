@@ -1,0 +1,420 @@
+{
+  "Pensamento Crítico": {
+    "Demonstração de espírito crítico": [
+      "1 - Não parece questionar informações, situações ou condições da sua própria vida.",
+      "2 - Questiona visivelmente certas informações e situações da sua própria vida.",
+      "3 - Mostra uma atitude crítica em relação às informações recebidas e às condições da sua própria vida.",
+      "4 - Explora e questiona o mundo ao seu redor. Mostra refletir sobre as informações adquiridas e sobre a própria vida.",
+      "5 - Demonstra formular julgamentos e avaliações próprias com base na reflexão sistemática."
+    ],
+    "Distinção entre factos e opiniões, interpretações avaliações, etc., nos argumentos dos outros": [
+      "1 - Apresenta julgamentos pessoais ou decisões com base em opiniões e interpretações pessoais como sendo factos objetivos.",
+      "2 - Aceita como factos objetivos e sem questionar, julgamentos ou decisões com base nas opiniões dos outros e na sua interpretação pessoal.",
+      "3 - Questiona julgamentos ou decisões com base em opiniões e interpretações pessoais.",
+      "4 - Prova ser capaz de distinguir factos objetivos de opiniões e interpretações pessoais",
+      "5 - Demonstra reconhecer, questionar e analisar julgamentos ou decisões com base em opiniões e interpretações pessoais."
+    ],
+    "Participação ativa nas discussões": [
+      "1 - Não participa durante as discussões.",
+      "2 - Demonstra dificuldade/desconforto em participar nas discussões.",
+      "3 - Participa ativamente nas discussões.",
+      "4 - Participa de forma construtiva nas discussões, contribuindo para reflexões conjuntas e ricas.",
+      "5 - Participa de forma construtiva nas discussões, promovendo o questionamento e servindo de referência para os outros."
+    ],
+    "Previsão das implicações práticas de decisões e abordagens": [
+      "1 - Não parece estar ciente dos efeitos das decisões e propostas.",
+      "2 - Parece ignorar as implicações práticas das decisões e propostas.",
+      "3 - Demonstra prever as implicações práticas das decisões e propostas.",
+      "4 - Analisa os prós e contras dos efeitos das decisões e propostas.",
+      "5 - Avalia adequadamente os prós e contras das decisões e propostas."
+    ],
+    "Reflexão sobre os efeitos das decisões pessoais nos outros": [
+      "1 - Não parece importar-se ou pensar nas consequências das suas ações nos outros.",
+      "2 - Ouve as observações e críticas dos outros, mas não parece refletir sobre elas. ",
+      "3 - Parece ouvir e refletir sobre as consequências e efeitos das suas ações nos outros.",
+      "4 - Ouve criticamente as opiniões dos outros e reconhece e aceita os seus próprios erros.",
+      "5 - Solicita, pondera e considera de forma crítica e construtiva as críticas dos outros acerca da sua conduta pessoal."
+    ],
+    "name": "Pensamento Crítico"
+  },
+  "Criatividade": {
+    "Contribuição com sugestões e ideias para situações ou problemas apresentados.": [
+      "1 - Não contribui com sugestões, mesmo quando lhe é solicitado.",
+      "2 - Contribui com sugestões limitadas e apenas quando lhe é solicitado.",
+      "3 - Contribui de forma ativa com algumas sugestões quando se encontra perante problemas.",
+      "4 - Contribui com várias  ideias para as questões levantadas, de forma expontânea.",
+      "5 - Contribui com várias ideias alternativas de forma espontânea e com pertiência para o tema em questão."
+    ],
+    "Proposta de ideias inovadoras em termos de conteúdo, desenvolvimento, etc.": [
+      "1 - Hesita em considerar ou propor novas ideias.",
+      "2 - Propõe ideias que não contêm nada de novo.",
+      "3 - Propõe ideias com algum conteúdo inovador.",
+      "4 - Propõe ideias inovadoras",
+      "5 - Propões e desenvolve ideias inovadoras."
+    ],
+    "Identificação de abordagens alternativas, ser inconformista.": [
+      "1 - Não parece questionar a sua própria situação ou circunstâncias. Atua de acordo com os padrões estabelecidos.",
+      "2 - Aparenta questionar as coisas, mas não faz nada para mudar a sua situação.",
+      "3 - Aparenta perceber que existem várias formas de se fazer as coisas. Não é conformista.",
+      "4 - Questiona a maneira tradicional de fazer as coisas e experimenta novas formas de as mlhorar.",
+      "5 - Questiona as situações em que se encontra e propõe abordagens alternativas e inovadoras para as melhorar."
+    ],
+    "Conceção de novas ideias ou soluções para situações ou problemas com base no que é conhecido.": [
+      "1 - Não aparenta aplicar o seu conhecimento em diferentes áreas.",
+      "2 - Aplica o seu conhecimento em diferentes áreas, mas sem apresentar novas ideias pessoais como resultado.",
+      "3 - Aplica o seu conhecimento para apresentar ideias relevantes ou soluções práticas que já funcionaram noutros contextos.",
+      "4 - Apresenta novas ideias/analogias com base noutras situações ou problemas vivenciados anteriormente.",
+      "5 - Gera ideias inovadoras e relevantes com base em conhecimentos adquiridos noutros contextos."
+    ],
+    "Comunicação de novas ideias a outros.": [
+      "1 - Não expressa ideias pessoais novas.",
+      "2 - Expressa ideias pessoais novas mas com aparente dificuldade.",
+      "3 - Expressa e transmite ideias pessoais novas aos outros.",
+      "4 - Partilha ideias pessoais novas e esforça-se para as tornar compreensíveis para os outros.",
+      "5 - Partilha ideias novas de forma clara e compreensiva aos outros."
+    ],
+    "name": "Criatividade"
+  },
+  "Comunicação Interpessoal": {
+    "Ouvir atentamente.": [
+      "1 - Não parece ouvir com atenção. Tenta impor as suas ideias aos outros.",
+      "2 - Parece distrair-se facilmente e não parece captar a mensagem na totalidade.",
+      "3 - Mostra concentração e interesse enquanto ouve os outros.",
+      "4 - Ouve ativamente os outros, demonstrando tentar compreender completamente as suas ideias.",
+      "5 - Escuta ativamente os outros, respeitando o seu tempo de modo a mostrar que estão a ser ouvidos."
+    ],
+    "Dizer o que pensa e sente sobre um assunto.": [
+      "1 - Não expressar os seus pensamentos sobre os assuntos abordados.",
+      "2 - Não parece adoptar nenhum ponto de vista em particular e as mensagens que expressa são ambíguas.",
+      "3 - Expressa pensamentos e sentimentos sobre os assuntos abordados.",
+      "4 - Expressa pensamentos e sentimentos livremente, com clareza e segurança.",
+      "5 - Demonstra assertividade. Deixa claro aos outros qual é a sua posição pessoal sobre os assuntos abordados."
+    ],
+    "Falar sobre as coisas de forma empática e igualitária.": [
+      "1 - Parece avaliar e julgar o que os outros dizem com frequência; age de forma defensiva.",
+      "2 - Fala com aparente sentimento de segurança e superioridade excessivos.",
+      "3 - Parece evitar fazer julgamentos de valor ou transmitir um sentimento de superioridade quando fala.",
+      "4 - Quando comunica, apoia e tem os outros em consideração.",
+      "5 - Quando comunica, promove a compreensão e o diálogo."
+    ],
+    "Colocar questões para compreender melhor.": [
+      "1 - Não coloca questões e parece assumir à partida que compreendeu o que os outros dizem.",
+      "2 - Coloca questões mas de forma inoportuna ou não estruturada.",
+      "3 - Coloca questões abertas num esforço para compreender as ideias e posições dos outros.",
+      "4 - Coloca questões que demonstram interesse em compreender as ideias dos outros e que permitem um diálogo natural.",
+      "5 - Coloca questões para compreender melhor as ideias dos outros, promovendo uma boa atmosfera e enriquecendo o diálogo."
+    ],
+    "Expressar-se com clareza e precisão.": [
+      "1 - A sua expressividade é vaga ou pouco clara.",
+      "2 - Expressa-se com hesitação e sem conseguir transmitir as ideias de forma clara.",
+      "3 - Transmite ideias de forma concisa quando em contextos que lhe são familiares.",
+      "4 - Expressa ideias com facilidade e fluidez em diferentes contextos.",
+      "5 - Mostra uma facilidade notável em expressar-se e em comunicar de forma clara em diferentes contextos."
+    ],
+    "name": "Comunicação Interpessoal"
+  },
+  "Colaboração - Trabalho de Equipa": {
+    "Conclusão das tarefas atribuídas dentro do prazo como membro de um grupo.": [
+      "1 - Não conclui as tarefas atribuídas.",
+      "2 - Completa parcialmente as tarefas atribuídas ou fá-lo com atrasos.",
+      "3 - Respeita os prazos e informa acerca do progresso da tarefa atribuída.",
+      "4 - Respeita os prazos; A tarefas realizadas apresentam um contributo relevante para o trabalho de grupo.",
+      "5 - Cumpre com sucesso as tarefas atribuídas, numa abordagem que facilita o trabalho dos restantes membros do grupo."
+    ],
+    "Participação ativa nas reuniões de equipa, partilhando informações, conhecimentos e experiências.": [
+      "1 - Não participa ou não contribui para o trabalho de grupo.",
+      "2 - Participa nas reuniões mas contribui sobretudo a pedido dos outros.",
+      "3 - Participa nas reuniões de grupo contribuindo no geral com alguma partilha.",
+      "4 - Participa ativamente. As suas contribuições fomentam a partilha e melhoram a qualidade dos resultados do grupo.",
+      "5 - As suas contribuições são fundamentais para o trabalho em equipa e para a qualidade dos resultados."
+    ],
+    "Colaboração na definição, organização e distribuição de tarefas do grupo.": [
+      "1 - Não colabora na organização do trabalho de grupo.",
+      "2 - Aceita o plano de trabalho proposto pelos restantes membros do grupo sem intervir ou questionar.",
+      "3 - Participa ativamente no planeamento, organização e distribuição do trabalho de grupo.",
+      "4 - Demonstra organização e  eficácia no planeamento, organização e distribuição das tarefas de grupo.",
+      "5 - Promove a organização do trabalho de forma eficaz e organizada, procurando integrar os talentos e a experiência dos outros."
+    ],
+    "Consideração e compromisso com acordos e objetivos partilhados": [
+      "1 - Parece focar-se apenas em objetivos pessoais.",
+      "2 - Tenta, mas demonstra dificuldade em conciliar objetivos pessoais com os partilhados entre o grupo.",
+      "3 - Demonstra ter em igual consideração os objetivos do grupo e os seus.",
+      "4 - Participa na definição clara dos objetivos do grupo, considerando os interesses de todos os seus membros.",
+      "5 - Motiva e orienta o grupo para objetivos mais desafiantes. Os grupos em que participa destacam-se pelo desempenho e qualidade."
+    ],
+    "Consideração do ponto de vista dos outros e capacidade de fornecer críticas construtivas. ": [
+      "1 - Parece não ouvir atentamente os colegas e subestimá-los sistematicamente, impondo as suas opiniões.",
+      "2 - Parece ouvir, mas não coloca questões; demonstra não ter em consideração as opiniões dos outros. As críticas são redundantes e pouco sugestivas.",
+      "3 - Ouve e aceita as opiniões dos outros. Expressa o seu ponto de vista de forma construtiva.",
+      "4 - Promove diálogos construtivos e inspira participações de qualidade por parte dos outros membros do grupo.",
+      "5 - Considera as opiniões dos outros numa perspetiva integrada, promovendo uma atmosfera de colaboração e apoio. "
+    ],
+    "name": "Colaboração - Trabalho de Equipa"
+  },
+  "Resolução de Problemas": {
+    "Identificação de problemas e tomada de decisão para os resolver.": [
+      "1 - Parece não se aperceber quando existe um problema.",
+      "2 - Percebe que existe um problema, mas demonstra dificuldade em identificá-lo concretamente.",
+      "3 - Identifica ativamente os problemas, mas demonstra passividade na sua resolução.",
+      "4 - Identifica problemas com facilidade e assume uma atitude pró-ativa em relação a eles.",
+      "5 - Identifica fácilmente os problemas, explicando concretamente como o faz; Demonstra iniciativa na tomada de decisão para os resolver."
+    ],
+    "Colocar questões para definir um problema.": [
+      "1 - Não se envolve na definição do problema.",
+      "2 - Coloca questões, de vez em quando, para definir o problema.",
+      "3 - Coloca questões de forma ativa para definir o problema.",
+      "4 - Coloca ativamente questões pertinentes e adequadas para definir o problema.",
+      "5 - Formula ativamente questões chave para definir o problema e considerando as suas diferentes perspetivas."
+    ],
+    "Recolha de informações relevantes de fontes confiáveis seguindo um método lógico de análise da informação.": [
+      "1 - Não recolhe informações ou as informações que recolhe são irrelevantes ou não confiáveis.",
+      "2 - Reúne informações relevantes que por vezes são incompletas ou pouco confiáveis; nem sempre segue um método de análise.",
+      "3 - Reúne as informações necessárias e analisa-as corretamente.",
+      "4 - Seleciona informações valiosas e confiáveis de forma precisa ​​e analisa-as sistematicamente.",
+      "5 - Reúne com eficiência informações relevantes e confiáveis​, analisando-as através de métodos eficazes, contribuindo com as suas ideias de forma pertinente."
+    ],
+    "Apresentação de diferentes soluções para um único problema e avaliação dos possíveis riscos e vantagens de cada uma.": [
+      "1 - Não apresenta mais de uma solução para um problema.",
+      "2 - Apresenta ocasionalmente soluções alternativas para um problema.",
+      "3 - Apresenta algumas soluções alternativas e demonstra uma análise simples de prós e contras.",
+      "4 - Demonstra uma análise completa e eficaz das soluções alternativas que apresenta.",
+      "5 - Escolhe uma ou mais soluções eficazes, com base numa análise profunda e coerente das suas vantagens e riscos."
+    ],
+    "Desenho de um plano de ação para a aplicação da solução escolhida.": [
+      "1 - Não propõe soluções ou as que propõe não se baseiam numa abordagem lógica.",
+      "2 - Propõe soluções, mas não desenha um plano de acção  para as aplicar.",
+      "3 - Propõe soluções com base numa argumentação sólida e apresenta um plano de acção para a solução escolhida.",
+      "4 - Propõe várias soluções com base numa argumentação sólida, apresenta e aplica um plano com base na solução escolhida.",
+      "5 - Propõe várias soluções com base numa argumentação sólida. Desenha e aplica um plano eficaz e completo com base na solução proposta."
+    ],
+    "name": "Resolução de Problemas"
+  },
+  "Diversidade e Interculturalidade": {
+    "Aceitação da diversidade como parte da condição humana.": [
+      "1 - Parece considerar a diversidade como barreira entre pessoas.",
+      "2 - Parece tratar as pessoas de maneira diferente, com base nas suas diferenças cognitivas, de género, sociais e culturais.",
+      "3 - A atitude em relação aos outros não parece ser limitada ou influenciada por diferenças cognitivas, de género, sociais ou culturais.",
+      "4 - Estabelece relações sociais sem barreiras ou preconceitos com base na diversidade humana.",
+      "5 - Adota uma atitude equitativa, promovendo um ambiente social que acolhe a diversidade humana."
+    ],
+    "Relacionamento com pessoas sem distinções/preconceitos de origem social e cultural.": [
+      "1 - Manifesta aversão em relação a pessoas de certas origens sociais e/ ou culturais.",
+      "2 - Manifesta desconfiança/preconceito em relação a pessoas e/ou práticas de diferentes origens sociais e/ou culturais.",
+      "3 - Mostra respeito por pessoas de diferentes contextos sociais e/ou culturais.",
+      "4 - Estabelece relações sem ser limitado pelas diferenças culturais ou sociais das outras pessoas.",
+      "5 - Aprecia as diferenças culturais e sociais e valoriza as pessoas pelas suas qualidades pessoais."
+    ],
+    "Não discriminação de pessoas por causa de diferenças cognitivas, de género, sociais ou culturais.": [
+      "1 - Apresenta comportamentos de discriminação de pessoas com diferenças cognitivas, de género, sociais e/ou culturais.",
+      "2 - Demonstra preconceito em relação a pessoas com diferenças cognitivas, de género, sociais e/ou culturais.",
+      "3 - Atua com respeito por pessoas com diferenças cognitivas, de género, sociais e/ou culturais.",
+      "4 - As suas atitudes demonstram aceitação da diversidade humana e das práticas sociais de outras pessoas.",
+      "5 - Atua com aceitação e respeito por todas as pessoas. Demonstra vontade de compreender os diferentes costumes e comportamentos sociais dos outros."
+    ],
+    "Interação com a diversidade como parte do seu desenvolvimento pessoal.": [
+      "1 - Demonstra preconceito e evita relacionar-se com pessoas que são diferentes de si.",
+      "2 - Parece assumir que as relações humanas devem ter por base semelhanças cognitivas, de género, sociais e/ou culturais.",
+      "3 - Parece relacionar-se com as pessoas independentemente das suas diferenças cognitivas, de género, sociais e/ou culturais.",
+      "4 - Parece apreciar diversos ambientes e explorar ativamente visões alternativas, pensamentos e ideias para o seu desenvolvimento pessoal.",
+      "5 - Promove ativamente um ambiente humano rico e diversificado que promove o desenvolvimento pessoal de todos os envolvidos."
+    ],
+    "Compreensão do valor acrescentado da diversidade humana.": [
+      "1 - Parece considerar a diversidade cognitiva, de género, social e/ou cultural como justificação para o acesso desigual às oportunidades sociais.",
+      "2 - Parece considerar os seus valores pessoais como os únicos válidos para fundamentar relacionamentos.",
+      "3 - Parece ouvir e interpretar os valores das outras pessoas com respeito.",
+      "4 - A sua atitude demonstra aceitação dos valores das outras pessoas.",
+      "5 - A sua atitude demonstra uma integração equilibrada entre os valores pessoais e os das outras pessoas."
+    ],
+    "name": "Diversidade e Interculturalidade"
+  },
+  "Comunicação Oral": {
+    "Participação em situações de discurso.": [
+      "1 - Não participa quando lhe é solicitado.",
+      "2 - Participa sem demonstrar interesse e só quando lhe é solicitado.",
+      "3 - Participa interessadamente quando lhe é solicitado.",
+      "4 - Participapor iniciativa própria nos momentos apropriados.",
+      "5 - Participa de forma construtiva e por iniciativa própria nos momentos apropriados."
+    ],
+    "Transmissão de informações importantes.": [
+      "1 - Não apresenta ideias ou expressa-se de forma pobre e confusa.",
+      "2 - Apresenta algumas ideias.",
+      "3 - Expressa ideias bem fundamentadas.",
+      "4 - Transmite ideias, sentimentos e valores de forma bem fundamentada.",
+      "5 - Destaca-se pela clareza de expressão relacionada com o raciocínio e/ou sentimentos."
+    ],
+    "Gestão dos nervos ao falar em público.": [
+      "1 - Esforça-se para falar e por vezes bloqueia, aparentemente devido aos nervos.",
+      "2 - Expressa-se em público, mas demonstrando nervosismo e desconforto.",
+      "3 - Expressa-se em público, mostrando alguma tranquilidade.",
+      "4 - Expressa-se em público com segurança e confiança.",
+      "5 - Expressa-se com calma, confiança e uma proficiência notável."
+    ],
+    "Fazer apresentações estruturadas, atendendo a quaisquer requisitos que possam existir.": [
+      "1 - As suas apresentações orais carecem de uma estrutura inteligível.",
+      "2 - A estrutura das apresentações não é eficaz ou não está de acordo com os requisitos estipulados.",
+      "3 - As apresentações são estruturadas atendendo aos requisitos estipulados, quando existem.",
+      "4 - Estrutura as apresentações, relacionando ideias e argumentos com facilidade.",
+      "5 - Faz apresentações orais eficazes e bem organizadas."
+    ],
+    "Resposta a questões.": [
+      "1 - Não responde às questões colocadas.",
+      "2 - Reage às questões colocadas, mas sem as responder.",
+      "3 - Responde às questões colocadas de forma superficial.",
+      "4 - Responde às questões colocadas de forma eficaz e articulada.",
+      "5 - Responde corretamente e com aparente facilidade às questões colocadas."
+    ],
+    "name": "Comunicação Oral"
+  },
+  "Capacidades de Escrita": {
+    "Trabalhar num tema específico, sem se desviar para outro.": [
+      "1 - Mistura vários tópicos sem esclarecer qual é o principal.",
+      "2 - Prolonga os textos com repetições ou divagações desnecessárias.",
+      "3 - Concentra-se no tópico sem desvios.",
+      "4 - Abrange todos os aspetos do tópico de acordo com as instruções.",
+      "5 - Aborda o tema com profundidade, além do que é exigido."
+    ],
+    "Expressão clara de ideias, conhecimentos ou sentimentos.": [
+      "1 - Os textos escritos são confusos e muito difíceis de seguir.",
+      "2 - As ideias expressas podem ser entendidas, mas a escrita é desorganizada.",
+      "3 - Apresenta os diferentes aspetos do tópico numa ordem lógica.",
+      "4 - A escrita é boa, lógica e organizada (por ex., inclui introdução, desenvolvimento e conclusão ao escrever os textos).",
+      "5 - A expressão escrita é excelente e lógica, com organização eficaz de parágrafos e secções."
+    ],
+    "Escrita gramaticalmente correta.": [
+      "1 - Não segue as regras gramaticais corretas quando escreve.",
+      "2 - Segue as regras gramaticais corretas, mas comete erros ortográficos relevantes.",
+      "3 - Os textos escritos estão corretos no que diz respeito à ortografia e à gramática.",
+      "4 - Os textos estão corretos quanto à ortografia e gramática e estão devidamente pontuados.",
+      "5 - Além de seguir as regras gramaticais e ortográficas usa corretamente as preposições e conjunções."
+    ],
+    "Utilização de linguagem adequada ao tipo de documento e leitor.": [
+      "1 - Usa abreviaturas ou jargões inapropriados.",
+      "2 - Usa a terminologia do tema incorretamente.",
+      "3 - Usa a terminologia adequada ao tema.",
+      "4 - Usa corretamente a terminologia adequada ao tema e adapta-a de acordo com o documento e o leitor.",
+      "5 - Utiliza sinónimos para esclarecer termos ambíguos ou equívocos, conforme o tipo de documento ou leitor final."
+    ],
+    "Utilização de dispositivos apropriados para facilitar a leitura e compreensão do texto": [
+      "1 - Não formata o texto (fonte, parágrafo, estilo, formatos, etc.). Não numera as páginas.",
+      "2 - Faz uso excessivo das ferramentas de formatação, dificultando a compreensão.",
+      "3 - Usa apropriadamente as ferramentas tipográficas (fonte, parágrafo, formatos de estilo, etc.).",
+      "4 - Formata adequadamente o texto e usa notas de rodapé ou notas finais para referências, comentários, etc.",
+      "5 - Organiza e formata claramente o texto e todos os seus elementos-chave."
+    ],
+    "name": "Capacidades de Escrita"
+  },
+  "Orientação da Aprendizagem": {
+    "Colocar em prática de forma disciplinada as abordagens, métodos e experiências propostas.": [
+      "1 - Não segue/parece ignorar as propostas de trabalho.",
+      "2 - Interpreta ou aplica as propostas de trabalho de forma inadequada.",
+      "3 - Segue adequadamente as propostas de trabalho no processo de aprendizagem.",
+      "4 - Dá prioridade às propostas de trabalho da forma que melhor se adequa aos objetivos de aprendizagem.",
+      "5 - Participa ativamente na criação e seleção de estratégias para colocar em prática as propostas de trabalho."
+    ],
+    "Partilhar e assumir os objetivos de aprendizagem propostos.": [
+      "1 - Parece ignorar os objetivos de aprendizagem propostos.",
+      "2 - Interpreta mal os objetivos de aprendizagem propostos pelo professor.",
+      "3 - Compreende e assume os objetivos de aprendizagem propostos pelo professor.",
+      "4 - Dá prioridade, com bom senso, aos objetivos de aprendizagem propostos pelo professor.",
+      "5 - Faz alterações pessoais adequadas aos objetivos de aprendizagem propostos pelo professor."
+    ],
+    "Colocar questões para compreender a informação e complementá-la para aprender mais.": [
+      "1 - Não coloca questões em relação às informações recebidas.",
+      "2 - Coloca questões apenas quando solicitado pelo professor ou para resolver problemas específicos.",
+      "3 - Coloca questões sobre as informações recebidas, a fim de compreender melhor o assunto.",
+      "4 - Coloca questões que mostram uma boa compreensão do que foi aprendido.",
+      "5 - Coloca questões que vão além do assunto para complementar as informações recebidas, a fim de aprender mais."
+    ],
+    "Reconhecimento da importância do esquema mental dos outros para uma experiência de aprendizagem mais rica.": [
+      "1 - Mostra pouco interesse em trocar ideias com os outros.",
+      "2 - Gosta de partilhar ideias, mas defende posições pessoais tendo pouca ou nenhuma consideração pelas ideias dos outros.",
+      "3 - Parece ouvir com interesse as ideias propostas pelos outros.",
+      "4 - Solicita as perspetivas e opiniões dos outros sobre os assuntos que estão a ser estudados.",
+      "5 - Promove a troca de opiniões e a argumentação de modo a enriquecer e aprofundar a aprendizagem."
+    ],
+    "Aprendizagem autónoma e autorregulada.": [
+      "1 - Não mostra iniciativa no processo de aprendizagem e segue as propostas de trabalho de forma incompleta.",
+      "2 - Completa as propostas de trabalho, mas com o mínimo de esforço.",
+      "3 - Completa as propostas de trabalho com motivação e com esforço para ter sucesso.",
+      "4 - Vai além das propostas de trabalho, completando tarefas com acréscimos que as melhoram para além do que é exigido.",
+      "5 - Vai para além das propostas de trabalho, visando explorar outros temas, de modo a aprender mais."
+    ],
+    "name": "Orientação da Aprendizagem"
+  },
+  "Sentido Ético": {
+    "Orientação do comportamento pessoal por um conhecimento básico de princípios éticos.": [
+      "1 - Parece agir sem considerar se as suas ações são moralmente certas ou erradas.",
+      "2 - Mostra dificuldade em orientar e motivar o seu comportamento pessoal de acordo com princípios éticos.",
+      "3 - Demonstra ter uma conduta moral e expressa opiniões morais muito básicas quando um princípio é aplicado.",
+      "4 - Parece agir de acordo com um julgamento moral bem fundamentado, apoiado no conhecimento de princípios éticos.",
+      "5 - Atua de forma moralmente consistente, argumentando com ideias bem fundamentadas envolvendo princípios éticos, e levando a uma conclusão moral."
+    ],
+    "Reflexão sobre ética e expressão do conhecimento sobre princípios éticos.": [
+      "1 - Não parece ter interesse na origem, raciocínio ou implicações dos princípios éticos básicos.",
+      "2 - Segue, mas não parece questionar/refletir nas razões por trás de alguns princípios éticos básicos.",
+      "3 - Segue princípios éticos básicos e demonstra consciência da dimensão ética do ser humano.",
+      "4 - Constrói argumentos lógicos em torno de princípios éticos e a sua aplicação em diferentes situações.",
+      "5 - Expressa uma ideia pessoal de ética consistente e bem fundamentada (de acordo com a perceção e o desenvolvimento da consciência moral)."
+    ],
+    "Aceitação crítica de novas perspetivas, mesmo que ponham em causa as suas próprias.": [
+      "1 - Não aborda as questões éticas em toda a sua complexidade (ou seja, todas as implicações, circunstâncias e consequências envolvidas).",
+      "2 - Parece considerar apenas a perspetiva pessoal ou daqueles diretamente envolvidos numa ação, deixando de lado outros pontos de vista relevantes.",
+      "3 - Demonstra uma posição crítica acerca do que está certo, usando critérios fundamentados com base em pontos de vista relevantes pessoais e de outras pessoas.",
+      "4 - Demonstra compreensão e abertura aos requisitos e interesses dos outros.",
+      "5 - Contribui de forma construtiva para a resolução de problemas, respeitando e reconhecendo as necessidades, sentimentos e opiniões dos outros."
+    ],
+    "Possuir um sistema de valores pessoais como parte da personalidade e identidade.": [
+      "1 - Não parece pensar ou importar-se com valores morais.",
+      "2 - Menciona valores, mas sem os assumir consciente e deliberadamente como seus.",
+      "3 - Manifesta valores pessoais aos outros como sendo parte da sua identidade pessoal.",
+      "4 - Tem uma organização clara dos valores pessoais de acordo com a sua importância e prioridade.",
+      "5 - Demonstra ter um sistema de valores pessoais coerente e baseado no reconhecimento de princípios éticos."
+    ],
+    "Observação e colocação em prática das regras estabelecidas no contexto em que se encontra.": [
+      "1 - Parece não estar ciente das regras estabelecidas pelo grupo/contexto educativo.",
+      "2 - Mostra reconhecimento das regras estabelecidas pelo grupo/contexto educativo, mas tem dificuldade em segui-las consistentemente.",
+      "3 - Reconhece e respeita as regras estabelecidas pelo grupo/contexto educativo.",
+      "4 - Parece tentar interpretar e dar sentido a cada um dos elementos normativos estabelecidos pelo grupo/contexto educativo.",
+      "5 - Demonstra ter um processo de reflexão que sensibiliza para os aspetos normativos e o seu papel no estabelecimento de um horizonte moral."
+    ],
+    "name": "Sentido Ético"
+  },
+  "Gestão de Projetos": {
+    "Descrição da situação que justifica a necessidade do projeto.": [
+      "1 - Parece não estar ciente das necessidades abordadas pelo projeto, nem dos temas envolvidos.",
+      "2 - Identifica os temas e os elementos envolvidos, mas não os relaciona com as necessidades do projeto.",
+      "3 - Contextualiza o projeto e os seus elementos, aludindo às necessidades abordadas.",
+      "4 - Justifica o projeto e os elementos envolvidos, fazendo uma ligação clara com as necessidades abordadas.",
+      "5 - Justifica a necessidade do projeto de forma clara e organizada, apoiando-se em evidências relevantes."
+    ],
+    "Estabelecimento de objetivos claros para o projeto.": [
+      "1 - Não formula metas para o projeto ou formula-as de forma pouco clara.",
+      "2 - Formula metas, mas falha em relacioná-las com as  necessidades abordadas no projeto.",
+      "3 - Formula objetivos claros e relaciona-os com as necessidades abordadas no projeto.",
+      "4 - Formula metas realistas e viáveis de forma clara e bem fundamentada.",
+      "5 - Formula metas realistas e ambiciosas que atendem às necessidades do projeto e vai além do esforço requerido para as alcançar."
+    ],
+    "Planeamento de ações para atingir as metas e gestão das pessoas responsáveis por elas.": [
+      "1 - Considera os objetivos sem especificar as ações necessárias para os realizar.",
+      "2 - Define ações, mas não toma iniciativa de as atribui a pessoas.",
+      "3 - Define ações concretas e propõe de forma especifica quem as irá realizar.",
+      "4 - Planeia cuidadosamente as ações, avaliando a sua viabilidade e especificando as pessoas responsáveis.",
+      "5 - Estabelece uma excelente sequência de ações e atribui-as à(s) pessoa(s) mais adequada(s)."
+    ],
+    "Previsão e alocação do tempo necessário para concluir as ações planeadas.": [
+      "1 - Não considera o tempo necessário para cada ação.",
+      "2 - Estima o tempo para cada ação de forma pouco realista.",
+      "3 - Planeia detalhadamente o tempo para cada ação.",
+      "4 - Faz uma planificação temporal bem pensada e considera tempo adicional em caso de imprevistos.",
+      "5 - Estabelece mecanismos para monitorizar o tempo e fazer os ajustes necessários como parte de um plano de ação claro."
+    ],
+    "Planeamento da avaliação dos resultados do projeto.": [
+      "1 - Negligencia a importância de avaliar os resultados do projeto.",
+      "2 - Parece estar ciente da importância de avaliar os resultados, mas falha em entregar um plano para o fazer.",
+      "3 - Fornece um plano geral de avaliação, incluindo quando e como será feita a avaliação e por quem.",
+      "4 - Planeia sistematicamente quando e como será feita a avaliação e por quem.",
+      "5 - Planeia sistematicamente quando e como será feita a avaliação e por quem, definindo os indicadores relevantes e os instrumentos a utilizar."
+    ],
+    "name": "Gestão de Projetos"
+  }
+}
