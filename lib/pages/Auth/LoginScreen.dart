@@ -184,7 +184,7 @@ showLoaderDialog(BuildContext context) {
       children: [
         CircularProgressIndicator(),
         Container(
-            margin: EdgeInsets.only(left: 7), child: Text("Loggin you in...")),
+            margin: EdgeInsets.only(left: 7), child: Text("Logging you in...")),
       ],
     ),
   );
