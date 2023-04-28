@@ -183,7 +183,8 @@ showLoaderDialog(BuildContext context) {
     content: new Row(
       children: [
         CircularProgressIndicator(),
-        Container(margin: EdgeInsets.only(left: 7), child: Text("Loading...")),
+        Container(
+            margin: EdgeInsets.only(left: 7), child: Text("Loggin you in...")),
       ],
     ),
   );
