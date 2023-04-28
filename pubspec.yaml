@@ -71,3 +71,4 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - lib/assets/eye.jpeg
+    - lib/assets/trads.json
