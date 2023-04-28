@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "ASSESS APP v4.1",
+              "ASSESS APP v1.0.5",
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 28.0,
