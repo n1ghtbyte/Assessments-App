@@ -12,7 +12,7 @@ class SkillsPage extends StatefulWidget {
 
 class _SkillsPageState extends State<SkillsPage> {
   final CollectionReference _competences =
-      FirebaseFirestore.instance.collection('Competences');
+      FirebaseFirestore.instance.collection('CompetencesPT');
 
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
 

@@ -1,6 +1,5 @@
 import 'package:assessments_app/pages/Teacher/Skills/SkillEdit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CompetencePicked extends StatefulWidget {
   final Map passedComp;

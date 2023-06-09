@@ -42,7 +42,7 @@ class _ReviewAssessmentState extends State<ReviewAssessment> {
   Map<dynamic, dynamic> kek = Map();
   Map<dynamic, dynamic> _mapinha = {};
   Stream<QuerySnapshot> _stream =
-      FirebaseFirestore.instance.collection('Competences').snapshots();
+      FirebaseFirestore.instance.collection('CompetencesPT').snapshots();
 
   final CollectionReference _assess =
       FirebaseFirestore.instance.collection('assessments');

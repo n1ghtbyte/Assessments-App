@@ -23,7 +23,7 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
   final _formKey = GlobalKey<FormState>();
 
   late Stream<QuerySnapshot> _stream =
-      FirebaseFirestore.instance.collection('Competences').snapshots();
+      FirebaseFirestore.instance.collection('CompetencesPT').snapshots();
 
   final _controllerName = TextEditingController();
   Map<String?, List<String?>> _competences =
