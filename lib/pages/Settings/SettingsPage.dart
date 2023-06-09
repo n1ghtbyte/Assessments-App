@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:assessments_app/pages/Settings/SettingsDispPage.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -8,7 +9,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Settings'),
+          title: Text(AppLocalizations.of(context)!.settings),
           centerTitle: true,
           backgroundColor: Color(0xFF29D09E),
         ),
@@ -19,8 +20,8 @@ class SettingsPage extends StatelessWidget {
             ListTile(
               enabled: false,
               leading: Icon(Icons.settings_display),
-              title: Text("Display"),
-              subtitle: Text("Dark mode, colors, navigation"),
+              title: Text("Dark-theme"),
+              // subtitle: Text(AppLocalizations.of(context)!.da),
               onTap: () {
                 Navigator.push(
                   context,

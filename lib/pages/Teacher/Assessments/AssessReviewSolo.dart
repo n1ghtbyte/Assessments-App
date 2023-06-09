@@ -21,7 +21,7 @@ class AssessReview extends StatefulWidget {
 
 class _AssessReviewState extends State<AssessReview> {
   final Stream<QuerySnapshot> _compsStream =
-      FirebaseFirestore.instance.collection('/Competences').snapshots();
+      FirebaseFirestore.instance.collection('/CompetencesPT').snapshots();
   final CollectionReference _assess =
       FirebaseFirestore.instance.collection('/assessments');
   final CollectionReference _formative =

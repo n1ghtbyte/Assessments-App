@@ -68,7 +68,7 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
                 Container(
                   padding: EdgeInsets.all(20.0),
                   child: ReadMoreText(
-                    content,
+                    AppLocalizations.of(context)!.summtext,
                     trimLength: 4,
                     textAlign: TextAlign.justify,
                     trimMode: TrimMode.Line,

@@ -130,7 +130,7 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
                 Container(
                   padding: EdgeInsets.all(20.0),
                   child: ReadMoreText(
-                    content,
+                    AppLocalizations.of(context)!.formtext,
                     trimLength: 4,
                     textAlign: TextAlign.justify,
                     trimMode: TrimMode.Line,
@@ -149,11 +149,12 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
                     controller: _controllerName,
                     decoration: InputDecoration(
                       icon: Icon(Icons.comment),
-                      labelText: 'Assessment name',
+                      labelText: AppLocalizations.of(context)!.assessname,
                       labelStyle: TextStyle(
                         color: Color(0xFF29D09E),
                       ),
-                      helperText: 'What is the name of the assessment?',
+                      helperText:
+                          AppLocalizations.of(context)!.assessnamequestion,
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Color(0xFF29D09E)),
                       ),
