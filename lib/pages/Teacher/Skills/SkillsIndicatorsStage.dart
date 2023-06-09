@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SkillsIndicatorsStage extends StatefulWidget {
   final double passedNumIndicator;
@@ -30,7 +31,7 @@ class _SkillsIndicatorsStage extends State<SkillsIndicatorsStage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Indicators Creation'),
+        title: Text(AppLocalizations.of(context)!.indicators),
         centerTitle: true,
         backgroundColor: Color(0xFF29D09E),
       ),
@@ -43,7 +44,8 @@ class _SkillsIndicatorsStage extends State<SkillsIndicatorsStage> {
             // If the form is valid, display a snackbar. In the real world,
             // you'd often call a server or save the information in a database.
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Competence created')),
+              SnackBar(
+                  content: Text(AppLocalizations.of(context)!.compcreated)),
             );
             Map<String, dynamic> data = Map();
             data['Name'] = widget.passedCompetenceName;
@@ -67,14 +69,14 @@ class _SkillsIndicatorsStage extends State<SkillsIndicatorsStage> {
                 .doc(widget.passedCompetenceName.toString())
                 .set(data)
                 .onError((e, _) => print("Error writing document: $e"));
-            final snackBar =
-                SnackBar(content: Text('The competence is created!'));
+            final snackBar = SnackBar(
+                content: Text(AppLocalizations.of(context)!.compcreated));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
             Navigator.of(context).pop();
             Navigator.of(context).pop();
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Some fields are missing')),
+              SnackBar(content: Text(AppLocalizations.of(context)!.fieldsdead)),
             );
           }
         },
@@ -95,17 +97,19 @@ class _SkillsIndicatorsStage extends State<SkillsIndicatorsStage> {
                         controller: _descriptionComp[ind][0],
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
+                            return AppLocalizations.of(context)!.entertxt;
                           }
                           return null;
                         },
                         decoration: InputDecoration(
                           icon: Icon(Icons.comment),
-                          labelText: 'Indicator ${ind + 1}',
+                          labelText:
+                              '${AppLocalizations.of(context)!.indicator} ${ind + 1}',
                           labelStyle: TextStyle(
                             color: Color(0xFF29D09E),
                           ),
-                          helperText: 'Indicator ${ind + 1} name',
+                          helperText:
+                              '${AppLocalizations.of(context)!.indicator} ${ind + 1} ${AppLocalizations.of(context)!.name}',
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFF29D09E)),
                           ),
@@ -123,18 +127,20 @@ class _SkillsIndicatorsStage extends State<SkillsIndicatorsStage> {
                               controller: _descriptionComp[ind][index2 + 1],
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter some text';
+                                  return AppLocalizations.of(context)!.entertxt;
                                 }
                                 return null;
                               },
                               decoration: InputDecoration(
                                 icon: Icon(Icons.comment),
-                                labelText: 'Descriptor ${index2 + 1}',
+                                labelText:
+                                    '${AppLocalizations.of(context)!.descriptor} ${index2 + 1}',
                                 labelStyle: TextStyle(
                                   color: Color(0xFF29D09E),
                                 ),
-                                helperText:
-                                    'Describe asserting a ${index2 + 1} score',
+                                // LIT
+                                // helperText:
+                                //     'Describe asserting a ${index2 + 1} score',
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide:
                                       BorderSide(color: Color(0xFF29D09E)),

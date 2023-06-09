@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddStudentToClass extends StatefulWidget {
   final String passedClassName;
@@ -41,7 +42,7 @@ class _AddStudentToClassState extends State<AddStudentToClass> {
         print(data['StudentList'].length);
         return Scaffold(
           appBar: AppBar(
-            title: Text('Add Student'),
+            title: Text(AppLocalizations.of(context)!.addstud),
             centerTitle: true,
             backgroundColor: Color(0xFF29D09E),
           ),
@@ -71,15 +72,15 @@ class _AddStudentToClassState extends State<AddStudentToClass> {
 
                   Navigator.of(context).pop();
                 } else {
-                  final snackBar = SnackBar(content: Text('NANI KORE DAYO!?'));
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  // final snackBar = SnackBar(content: Text('NANI KORE DAYO!?'));
+                  // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
               });
               // Navigator.pop(context);
               // Respond to button press
             },
             icon: Icon(Icons.add),
-            label: Text('Add'),
+            label: Text(AppLocalizations.of(context)!.add),
           ),
           body: SafeArea(
             child: ListView(
@@ -88,11 +89,11 @@ class _AddStudentToClassState extends State<AddStudentToClass> {
                   controller: _controllerJoin,
                   decoration: InputDecoration(
                     icon: Icon(Icons.person),
-                    labelText: 'Student Name',
+                    labelText: AppLocalizations.of(context)!.studname,
                     labelStyle: TextStyle(
                       color: Color(0xFF29D09E),
                     ),
-                    helperText: 'Enter the name of the student',
+                    helperText: AppLocalizations.of(context)!.enterstudname,
                     suffixIcon: Icon(
                       Icons.check_circle,
                     ),

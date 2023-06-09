@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StudentAddClass extends StatefulWidget {
   const StudentAddClass({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class _StudentAddClassState extends State<StudentAddClass> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Join Class'),
+        title: Text(AppLocalizations.of(context)!.joinclass),
         centerTitle: true,
         backgroundColor: Color(0xFF29D09E),
       ),
@@ -54,14 +55,15 @@ class _StudentAddClassState extends State<StudentAddClass> {
                   .update({'NumStudents': (num)});
               Navigator.pop(context);
             } else {
-              final snackBar =
-                  SnackBar(content: Text('The class is unavailable...'));
+              final snackBar = SnackBar(
+                  content:
+                      Text(AppLocalizations.of(context)!.classunavailable));
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
           });
         },
         icon: Icon(Icons.next_plan),
-        label: Text('Join'),
+        label: Text(AppLocalizations.of(context)!.join),
       ),
       body: SafeArea(
         child: Padding(
@@ -75,7 +77,7 @@ class _StudentAddClassState extends State<StudentAddClass> {
                   labelStyle: TextStyle(
                     color: Color(0xFF29D09E),
                   ),
-                  helperText: 'Enter the class\'s join code',
+                  helperText: AppLocalizations.of(context)!.entertheclasscode,
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFF29D09E)),
                   ),

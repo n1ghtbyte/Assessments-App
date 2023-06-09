@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:assessments_app/assets/src/LinkedLabelCheckbox.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart'; // From the docs
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GenSummAssessment extends StatefulWidget {
   final String passedClassName;
@@ -78,7 +79,7 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
 
               return Scaffold(
                 appBar: AppBar(
-                  title: Text('Generate Summ. Assessment'),
+                  title: Text(AppLocalizations.of(context)!.genassess),
                   centerTitle: true,
                   backgroundColor: Color(0xFF29D09E),
                 ),
@@ -90,12 +91,12 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                       Container(
                         padding: EdgeInsets.all(20.0),
                         child: ReadMoreText(
-                          content,
+                          AppLocalizations.of(context)!.summtext,
                           trimLength: 4,
                           textAlign: TextAlign.justify,
                           trimMode: TrimMode.Line,
-                          trimCollapsedText: " Show More ",
-                          trimExpandedText: " Show less ",
+                          trimCollapsedText: AppLocalizations.of(context)!.sm,
+                          trimExpandedText: AppLocalizations.of(context)!.sl,
                           lessStyle: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF29D09E)),
@@ -119,8 +120,7 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                       ),
                       Container(
                         padding: EdgeInsets.all(20.0),
-                        child: Text(
-                            "Choose which assessments to take into account",
+                        child: Text(AppLocalizations.of(context)!.pickassess,
                             style: TextStyle(fontSize: 18.0)),
                       ),
                       ListView.builder(
@@ -264,13 +264,10 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                             result = 0;
                             sumativo = 0;
                           }
-                          final snackBar = SnackBar(
-                              content: Text(
-                                  'The assessment has been issued to this Class :)'));
 
                           Navigator.pop(context);
                         },
-                        child: Text(('Generate'),
+                        child: Text((AppLocalizations.of(context)!.generate),
                             style: new TextStyle(fontSize: 18)),
                       ),
                     ],
@@ -282,7 +279,7 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
         } else {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Generate Summ. Assessment'),
+              title: Text(AppLocalizations.of(context)!.genassess),
               centerTitle: true,
               backgroundColor: Color(0xFF29D09E),
             ),
@@ -294,7 +291,7 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                   Container(
                     padding: EdgeInsets.all(20.0),
                     child: Text(
-                      "Before you can run a summative assessment, you must setup the weights of each competence!",
+                      AppLocalizations.of(context)!.forgetsetup,
                     ),
                   ),
                 ],

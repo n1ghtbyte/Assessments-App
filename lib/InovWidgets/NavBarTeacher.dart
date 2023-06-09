@@ -5,6 +5,8 @@ import 'package:assessments_app/pages/Teacher/Skills/SkillsPage.dart';
 import 'package:assessments_app/pages/Teacher/Account/TeacherProfile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 // import 'package:firebase_storage/firebase_storage.dart';
 
 class NavBarTeacher extends StatefulWidget {
@@ -25,13 +27,13 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text('Teacher'),
+            accountName: Text(AppLocalizations.of(context)!.teacher),
             accountEmail: Text(currentUser!),
             decoration: BoxDecoration(color: Color(0xFF29D09E)),
           ),
           ListTile(
             leading: Icon(Icons.summarize),
-            title: const Text('Assessments'),
+            title: Text(AppLocalizations.of(context)!.assessments),
             onTap: () {
               Navigator.pop(context);
 
@@ -43,7 +45,7 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
           ),
           ListTile(
             leading: Icon(Icons.menu_book),
-            title: const Text('Competences'),
+            title: Text(AppLocalizations.of(context)!.competences),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(
@@ -60,7 +62,7 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
           const SizedBox(height: 16),
           ListTile(
             leading: Icon(Icons.account_box),
-            title: const Text('Account'),
+            title: Text(AppLocalizations.of(context)!.account),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(
@@ -71,7 +73,7 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
           ),
           ListTile(
             leading: Icon(Icons.settings),
-            title: const Text('Settings'),
+            title: Text(AppLocalizations.of(context)!.settings),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(
@@ -82,13 +84,13 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
           ),
           ListTile(
             leading: Icon(Icons.logout),
-            title: const Text('Log out'),
+            title: Text(AppLocalizations.of(context)!.logout),
             onTap: () {
               showDialog(
                 context: context,
                 builder: (_) => AlertDialog(
-                  title: Text("Logout"),
-                  content: Text('Log out now?'),
+                  title: Text(AppLocalizations.of(context)!.logout),
+                  content: Text(AppLocalizations.of(context)!.logout),
                   actions: [
                     TextButton(
                       style: ButtonStyle(
@@ -98,7 +100,7 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
                       onPressed: () {
                         Navigator.of(context, rootNavigator: true).pop();
                       },
-                      child: Text('CANCEL'),
+                      child: Text(AppLocalizations.of(context)!.cancel),
                     ),
                     TextButton(
                       style: ButtonStyle(
@@ -117,7 +119,7 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
                           },
                         );
                       },
-                      child: Text('LOGOUT'),
+                      child: Text(AppLocalizations.of(context)!.logout),
                     ),
                   ],
                 ),

@@ -2,6 +2,7 @@ import 'package:assessments_app/pages/Teacher/Assessments/AssessReviewSolo.dart'
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AssessmentCheck extends StatefulWidget {
   final String passedAssessmentIdName;
@@ -84,7 +85,7 @@ class _AssessmentCheckState extends State<AssessmentCheck> {
 
                 return Scaffold(
                     appBar: AppBar(
-                      title: Text('Review'),
+                      title: Text(AppLocalizations.of(context)!.review),
                       centerTitle: true,
                       backgroundColor: Color(0xff29d092),
                     ),
@@ -96,7 +97,7 @@ class _AssessmentCheckState extends State<AssessmentCheck> {
                         Container(
                           padding: EdgeInsets.all(14.0),
                           child: Text(
-                            "Name: ${data['Name']}\nClass: ${data['ClassName']}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}",
+                            "${AppLocalizations.of(context)!.name}: ${data['Name']}\n${AppLocalizations.of(context)!.classConcept}: ${data['ClassName']}\n${AppLocalizations.of(context)!.date}: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}",
                             style: TextStyle(fontSize: 20),
                           ),
                         ),
@@ -109,7 +110,6 @@ class _AssessmentCheckState extends State<AssessmentCheck> {
                               itemCount: studs.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return ListTile(
-                                  //title: Text("KII"),
                                   title: Text(
                                       namedStuds[studs[index].toString()]
                                           .toString()),

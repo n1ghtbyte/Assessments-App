@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:assessments_app/assets/group_radio_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReviewAssessment extends StatefulWidget {
   final String passedAssessmentIdName;
@@ -133,7 +134,7 @@ class _ReviewAssessmentState extends State<ReviewAssessment> {
                 }
                 return Scaffold(
                   appBar: AppBar(
-                    title: Text('Review Assessment'),
+                    title: Text(AppLocalizations.of(context)!.reviewassessment),
                     centerTitle: true,
                     backgroundColor: Color(0xFF29D09E),
                   ),
@@ -173,7 +174,7 @@ class _ReviewAssessmentState extends State<ReviewAssessment> {
                       }
                     },
                     icon: Icon(Icons.skip_next),
-                    label: Text('Next'),
+                    label: Text(AppLocalizations.of(context)!.next),
                   ),
                   body: SafeArea(
                     child: SingleChildScrollView(
@@ -184,7 +185,7 @@ class _ReviewAssessmentState extends State<ReviewAssessment> {
                           Container(
                             padding: EdgeInsets.all(20.0),
                             child: Text(
-                              "Student: $currentStudent\nClass:${data['ClassName']}\nAssessment: ${data['currentNumber']}#",
+                              "${AppLocalizations.of(context)!.student}: $currentStudent\n${AppLocalizations.of(context)!.classConcept}: ${data['ClassName']}\n${AppLocalizations.of(context)!.assessname}: ${data['currentNumber']}#",
                               style: TextStyle(fontSize: 26),
                             ),
                           ),

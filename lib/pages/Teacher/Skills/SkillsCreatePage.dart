@@ -1,5 +1,6 @@
 import 'package:assessments_app/pages/Teacher/Skills/SkillsIndicatorsStage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SkillsCreatePage extends StatefulWidget {
   const SkillsCreatePage({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class _SkillsCreatePageState extends State<SkillsCreatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Competence'),
+        title: Text(AppLocalizations.of(context)!.createcomp),
         centerTitle: true,
         backgroundColor: Color(0xFF29D09E),
       ),
@@ -45,14 +46,15 @@ class _SkillsCreatePageState extends State<SkillsCreatePage> {
             );
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Enter the competence name')),
+              SnackBar(
+                  content: Text(AppLocalizations.of(context)!.entercompname)),
             );
           }
 
           // Respond to button press
         },
         icon: Icon(Icons.skip_next),
-        label: Text('Next'),
+        label: Text(AppLocalizations.of(context)!.next),
       ),
       body: Form(
         key: _formKey,
@@ -64,17 +66,17 @@ class _SkillsCreatePageState extends State<SkillsCreatePage> {
               controller: _competenceName,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
+                  return AppLocalizations.of(context)!.entertxt;
                 }
                 return null;
               },
               decoration: InputDecoration(
                 icon: Icon(Icons.comment),
-                labelText: 'Competence name',
+                labelText: AppLocalizations.of(context)!.compname,
                 labelStyle: TextStyle(
                   color: Color(0xFF29D09E),
                 ),
-                helperText: 'What is the name of the competence?',
+                helperText: AppLocalizations.of(context)!.compnamequestion,
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Color(0xFF29D09E)),
                 ),
@@ -85,7 +87,7 @@ class _SkillsCreatePageState extends State<SkillsCreatePage> {
           const SizedBox(height: 16),
           ListTile(
             leading: Icon(Icons.format_list_numbered),
-            title: Text("How many indicators?"),
+            title: Text(AppLocalizations.of(context)!.hminds),
           ),
           Slider(
             value: _sliderDiscreteValue,

@@ -3,6 +3,7 @@ import 'package:assessments_app/pages/Teacher/Skills/SkillsCreatePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SkillsPage extends StatefulWidget {
   @override
@@ -51,7 +52,7 @@ class _SkillsPageState extends State<SkillsPage> {
 
             return Scaffold(
               appBar: AppBar(
-                title: Text('Competences'),
+                title: Text(AppLocalizations.of(context)!.competences),
                 centerTitle: true,
                 backgroundColor: Color(0xFF29D09E),
               ),

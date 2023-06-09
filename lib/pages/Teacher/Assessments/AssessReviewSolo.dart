@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:assessments_app/assets/group_radio_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AssessReview extends StatefulWidget {
   final String passedAssessmentIdName;
@@ -157,8 +158,8 @@ class _AssessReviewState extends State<AssessReview> {
 
                             return Scaffold(
                               appBar: AppBar(
-                                title:
-                                    Text('Reviewing ${widget.passedStudName}'),
+                                title: Text(
+                                    '${AppLocalizations.of(context)!.reviewing}: ${widget.passedStudName}'),
                                 centerTitle: true,
                                 backgroundColor: Color(0xFF29D09E),
                               ),
@@ -230,7 +231,7 @@ class _AssessReviewState extends State<AssessReview> {
                                       Container(
                                         padding: EdgeInsets.all(15.0),
                                         child: Text(
-                                          "Student: ${widget.passedStudName}\nAssessment: ${data['Name']}\nClass: ${data['ClassName']}\n",
+                                          "${AppLocalizations.of(context)!.student}: ${widget.passedStudName}\n${AppLocalizations.of(context)!.assessname}: ${data['Name']}\n${AppLocalizations.of(context)!.classConcept}: ${data['ClassName']}\n",
                                           style: TextStyle(fontSize: 20),
                                         ),
                                       ),
@@ -299,13 +300,13 @@ class _AssessReviewState extends State<AssessReview> {
                                                         onChanged: (value) =>
                                                             setState(
                                                           () {
-                                                            var docId =
-                                                                formativenp
-                                                                    .data!
-                                                                    .docs[0]
-                                                                    .reference
-                                                                    .id
-                                                                    .toString();
+                                                            // var docId =
+                                                            //     formativenp
+                                                            //         .data!
+                                                            //         .docs[0]
+                                                            //         .reference
+                                                            //         .id
+                                                            //         .toString();
 
                                                             print(k);
                                                             print(x);

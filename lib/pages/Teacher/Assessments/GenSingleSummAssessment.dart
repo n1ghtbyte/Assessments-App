@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:assessments_app/assets/src/LinkedLabelCheckbox.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart'; // From the docs
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GenSingleSummAssessment extends StatefulWidget {
   final String passedClassName; //Class ID
@@ -55,7 +56,7 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text('Generate Summ. Assessment'),
+            title: Text(AppLocalizations.of(context)!.genassess),
             centerTitle: true,
             backgroundColor: Color(0xFF29D09E),
           ),
@@ -71,8 +72,8 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
                     trimLength: 4,
                     textAlign: TextAlign.justify,
                     trimMode: TrimMode.Line,
-                    trimCollapsedText: " Show More ",
-                    trimExpandedText: " Show less ",
+                    trimCollapsedText: AppLocalizations.of(context)!.sm,
+                    trimExpandedText: AppLocalizations.of(context)!.sl,
                     lessStyle: TextStyle(
                         fontWeight: FontWeight.bold, color: Color(0xFF29D09E)),
                     moreStyle: TextStyle(
@@ -81,7 +82,7 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
                 ),
                 Container(
                   padding: EdgeInsets.all(20.0),
-                  child: Text("Choose which assessments to take into account",
+                  child: Text(AppLocalizations.of(context)!.pickassess,
                       style: TextStyle(fontSize: 18.0)),
                 ),
                 ListView.builder(
@@ -241,12 +242,13 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
                       onError: (e) => print("Error getting document: $e"),
                     );
                     SnackBar(
-                        content: Text(
-                            'The summative assessment has been issued to this Class :)'));
+                        content:
+                            Text(AppLocalizations.of(context)!.summissued));
 
                     Navigator.pop(context);
                   },
-                  child: Text(('Generate'), style: new TextStyle(fontSize: 18)),
+                  child: Text((AppLocalizations.of(context)!.generate),
+                      style: new TextStyle(fontSize: 18)),
                 ),
               ],
             ),

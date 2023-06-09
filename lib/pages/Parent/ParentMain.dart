@@ -3,6 +3,7 @@ import 'package:assessments_app/pages/Parent/Student/ChildClasses.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ParentMainScreen extends StatefulWidget {
   const ParentMainScreen({Key? key}) : super(key: key);
@@ -36,7 +37,7 @@ class _ParentMainScreenState extends State<ParentMainScreen> {
           return Scaffold(
             drawer: NavBarParent(),
             appBar: AppBar(
-              title: Text('Children'),
+              title: Text(AppLocalizations.of(context)!.children),
               centerTitle: true,
               backgroundColor: Color(0xFF29D09E),
             ),
@@ -54,7 +55,7 @@ class _ParentMainScreenState extends State<ParentMainScreen> {
             // ),
             body: Center(
               child: Text(
-                "You have no official children",
+                "...",
                 style: TextStyle(fontStyle: FontStyle.italic),
                 textAlign: TextAlign.center,
               ),
@@ -64,7 +65,7 @@ class _ParentMainScreenState extends State<ParentMainScreen> {
           return Scaffold(
             drawer: NavBarParent(),
             appBar: AppBar(
-              title: Text('Children'),
+              title: Text(AppLocalizations.of(context)!.children),
               centerTitle: true,
               backgroundColor: Color(0xFF29D09E),
             ),

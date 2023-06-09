@@ -2,6 +2,7 @@ import 'package:assessments_app/InovWidgets/NavBarStudent.dart';
 import 'package:assessments_app/pages/Student/Classes/StudentClassInside.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChildClasses extends StatefulWidget {
   final String passedEmail;
@@ -36,13 +37,14 @@ class _ChildClassesState extends State<ChildClasses> {
         if (snapshot.data?.size.toInt() == 0) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('${widget.passedEmail}\'s Classes'),
+              title: Text(
+                  '${widget.passedEmail}\'s ${AppLocalizations.of(context)!.classes}'),
               centerTitle: true,
               backgroundColor: Color(0xFF29D09E),
             ),
             body: Center(
               child: Text(
-                "Classes will be displayed here, once you join any",
+                AppLocalizations.of(context)!.classdisplayhere,
                 style: TextStyle(fontStyle: FontStyle.italic),
                 textAlign: TextAlign.center,
               ),
@@ -52,7 +54,7 @@ class _ChildClassesState extends State<ChildClasses> {
         return Scaffold(
           drawer: NavBarStudent(),
           appBar: AppBar(
-            title: Text('Classes'),
+            title: Text(AppLocalizations.of(context)!.classes),
             centerTitle: true,
             backgroundColor: Color(0xFF29D09E),
           ),

@@ -8,6 +8,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:assessments_app/InovWidgets/LegendWidget.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StudentClassInside extends StatefulWidget {
   final String passedClassName;
@@ -318,7 +319,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
               print("no summative here");
               return Scaffold(
                 appBar: AppBar(
-                  title: Text('Graphs'),
+                  title: Text(AppLocalizations.of(context)!.graphs),
                   centerTitle: true,
                   backgroundColor: Color(0xFF29D09E),
                 ),
@@ -331,7 +332,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                         Container(
                           padding: EdgeInsets.all(20.0),
                           child: Text(
-                            "Weights of each competence",
+                            AppLocalizations.of(context)!.wec,
                             style: TextStyle(
                                 fontSize: 21, fontWeight: FontWeight.w800),
                             textAlign: TextAlign.center,
@@ -367,7 +368,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                     Container(
                       padding: EdgeInsets.all(20),
                       child: Text(
-                        "Summative Assessments",
+                        AppLocalizations.of(context)!.summa,
                         style: TextStyle(
                             fontSize: 21, fontWeight: FontWeight.w800),
                         textAlign: TextAlign.center,
@@ -380,12 +381,12 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                     DataTable(
                       columns: [
                         DataColumn(
-                            label: Text('Grade',
+                            label: Text(AppLocalizations.of(context)!.grade,
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold))),
                         DataColumn(
-                            label: Text('Date',
+                            label: Text(AppLocalizations.of(context)!.date,
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold))),
@@ -395,7 +396,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                     Container(
                       padding: EdgeInsets.all(20),
                       child: Text(
-                        "Total: 0 \nAverage: 0",
+                        "{AppLocalizations.of(context)!.ovr}: 0 \n{AppLocalizations.of(context)!.avg}: 0",
                         style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w400),
                         textAlign: TextAlign.left,
@@ -411,7 +412,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                     Container(
                       padding: EdgeInsets.all(20),
                       child: Text(
-                        "Formative Assessments",
+                        AppLocalizations.of(context)!.forma,
                         style: TextStyle(
                             fontSize: 21, fontWeight: FontWeight.w800),
                         textAlign: TextAlign.center,
@@ -520,7 +521,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                         Column(
                           children: [
                             Text(
-                              "Student Progression",
+                              AppLocalizations.of(context)!.studentprog,
                               style: TextStyle(
                                   fontSize: 21, fontWeight: FontWeight.w400),
                               textAlign: TextAlign.left,
@@ -613,7 +614,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                         Container(
                           padding: EdgeInsets.all(20.0),
                           child: Text(
-                            "Weights of each competence",
+                            AppLocalizations.of(context)!.wec,
                             style: TextStyle(
                                 fontSize: 21, fontWeight: FontWeight.w800),
                             textAlign: TextAlign.center,
@@ -649,7 +650,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                     Container(
                       padding: EdgeInsets.all(20),
                       child: Text(
-                        "Summative Assessments",
+                        AppLocalizations.of(context)!.summa,
                         style: TextStyle(
                             fontSize: 21, fontWeight: FontWeight.w800),
                         textAlign: TextAlign.center,
@@ -662,12 +663,12 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                     DataTable(
                       columns: [
                         DataColumn(
-                            label: Text('Grade',
+                            label: Text(AppLocalizations.of(context)!.grade,
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold))),
                         DataColumn(
-                            label: Text('Date',
+                            label: Text(AppLocalizations.of(context)!.date,
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold))),
@@ -685,7 +686,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                     Container(
                       padding: EdgeInsets.all(20),
                       child: Text(
-                        "Total: ${fsum.length} \nAverage: ${(fsum.map((e) => e['Result']).reduce((value, element) => value + element) / fsum.length).toStringAsFixed(2)}",
+                        "{AppLocalizations.of(context)!.ovr}: ${fsum.length} \n{AppLocalizations.of(context)!.avg}: ${(fsum.map((e) => e['Result']).reduce((value, element) => value + element) / fsum.length).toStringAsFixed(2)}",
                         style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w400),
                         textAlign: TextAlign.left,
@@ -701,7 +702,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                     Container(
                       padding: EdgeInsets.all(20),
                       child: Text(
-                        "Formative Assessments",
+                        AppLocalizations.of(context)!.forma,
                         style: TextStyle(
                             fontSize: 21, fontWeight: FontWeight.w800),
                         textAlign: TextAlign.center,
@@ -809,7 +810,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                         Column(
                           children: [
                             Text(
-                              "Student Progression",
+                              AppLocalizations.of(context)!.studentprog,
                               style: TextStyle(
                                   fontSize: 21, fontWeight: FontWeight.w400),
                               textAlign: TextAlign.left,
@@ -879,98 +880,103 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                           ],
                         ),
                         Container(
-                            width: double.infinity,
-                            child: RawMaterialButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (_) => AlertDialog(
-                                          title: Text("Leave this class"),
-                                          content: Text(
-                                              'Are you sure you wish to leave thisclass and delete all your assesments?'),
-                                          actions: [
-                                            TextButton(
-                                              style: ButtonStyle(
-                                                foregroundColor:
-                                                    MaterialStateProperty.all<
-                                                        Color>(Colors.blue),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.of(context,
-                                                        rootNavigator: true)
-                                                    .pop();
-                                              },
-                                              child: Text('CANCEL'),
+                          width: double.infinity,
+                          child: RawMaterialButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => AlertDialog(
+                                        title: Text(
+                                            AppLocalizations.of(context)!.ltc),
+                                        content: Text(
+                                            AppLocalizations.of(context)!
+                                                .delclass),
+                                        actions: [
+                                          TextButton(
+                                            style: ButtonStyle(
+                                              foregroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(Colors.blue),
                                             ),
-                                            TextButton(
-                                              style: ButtonStyle(
-                                                foregroundColor:
-                                                    MaterialStateProperty.all<
-                                                        Color>(Colors.blue),
-                                              ),
-                                              onPressed: () async {
-                                                Navigator.of(context,
-                                                        rootNavigator: true)
-                                                    .pop();
-                                                await FirebaseFirestore.instance
-                                                    .collection('/classes')
-                                                    .doc(widget.passedClassId)
-                                                    .get()
-                                                    .then(
-                                                  (DocumentSnapshot
-                                                      documentSnapshot) {
-                                                    if (documentSnapshot
-                                                        .exists) {
-                                                      var num = documentSnapshot[
-                                                              'NumStudents'] -
-                                                          1;
-                                                      List<dynamic> tmp =
-                                                          documentSnapshot[
-                                                              'StudentList'];
-                                                      tmp.remove(
-                                                          widget.passedEmail);
-                                                      FirebaseFirestore.instance
-                                                          .collection('classes')
-                                                          .doc(widget
-                                                              .passedClassId)
-                                                          .update({
-                                                        'StudentList': tmp
-                                                      });
-                                                      FirebaseFirestore.instance
-                                                          .collection('classes')
-                                                          .doc(widget
-                                                              .passedClassId)
-                                                          .update({
-                                                        'NumStudents': num
-                                                      });
-                                                      // Navigator.of(context)
-                                                      //     .pushReplacement(
-                                                      //   MaterialPageRoute(
-                                                      //     builder: (context) =>
-                                                      //         TurmaExemplo(
-                                                      //       widget.passedClassId
-                                                      //           .toString(),
-                                                      //     ),
-                                                      //   ),
-                                                      // );
-                                                    }
-                                                  },
-                                                );
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text(
-                                                'DELETE',
-                                              ),
+                                            onPressed: () {
+                                              Navigator.of(context,
+                                                      rootNavigator: true)
+                                                  .pop();
+                                            },
+                                            child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .cancel),
+                                          ),
+                                          TextButton(
+                                            style: ButtonStyle(
+                                              foregroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(Colors.blue),
                                             ),
-                                          ],
-                                        ));
-                              },
-                              child: Text(
-                                "Leave Class",
-                                style: TextStyle(
-                                    color: Colors.red, fontSize: 18.0),
-                              ),
-                            )),
+                                            onPressed: () async {
+                                              Navigator.of(context,
+                                                      rootNavigator: true)
+                                                  .pop();
+                                              await FirebaseFirestore.instance
+                                                  .collection('/classes')
+                                                  .doc(widget.passedClassId)
+                                                  .get()
+                                                  .then(
+                                                (DocumentSnapshot
+                                                    documentSnapshot) {
+                                                  if (documentSnapshot.exists) {
+                                                    var num = documentSnapshot[
+                                                            'NumStudents'] -
+                                                        1;
+                                                    List<dynamic> tmp =
+                                                        documentSnapshot[
+                                                            'StudentList'];
+                                                    tmp.remove(
+                                                        widget.passedEmail);
+                                                    FirebaseFirestore.instance
+                                                        .collection('classes')
+                                                        .doc(widget
+                                                            .passedClassId)
+                                                        .update({
+                                                      'StudentList': tmp
+                                                    });
+                                                    FirebaseFirestore.instance
+                                                        .collection('classes')
+                                                        .doc(widget
+                                                            .passedClassId)
+                                                        .update({
+                                                      'NumStudents': num
+                                                    });
+                                                    // Navigator.of(context)
+                                                    //     .pushReplacement(
+                                                    //   MaterialPageRoute(
+                                                    //     builder: (context) =>
+                                                    //         TurmaExemplo(
+                                                    //       widget.passedClassId
+                                                    //           .toString(),
+                                                    //     ),
+                                                    //   ),
+                                                    // );
+                                                  }
+                                                },
+                                              );
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .delete,
+                                            ),
+                                          ),
+                                        ],
+                                      ));
+                            },
+                            child: Text(
+                              AppLocalizations.of(context)!.leaveclass,
+                              style:
+                                  TextStyle(color: Colors.red, fontSize: 18.0),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ],

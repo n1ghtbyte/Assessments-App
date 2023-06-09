@@ -3,6 +3,7 @@ import 'package:assessments_app/pages/Student/Account/AccountStudentPage.dart';
 import 'package:assessments_app/pages/Settings/SettingsPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../pages/Auth/LoginScreen.dart';
 import '../pages/Teacher/Skills/SkillsPage.dart';
@@ -25,13 +26,13 @@ class _NavBarParentState extends State<NavBarParent> {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text('Parent'),
+            accountName: Text(AppLocalizations.of(context)!.parent),
             accountEmail: Text(currentUser!),
             decoration: BoxDecoration(color: Color(0xFF29D09E)),
           ),
           ListTile(
             leading: Icon(Icons.menu_book),
-            title: const Text('Competences'),
+            title: Text(AppLocalizations.of(context)!.competences),
             onTap: () {
               Navigator.pop(context);
 
@@ -44,7 +45,7 @@ class _NavBarParentState extends State<NavBarParent> {
           const SizedBox(height: 16),
           ListTile(
             leading: Icon(Icons.family_restroom),
-            title: const Text('Children'),
+            title: Text(AppLocalizations.of(context)!.children),
             onTap: () {
               Navigator.pop(context);
               Navigator.push(
@@ -61,7 +62,7 @@ class _NavBarParentState extends State<NavBarParent> {
           const SizedBox(height: 16),
           ListTile(
             leading: Icon(Icons.account_box),
-            title: const Text('Account'),
+            title: Text(AppLocalizations.of(context)!.account),
             enabled: false,
             onTap: () {
               Navigator.push(
@@ -72,7 +73,7 @@ class _NavBarParentState extends State<NavBarParent> {
           ),
           ListTile(
             leading: Icon(Icons.settings),
-            title: const Text('Settings'),
+            title: Text(AppLocalizations.of(context)!.settings),
             onTap: () {
               Navigator.push(
                 context,
@@ -82,13 +83,13 @@ class _NavBarParentState extends State<NavBarParent> {
           ),
           ListTile(
             leading: Icon(Icons.logout),
-            title: const Text('Log out'),
+            title: Text(AppLocalizations.of(context)!.logout),
             onTap: () {
               showDialog(
                 context: context,
                 builder: (_) => AlertDialog(
-                  title: Text("Logout"),
-                  content: Text('Log out now?'),
+                  title: Text(AppLocalizations.of(context)!.logout),
+                  content: Text(AppLocalizations.of(context)!.logout),
                   actions: [
                     TextButton(
                       style: ButtonStyle(
@@ -98,7 +99,7 @@ class _NavBarParentState extends State<NavBarParent> {
                       onPressed: () {
                         Navigator.of(context, rootNavigator: true).pop();
                       },
-                      child: Text('CANCEL'),
+                      child: Text(AppLocalizations.of(context)!.cancel),
                     ),
                     TextButton(
                       style: ButtonStyle(
@@ -117,7 +118,7 @@ class _NavBarParentState extends State<NavBarParent> {
                           },
                         );
                       },
-                      child: Text('LOGOUT'),
+                      child: Text(AppLocalizations.of(context)!.logout),
                     ),
                   ],
                 ),

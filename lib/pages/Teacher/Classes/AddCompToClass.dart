@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'ClassSetup.dart';
 
 class AddCompToClass extends StatefulWidget {
@@ -116,7 +116,7 @@ class _AddStudentToClassState extends State<AddCompToClass> {
 
                 return Scaffold(
                   appBar: AppBar(
-                    title: Text('Add competences'),
+                    title: Text(AppLocalizations.of(context)!.addcomps),
                     centerTitle: true,
                     backgroundColor: Color(0xFF29D09E),
                   ),
@@ -148,7 +148,7 @@ class _AddStudentToClassState extends State<AddCompToClass> {
                                   passedClassNameSetup:
                                       widget.passedClassName)));
                     },
-                    label: Text('Add'),
+                    label: Text(AppLocalizations.of(context)!.add),
                     icon: Icon(Icons.add, size: 18),
                   ),
                   body: LoaderOverlay(
@@ -158,7 +158,7 @@ class _AddStudentToClassState extends State<AddCompToClass> {
                           Container(
                             padding: EdgeInsets.all(24),
                             child: Text(
-                              "Select the competences you want to add to this class",
+                              AppLocalizations.of(context)!.pickcompsclass,
                               style: TextStyle(
                                   fontSize: 21, fontWeight: FontWeight.w500),
                               textAlign: TextAlign.center,

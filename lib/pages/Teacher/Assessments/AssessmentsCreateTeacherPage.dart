@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AssessmentsCreateTeacherPage extends StatefulWidget {
   final String passedClassName;
@@ -140,7 +141,7 @@ class _AssessmentsCreateTeacherPageState
                         },
                       ),
                       Text(
-                        'Peer',
+                        AppLocalizations.of(context)!.peer,
                         style: new TextStyle(fontSize: 16),
                       ),
                       Radio(
@@ -154,7 +155,7 @@ class _AssessmentsCreateTeacherPageState
                         },
                       ),
                       Text(
-                        'Self',
+                        AppLocalizations.of(context)!.self,
                         style: new TextStyle(fontSize: 14),
                       ),
                       Radio(
@@ -168,7 +169,7 @@ class _AssessmentsCreateTeacherPageState
                         },
                       ),
                       Text(
-                        'Formative',
+                        AppLocalizations.of(context)!.formative,
                         style: new TextStyle(
                           fontSize: 14,
                         ),
@@ -184,7 +185,7 @@ class _AssessmentsCreateTeacherPageState
                         },
                       ),
                       Text(
-                        'Sumative',
+                        AppLocalizations.of(context)!.summative,
                         style: new TextStyle(fontSize: 14),
                       ),
                     ],
@@ -198,7 +199,7 @@ class _AssessmentsCreateTeacherPageState
 
                   Container(
                     padding: EdgeInsets.all(20.0),
-                    child: Text("Choose the Competences",
+                    child: Text(AppLocalizations.of(context)!.choosethecomps,
                         style: TextStyle(fontSize: 20.0)),
                   ),
                   //Start Populator
@@ -293,8 +294,9 @@ class _AssessmentsCreateTeacherPageState
                           addAssessment(resultMap, competencesFirebase,
                               data['currAssess']);
                           final snackBar = SnackBar(
-                              content: Text(
-                                  'The assessment has been issued to this Class :)'));
+                            content: Text(
+                                AppLocalizations.of(context)!.issuedassess),
+                          );
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           Navigator.pop(context);
                         } else {
@@ -304,12 +306,13 @@ class _AssessmentsCreateTeacherPageState
                         }
                       } else {
                         final snackBar = SnackBar(
-                            content: Text(
-                                'You must end the assessment that you assigned to this class first!'));
+                            content: Text(AppLocalizations.of(context)!
+                                .finishassessfirst));
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       }
                     },
-                    child: Text(('Create'), style: new TextStyle(fontSize: 18)),
+                    child: Text(AppLocalizations.of(context)!.create,
+                        style: new TextStyle(fontSize: 18)),
                   ),
                 ],
               ),

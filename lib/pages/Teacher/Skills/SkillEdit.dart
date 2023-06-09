@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SkillEdit extends StatefulWidget {
   final Map passedComp;
@@ -53,7 +54,7 @@ class _SkillEditState extends State<SkillEdit> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Editing a competence"),
+        title: Text(AppLocalizations.of(context)!.compediting),
         centerTitle: true,
         backgroundColor: Color(0xFF29D09E),
       ),
@@ -66,7 +67,7 @@ class _SkillEditState extends State<SkillEdit> {
             // If the form is valid, display a snackbar. In the real world,
             // you'd often call a server or save the information in a database.
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Competence edited')),
+              SnackBar(content: Text(AppLocalizations.of(context)!.compedited)),
             );
             Map<String, dynamic> data = Map();
             data['Name'] = _descriptionComp[0][0].text.toString();
@@ -90,14 +91,14 @@ class _SkillEditState extends State<SkillEdit> {
                 .doc(widget.name.toString())
                 .set(data)
                 .onError((e, _) => print("Error writing document: $e"));
-            final snackBar =
-                SnackBar(content: Text('The competence was updated!'));
+            final snackBar = SnackBar(
+                content: Text(AppLocalizations.of(context)!.compupdated));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
             Navigator.of(context).pop();
             Navigator.of(context).pop();
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Some fields are missing')),
+              SnackBar(content: Text(AppLocalizations.of(context)!.fieldsdead)),
             );
           }
         },
@@ -116,17 +117,18 @@ class _SkillEditState extends State<SkillEdit> {
                       controller: _descriptionComp[0][0],
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
+                          return AppLocalizations.of(context)!.entertxt;
                         }
                         return null;
                       },
                       decoration: InputDecoration(
                         icon: Icon(Icons.comment),
-                        labelText: 'Competence Name',
+                        labelText: AppLocalizations.of(context)!.compname,
                         labelStyle: TextStyle(
                           color: Color(0xFF29D09E),
                         ),
-                        helperText: 'What is the competence name?',
+                        helperText:
+                            AppLocalizations.of(context)!.compnamequestion,
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFF29D09E)),
                         ),
@@ -153,17 +155,19 @@ class _SkillEditState extends State<SkillEdit> {
                             controller: _descriptionComp[ind][0],
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter some text';
+                                return AppLocalizations.of(context)!.entertxt;
                               }
                               return null;
                             },
                             decoration: InputDecoration(
                               icon: Icon(Icons.comment),
-                              labelText: 'Indicator $ind',
+                              labelText:
+                                  '${AppLocalizations.of(context)!.indicator} $ind',
                               labelStyle: TextStyle(
                                 color: Color(0xFF29D09E),
                               ),
-                              helperText: 'Indicator $ind name',
+                              helperText:
+                                  '${AppLocalizations.of(context)!.indicator} $ind ${AppLocalizations.of(context)!.name}',
                               enabledBorder: UnderlineInputBorder(
                                 borderSide:
                                     BorderSide(color: Color(0xFF29D09E)),
@@ -185,19 +189,22 @@ class _SkillEditState extends State<SkillEdit> {
                                   controller: _descriptionComp[ind][index2 + 1],
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter some text';
+                                      return AppLocalizations.of(context)!
+                                          .entertxt;
                                     }
                                     return null;
                                   },
                                   decoration: InputDecoration(
                                     isDense: true,
                                     icon: Icon(Icons.comment),
-                                    labelText: 'Descriptor ${index2 + 1}',
+                                    labelText:
+                                        '${AppLocalizations.of(context)!.descriptor} ${index2 + 1}',
                                     labelStyle: TextStyle(
                                       color: Color(0xFF29D09E),
                                     ),
-                                    helperText:
-                                        'Describe asserting a ${index2 + 1} score',
+                                    // LIT
+                                    // helperText:
+                                    //     'Describe asserting a ${index2 + 1} score',
                                     enabledBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
                                         color: Color(0xFF29D09E),

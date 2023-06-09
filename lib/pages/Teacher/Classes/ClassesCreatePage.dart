@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:assessments_app/assets/Mypluggin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ClassesCreatePage extends StatefulWidget {
   const ClassesCreatePage({Key? key}) : super(key: key);
@@ -148,7 +149,7 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
 
             return Scaffold(
               appBar: AppBar(
-                title: Text('Create a Class'),
+                title: Text(AppLocalizations.of(context)!.createclass),
                 centerTitle: true,
                 backgroundColor: Color(0xFF29D09E),
               ),
@@ -177,16 +178,18 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                       ),
                     );
                     final snackBar = SnackBar(
-                      content: Text('Generating the join code'),
+                      content: Text(AppLocalizations.of(context)!.geningcc),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Enter the class name')),
-                    );
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   const SnackBar(
+                    //       content: Text(
+                    //           AppLocalizations.of(context)!.enterclassname)),
+                    // );
                   }
                 },
-                label: Text('Create'),
+                label: Text(AppLocalizations.of(context)!.create),
                 icon: Icon(Icons.add, size: 18),
               ),
               body: LoaderOverlay(
@@ -199,7 +202,7 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                           controller: _controllerName,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
+                              return AppLocalizations.of(context)!.entertxt;
                             }
                             return null;
                           },
@@ -212,11 +215,12 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                               borderSide: BorderSide(color: Color(0xff388e3c)),
                             ),
                             icon: Icon(Icons.person),
-                            labelText: 'Class Name',
+                            labelText: AppLocalizations.of(context)!.classname,
                             labelStyle: TextStyle(
                               color: Color(0xFF29D09E),
                             ),
-                            helperText: 'Enter the name that will be displayed',
+                            helperText:
+                                AppLocalizations.of(context)!.enterclassname,
                           ),
                         ),
                       ),
@@ -232,10 +236,9 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                       ),
                       ListTile(
                         leading: Icon(Icons.computer),
-                        title: Text("Competences"),
-                        subtitle: Text("Choose the indicators"),
+                        title: Text(AppLocalizations.of(context)!.competences),
+                        subtitle: Text(AppLocalizations.of(context)!.pickind),
                         enabled: true,
-                        // trailing: Icon(Icons.arrow_drop_down),
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,

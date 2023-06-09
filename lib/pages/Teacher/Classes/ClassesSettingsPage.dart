@@ -1,6 +1,7 @@
 import 'package:assessments_app/pages/Teacher/Classes/ClassesPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ClassesSettingsPage extends StatefulWidget {
   final String passedClassName;
@@ -29,7 +30,7 @@ class _ClassesSettingsPageState extends State<ClassesSettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Class Settings'),
+        title: Text(AppLocalizations.of(context)!.classsettings),
         centerTitle: true,
         backgroundColor: Color(0xFF29D09E),
       ),
@@ -40,11 +41,10 @@ class _ClassesSettingsPageState extends State<ClassesSettingsPage> {
               controller: nameController,
               decoration: InputDecoration(
                 icon: Icon(Icons.school),
-                labelText: 'Change class name',
+                labelText: AppLocalizations.of(context)!.changename,
                 labelStyle: TextStyle(
                   color: Color(0xFF29D09E),
                 ),
-                helperText: 'Year ID',
                 suffixIcon: Icon(
                   Icons.check_circle,
                 ),
@@ -57,7 +57,7 @@ class _ClassesSettingsPageState extends State<ClassesSettingsPage> {
               alignment: Alignment.bottomCenter,
               width: double.infinity,
               child: RawMaterialButton(
-                child: Text('Change the class\'s name'),
+                child: Text(AppLocalizations.of(context)!.changeclassname),
                 onPressed: () {
                   var collection =
                       FirebaseFirestore.instance.collection('/classes');
@@ -72,86 +72,87 @@ class _ClassesSettingsPageState extends State<ClassesSettingsPage> {
               ),
             ),
             Container(
-                alignment: Alignment.bottomCenter,
-                width: double.infinity,
-                child: RawMaterialButton(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                              title: Text("Delete this class"),
-                              content: Text(
-                                  'Are you sure you wish to delete this class and delete all their assesments?'),
-                              actions: [
-                                TextButton(
-                                  style: ButtonStyle(
-                                    foregroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            Colors.blue),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context, rootNavigator: true)
-                                        .pop();
-                                  },
-                                  child: Text('CANCEL'),
+              alignment: Alignment.bottomCenter,
+              width: double.infinity,
+              child: RawMaterialButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                            title:
+                                Text(AppLocalizations.of(context)!.killclass),
+                            content: Text(AppLocalizations.of(context)!
+                                .killclassandassess),
+                            actions: [
+                              TextButton(
+                                style: ButtonStyle(
+                                  foregroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.blue),
                                 ),
-                                TextButton(
-                                  style: ButtonStyle(
-                                    foregroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            Colors.blue),
-                                  ),
-                                  onPressed: () async {
-                                    Navigator.of(context, rootNavigator: true)
-                                        .pop();
-
-                                    // Delete the class from /classes
-                                    // This does not removed subcollections
-
-                                    await collectionClasses
-                                        .doc(widget
-                                            .passedClassName) // <-- Doc ID to be deleted.
-                                        .delete() // <-- Delete
-                                        .then((_) => print('Deleted'))
-                                        .catchError((error) =>
-                                            print('Delete failed: $error'));
-
-                                    // Delete assessments in /assessments
-
-                                    await collectionAssessments
-                                        .where("ClassId",
-                                            isEqualTo: widget.passedClassName
-                                                .toString())
-                                        .get()
-                                        .then(
-                                      (querySnapshot) {
-                                        querySnapshot.docs.forEach(
-                                          (doc) {
-                                            doc.reference.delete();
-                                          },
-                                        );
-                                      },
-                                      onError: (e) =>
-                                          print("Error deleting: $e"),
-                                    );
-
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ClassesPage()));
-                                  },
-                                  child: Text(
-                                    'DELETE',
-                                  ),
+                                onPressed: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop();
+                                },
+                                child:
+                                    Text(AppLocalizations.of(context)!.cancel),
+                              ),
+                              TextButton(
+                                style: ButtonStyle(
+                                  foregroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.blue),
                                 ),
-                              ],
-                            ));
-                  },
-                  child: Text(
-                    "Delete Class",
-                    style: TextStyle(color: Colors.red, fontSize: 18.0),
-                  ),
-                )),
+                                onPressed: () async {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop();
+
+                                  // Delete the class from /classes
+                                  // This does not removed subcollections
+
+                                  await collectionClasses
+                                      .doc(widget
+                                          .passedClassName) // <-- Doc ID to be deleted.
+                                      .delete() // <-- Delete
+                                      .then((_) => print('Deleted'))
+                                      .catchError((error) =>
+                                          print('Delete failed: $error'));
+
+                                  // Delete assessments in /assessments
+
+                                  await collectionAssessments
+                                      .where("ClassId",
+                                          isEqualTo:
+                                              widget.passedClassName.toString())
+                                      .get()
+                                      .then(
+                                    (querySnapshot) {
+                                      querySnapshot.docs.forEach(
+                                        (doc) {
+                                          doc.reference.delete();
+                                        },
+                                      );
+                                    },
+                                    onError: (e) => print("Error deleting: $e"),
+                                  );
+
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (context) => ClassesPage()));
+                                },
+                                child: Text(
+                                  AppLocalizations.of(context)!.cancel,
+                                ),
+                              ),
+                            ],
+                          ));
+                },
+                child: Text(
+                  AppLocalizations.of(context)!.delete,
+                  style: TextStyle(color: Colors.red, fontSize: 18.0),
+                ),
+              ),
+            ),
           ],
         ),
       ),

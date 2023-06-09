@@ -1,6 +1,7 @@
 import 'package:assessments_app/pages/Teacher/Classes/ReviewTheAssess.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReviewAssessments extends StatefulWidget {
   final String passedClassName;
@@ -42,13 +43,14 @@ class _ReviewAssessmentsState extends State<ReviewAssessments> {
         if (snapshot.data?.size.toInt() == 0) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Review Assessments'),
+              title: Text(AppLocalizations.of(context)!.reviewassessments),
               centerTitle: true,
               backgroundColor: Color(0xFF29D09E),
             ),
             body: Center(
               child: Text(
-                "Assessments will be displayed here, once they are completed",
+                // falta traducao
+                "",
                 style: TextStyle(fontStyle: FontStyle.italic),
                 textAlign: TextAlign.center,
               ),
@@ -57,7 +59,7 @@ class _ReviewAssessmentsState extends State<ReviewAssessments> {
         } else {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Review Assessments'),
+              title: Text(AppLocalizations.of(context)!.reviewassessments),
               centerTitle: true,
               backgroundColor: Color(0xFF29D09E),
             ),
@@ -85,7 +87,8 @@ class _ReviewAssessmentsState extends State<ReviewAssessments> {
                     enabled: data['DONE'] == true,
                     title: Text('${data['Type']} Assessment'),
                     subtitle: Text(
-                        "Class Name:${data['ClassName'].toString()}\nCount:${data['Count'].toString()}/${data['Students'].values.toList().length}\nNumber:${data['currentNumber'].toString()}"),
+                        //\nNumber: ${data['currentNumber'].toString() LIT
+                        "${AppLocalizations.of(context)!.classname}: ${data['ClassName'].toString()}\n${AppLocalizations.of(context)!.count}: ${data['Count'].toString()}/${data['Students'].values.toList().length}"),
                   );
                 },
               ).toList(),

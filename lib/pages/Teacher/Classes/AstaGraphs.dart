@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:assessments_app/InovWidgets/LegendWidget.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../Assessments/GenFormAssessment.dart';
 import '../Assessments/GenSingleSummAssessment.dart';
@@ -335,7 +336,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
               print("no summative here");
               return Scaffold(
                 appBar: AppBar(
-                  title: Text('${widget.passedLegitName} data'),
+                  title: Text('${widget.passedLegitName}'),
                   centerTitle: true,
                   backgroundColor: Color(0xFF29D09E),
                 ),
@@ -358,7 +359,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     SpeedDialChild(
                       child: Icon(Icons.summarize),
                       backgroundColor: Color(0xFF29D09E),
-                      label: 'Summative',
+                      label: AppLocalizations.of(context)!.summative,
                       elevation: 5.0,
                       onTap: () {
                         Navigator.push(
@@ -376,17 +377,17 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     SpeedDialChild(
                         child: Icon(Icons.self_improvement),
                         backgroundColor: Color.fromARGB(135, 41, 208, 158),
-                        label: 'Self',
+                        label: AppLocalizations.of(context)!.self,
                         elevation: 5.0),
                     SpeedDialChild(
                         child: Icon(Icons.group),
                         backgroundColor: Color.fromARGB(135, 41, 208, 158),
-                        label: 'Peer',
+                        label: AppLocalizations.of(context)!.peer,
                         elevation: 5.0),
                     SpeedDialChild(
                       child: Icon(Icons.quiz),
                       backgroundColor: Color(0xFF29D09E),
-                      label: 'Formative',
+                      label: AppLocalizations.of(context)!.formative,
                       elevation: 5.0,
                       onTap: () {
                         Navigator.push(
@@ -411,7 +412,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     Container(
                       padding: EdgeInsets.all(20),
                       child: Text(
-                        "Summative Assessments",
+                        AppLocalizations.of(context)!.summa,
                         style: TextStyle(
                             fontSize: 21, fontWeight: FontWeight.w800),
                         textAlign: TextAlign.center,
@@ -425,14 +426,14 @@ class _AstaGraphsState extends State<AstaGraphs> {
                       columns: [
                         DataColumn(
                           label: Text(
-                            'Grade',
+                            AppLocalizations.of(context)!.grade,
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                         ),
                         DataColumn(
                           label: Text(
-                            'Date',
+                            AppLocalizations.of(context)!.date,
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
@@ -443,7 +444,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     Container(
                       padding: EdgeInsets.all(20),
                       child: Text(
-                        "Total: 0 \nAverage: 0",
+                        "${AppLocalizations.of(context)!.ovr}: 0 \nAppLocalizations.of(context)!.avr: 0",
                         style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w400),
                         textAlign: TextAlign.left,
@@ -459,7 +460,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     Container(
                       padding: EdgeInsets.all(20),
                       child: Text(
-                        "Formative Assessments",
+                        AppLocalizations.of(context)!.forma,
                         style: TextStyle(
                             fontSize: 21, fontWeight: FontWeight.w800),
                         textAlign: TextAlign.center,
@@ -568,7 +569,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                         Column(
                           children: [
                             Text(
-                              "Student Progression",
+                              AppLocalizations.of(context)!.studentprog,
                               style: TextStyle(
                                   fontSize: 21, fontWeight: FontWeight.w400),
                               textAlign: TextAlign.left,
@@ -649,7 +650,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
 
               return Scaffold(
                 appBar: AppBar(
-                  title: Text('${widget.passedLegitName} data'),
+                  title: Text('${widget.passedLegitName}'),
                   centerTitle: true,
                   backgroundColor: Color(0xFF29D09E),
                 ),
@@ -672,7 +673,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     SpeedDialChild(
                       child: Icon(Icons.summarize),
                       backgroundColor: Color(0xFF29D09E),
-                      label: 'Summative',
+                      label: AppLocalizations.of(context)!.summative,
                       elevation: 5.0,
                       onTap: () {
                         Navigator.push(
@@ -690,17 +691,17 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     SpeedDialChild(
                         child: Icon(Icons.self_improvement),
                         backgroundColor: Color.fromARGB(135, 41, 208, 158),
-                        label: 'Self',
+                        label: AppLocalizations.of(context)!.self,
                         elevation: 5.0),
                     SpeedDialChild(
                         child: Icon(Icons.group),
                         backgroundColor: Color.fromARGB(135, 41, 208, 158),
-                        label: 'Peer',
+                        label: AppLocalizations.of(context)!.peer,
                         elevation: 5.0),
                     SpeedDialChild(
                       child: Icon(Icons.quiz),
                       backgroundColor: Color(0xFF29D09E),
-                      label: 'Formative',
+                      label: AppLocalizations.of(context)!.formative,
                       elevation: 5.0,
                       onTap: () {
                         print(widget.passedClassId);
@@ -729,7 +730,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     Container(
                       padding: EdgeInsets.all(20),
                       child: Text(
-                        "Summative Assessments",
+                        AppLocalizations.of(context)!.summa,
                         style: TextStyle(
                             fontSize: 21, fontWeight: FontWeight.w800),
                         textAlign: TextAlign.center,
@@ -744,12 +745,12 @@ class _AstaGraphsState extends State<AstaGraphs> {
 
                       columns: [
                         DataColumn(
-                            label: Text('Grade',
+                            label: Text(AppLocalizations.of(context)!.grade,
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold))),
                         DataColumn(
-                            label: Text('Date',
+                            label: Text(AppLocalizations.of(context)!.date,
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold))),
@@ -760,7 +761,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                             cells: [
                               DataCell(Text(dt['Result'].toStringAsFixed(2))),
                               DataCell(dt['Created'] == null
-                                  ? Text("Loading")
+                                  ? Text(AppLocalizations.of(context)!.loading)
                                   : Text(DateFormat.yMMMEd()
                                       .format(dt['Created'].toDate())
                                       .toString()))
@@ -791,7 +792,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                     Container(
                                       padding: EdgeInsets.all(14),
                                       child: Text(
-                                        "Formative Assessments used to compute this summative",
+                                        AppLocalizations.of(context)!.formsarg,
                                         style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w800),
@@ -808,7 +809,9 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                           AsyncSnapshot<QuerySnapshot>
                                               snapshot) {
                                         if (!snapshot.hasData)
-                                          return const Text('Connecting...');
+                                          return Text(
+                                              AppLocalizations.of(context)!
+                                                  .connecting);
                                         var assessForms = snapshot.data?.docs;
                                         return ListView.builder(
                                           shrinkWrap: true,
@@ -817,9 +820,9 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                               int index) {
                                             return ListTile(
                                               title: Text(
-                                                  "Name: ${assessForms![index]['Name'].toString()}"),
+                                                  "${AppLocalizations.of(context)!.name}: ${assessForms![index]['Name'].toString()}"),
                                               subtitle: Text(
-                                                  "Date: ${DateFormat('yyyy-MM-dd').format((assessForms[index]['Created'] as Timestamp).toDate())}"),
+                                                  "${AppLocalizations.of(context)!.date}: ${DateFormat('yyyy-MM-dd').format((assessForms[index]['Created'] as Timestamp).toDate())}"),
                                             );
                                           },
                                         );
@@ -829,7 +832,8 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                     Container(
                                       padding: EdgeInsets.all(14),
                                       child: Text(
-                                        "Weights used to compute this summative",
+                                        AppLocalizations.of(context)!
+                                            .weightsargs,
                                         style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w800),
@@ -849,7 +853,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                         return ListTile(
                                           title: Text("$key"),
                                           subtitle: Text(
-                                              "Weight: ${dt['Weights'][key]} %"),
+                                              "${AppLocalizations.of(context)!.weights}: ${dt['Weights'][key]} %"),
                                         );
                                       },
                                     ),
@@ -858,7 +862,8 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      child: const Text('Close'),
+                                      child: Text(
+                                          AppLocalizations.of(context)!.close),
                                     ),
                                   ],
                                 ),
@@ -870,7 +875,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     Container(
                       padding: EdgeInsets.all(20),
                       child: Text(
-                        "Total: ${fsum.length} \nAverage: ${(fsum.map((e) => e['Result']).reduce((value, element) => value + element) / fsum.length).toStringAsFixed(2)}",
+                        "${AppLocalizations.of(context)!.ovr}: ${fsum.length} \n ${AppLocalizations.of(context)!.avg}: ${(fsum.map((e) => e['Result']).reduce((value, element) => value + element) / fsum.length).toStringAsFixed(2)}",
                         style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w400),
                         textAlign: TextAlign.left,
@@ -886,7 +891,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     Container(
                       padding: EdgeInsets.all(20),
                       child: Text(
-                        "Formative Assessments",
+                        AppLocalizations.of(context)!.forma,
                         style: TextStyle(
                             fontSize: 21, fontWeight: FontWeight.w800),
                         textAlign: TextAlign.center,
@@ -994,7 +999,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                         Column(
                           children: [
                             Text(
-                              "Student Progression",
+                              AppLocalizations.of(context)!.studentprog,
                               style: TextStyle(
                                   fontSize: 21, fontWeight: FontWeight.w400),
                               textAlign: TextAlign.left,

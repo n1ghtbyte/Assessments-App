@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GenFormAssessment extends StatefulWidget {
   final String passedClassName; //Class ID
@@ -117,7 +118,7 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text('Generate F.Assessment'),
+            title: Text(AppLocalizations.of(context)!.genassess),
             centerTitle: true,
             backgroundColor: Color(0xFF29D09E),
           ),
@@ -133,8 +134,8 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
                     trimLength: 4,
                     textAlign: TextAlign.justify,
                     trimMode: TrimMode.Line,
-                    trimCollapsedText: " Show More ",
-                    trimExpandedText: " Show less ",
+                    trimCollapsedText: AppLocalizations.of(context)!.sm,
+                    trimExpandedText: AppLocalizations.of(context)!.sl,
                     lessStyle: TextStyle(
                         fontWeight: FontWeight.bold, color: Color(0xFF29D09E)),
                     moreStyle: TextStyle(
@@ -161,7 +162,7 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
                 ),
                 Container(
                   padding: EdgeInsets.all(20.0),
-                  child: Text("Choose the Competences to take into account",
+                  child: Text(AppLocalizations.of(context)!.pickcomps,
                       style: TextStyle(fontSize: 18.0)),
                 ),
                 //Start Populator
@@ -218,8 +219,8 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
                           resultMap, competencesFirebase, data['currAssess']);
                       print(docID);
                       final snackBar = SnackBar(
-                          content: Text(
-                              'The assessment has been issued to this Class :)'));
+                          content:
+                              Text(AppLocalizations.of(context)!.issuedassess));
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       Navigator.pop(context);
                       Navigator.push(
@@ -233,11 +234,12 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
                     } else {
                       final snackBar = SnackBar(
                           content: Text(
-                              'You must finish the assessment that you assigned to this class first!'));
+                              AppLocalizations.of(context)!.finishassessfirst));
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   },
-                  child: Text(('Create'), style: new TextStyle(fontSize: 18)),
+                  child: Text((AppLocalizations.of(context)!.create),
+                      style: new TextStyle(fontSize: 18)),
                 ),
               ],
             ),

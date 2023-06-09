@@ -1,6 +1,7 @@
 import 'package:assessments_app/pages/Teacher/Classes/TurmaExemplo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ClassSetup extends StatefulWidget {
   final String passedClassNameSetup;
@@ -52,16 +53,8 @@ class _ClassSetupState extends State<ClassSetup> {
 
           return Scaffold(
             appBar: AppBar(
-              title: Text("Setup the weights"),
+              title: Text(AppLocalizations.of(context)!.setupweights),
               centerTitle: true,
-              actions: [
-                // IconButton(icon: new Icon(Icons.more_vert), onPressed:  () {
-                //     Navigator.push(
-                //       context,
-                //       MaterialPageRoute(builder: (context) => ClassesSettingsPage()),
-                //     );
-                //   },
-              ],
               backgroundColor: Color(0xFF29D09E),
             ),
             floatingActionButton: FloatingActionButton(
@@ -81,8 +74,8 @@ class _ClassSetupState extends State<ClassSetup> {
                       .collection("/classes")
                       .doc(widget.passedClassNameSetup)
                       .set({"Weights": map1}, SetOptions(merge: true));
-                  final snackBar =
-                      SnackBar(content: Text('The values are stored!'));
+                  final snackBar = SnackBar(
+                      content: Text(AppLocalizations.of(context)!.valsstored));
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                   Navigator.pushReplacement(
@@ -93,7 +86,7 @@ class _ClassSetupState extends State<ClassSetup> {
                   print("success");
                 } else {
                   final snackBar = SnackBar(
-                      content: Text('The values must add up to 100!!'));
+                      content: Text(AppLocalizations.of(context)!.summhundred));
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
               },
@@ -104,7 +97,7 @@ class _ClassSetupState extends State<ClassSetup> {
                 Container(
                   padding: EdgeInsets.all(20),
                   child: Text(
-                    "Please attribute ths desired weight to your competences",
+                    AppLocalizations.of(context)!.attrweigh,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     textAlign: TextAlign.center,
                   ),
@@ -125,9 +118,11 @@ class _ClassSetupState extends State<ClassSetup> {
                             labelStyle: TextStyle(
                               color: Color(0xFF29D09E),
                             ),
-                            hintText: 'for example, ${100 ~/ list.length}',
-                            counterText: "percentage",
-                            helperText: '${list[index]} weight ',
+                            // hintText: 'for ex ample, ${100 ~/ list.length}',
+                            counterText:
+                                AppLocalizations.of(context)!.percentage,
+                            //  helperText:
+                            //       '${list[index]} ${AppLocalizations.of(context)!.weight} ',
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Color(0xFF29D09E)),
                             ),

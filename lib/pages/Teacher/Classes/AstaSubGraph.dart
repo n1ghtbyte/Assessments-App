@@ -6,6 +6,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:assessments_app/InovWidgets/LegendWidget.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AstaSubGraph extends StatefulWidget {
   final Timestamp passedSummDate;
@@ -247,7 +248,7 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text('${widget.passedLegitName} data'),
+            title: Text('${widget.passedLegitName}'),
             centerTitle: true,
             backgroundColor: Color(0xFF29D09E),
           ),
@@ -257,7 +258,7 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(14.0),
                 child: Text(
-                  "Student: ${widget.passedLegitName}\nDate: ${DateFormat('yyyy-MM-dd').format((widget.passedSummDate).toDate())}",
+                  "${AppLocalizations.of(context)!.student}: ${widget.passedLegitName}\nDate: ${DateFormat('yyyy-MM-dd').format((widget.passedSummDate).toDate())}",
                   style: TextStyle(fontSize: 20),
                 ),
               ),

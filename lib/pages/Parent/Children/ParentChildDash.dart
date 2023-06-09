@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ParentChildDash extends StatefulWidget {
   const ParentChildDash({Key? key}) : super(key: key);
@@ -48,7 +49,7 @@ class _ParentChildDashState extends State<ParentChildDash> {
         if (data['children'] != null) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Children'),
+              title: Text(AppLocalizations.of(context)!.children),
               centerTitle: true,
               backgroundColor: Color(0xFF29D09E),
             ),
@@ -74,22 +75,22 @@ class _ParentChildDashState extends State<ParentChildDash> {
                     }
                     // childred did not insert parent email
                     else {
-                      final snackBar = SnackBar(
-                          content: Text(
-                              'The student did not mention you in his account....'));
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      // final snackBar = SnackBar(
+                      //     content: Text(
+                      //         'The student did not mention you in his account....'));
+                      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   } else {
-                    final snackBar = SnackBar(
-                        content: Text('The student does not exist ?!?!(...)'));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    // final snackBar = SnackBar(
+                    //     content: Text('The student does not exist ?!?!(...)'));
+                    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }
                 });
 
                 Navigator.pop(context);
               },
               icon: Icon(Icons.create),
-              label: Text('Add'),
+              label: Text(AppLocalizations.of(context)!.add),
             ),
             body: SafeArea(
               child: Column(
@@ -101,8 +102,7 @@ class _ParentChildDashState extends State<ParentChildDash> {
                       labelStyle: TextStyle(
                         color: Color(0xFF29D09E),
                       ),
-                      helperText:
-                          'Enter your children\'s account email address',
+                      helperText: AppLocalizations.of(context)!.childemail,
                       suffixIcon: Icon(Icons.check_circle),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Color(0xFF29D09E)),
@@ -182,7 +182,7 @@ class _ParentChildDashState extends State<ParentChildDash> {
         } else {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Children'),
+              title: Text(AppLocalizations.of(context)!.children),
               centerTitle: true,
               backgroundColor: Color(0xFF29D09E),
             ),
@@ -193,37 +193,39 @@ class _ParentChildDashState extends State<ParentChildDash> {
                     .collection('users')
                     .doc(_controllerParent.text)
                     .get()
-                    .then((DocumentSnapshot documentSnapshot) {
-                  if (documentSnapshot.exists) {
-                    if (documentSnapshot['Parents']
-                        .contains(currentUser.toString())) {
-                      FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(FirebaseAuth.instance.currentUser?.email
-                              .toString())
-                          .update({
-                        "children":
-                            FieldValue.arrayUnion([_controllerParent.text]),
-                      });
+                    .then(
+                  (DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists) {
+                      if (documentSnapshot['Parents']
+                          .contains(currentUser.toString())) {
+                        FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(FirebaseAuth.instance.currentUser?.email
+                                .toString())
+                            .update({
+                          "children":
+                              FieldValue.arrayUnion([_controllerParent.text]),
+                        });
+                      }
+                      // childred did not insert parent email
+                      else {
+                        // final snackBar = SnackBar(
+                        //     content: Text(
+                        //         'The student did not mention you in his account....'));
+                        // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+                    } else {
+                      // final snackBar = SnackBar(
+                      //     content: Text('The student does not exist ?!?!(...)'));
+                      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
-                    // childred did not insert parent email
-                    else {
-                      final snackBar = SnackBar(
-                          content: Text(
-                              'The student did not mention you in his account....'));
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    }
-                  } else {
-                    final snackBar = SnackBar(
-                        content: Text('The student does not exist ?!?!(...)'));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }
-                });
+                  },
+                );
 
                 Navigator.pop(context);
               },
               icon: Icon(Icons.create),
-              label: Text('Add'),
+              label: Text(AppLocalizations.of(context)!.add),
             ),
             body: SafeArea(
               child: Column(
@@ -235,8 +237,7 @@ class _ParentChildDashState extends State<ParentChildDash> {
                       labelStyle: TextStyle(
                         color: Color(0xFF29D09E),
                       ),
-                      helperText:
-                          'Enter your children\'s account email address',
+                      helperText: AppLocalizations.of(context)!.childemail,
                       suffixIcon: Icon(Icons.check_circle),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Color(0xFF29D09E)),

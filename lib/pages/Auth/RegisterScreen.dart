@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -71,7 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: Text(
-                      "Registration Page",
+                      AppLocalizations.of(context)!.registerGreet,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.black,
@@ -88,7 +89,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: TextFormField(
                       controller: _firstName,
                       decoration: InputDecoration(
-                          hintText: "First Name",
+                          hintText: AppLocalizations.of(context)!.firstname,
                           prefixIcon: Icon(Icons.person)),
                     ),
                   ),
@@ -101,7 +102,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: TextFormField(
                       controller: _lastName,
                       decoration: InputDecoration(
-                        hintText: "Last Name",
+                        hintText: AppLocalizations.of(context)!.lastname,
                         prefixIcon: Icon(Icons.person),
                       ),
                     ),
@@ -114,12 +115,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         const EdgeInsets.only(bottom: 15, left: 10, right: 10),
                     child: TextFormField(
                       validator: (val) => val!.isEmpty || !val.contains("@")
-                          ? "enter a valid email"
+                          ? AppLocalizations.of(context)!.emailvaild
                           : null,
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                        hintText: "Enter you email or account name",
+                        hintText: AppLocalizations.of(context)!.emailenter,
                         prefixIcon: Icon(Icons.email),
                       ),
                       // ,
@@ -137,13 +138,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        hintText: "Password",
+                        hintText: AppLocalizations.of(context)!.password,
                         prefixIcon: Icon(Icons.lock),
                       ),
                       // decoration: buildInputDecoration(Icons.lock, "Password"),
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Please a Enter Password';
+                          return AppLocalizations.of(context)!.pwinsert;
                         }
                         return null;
                       },
@@ -160,20 +161,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       obscureText: true,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        hintText: "Confirm Password",
+                        hintText: AppLocalizations.of(context)!.pwconfirm,
                         prefixIcon: Icon(Icons.lock),
                       ),
                       // decoration:
                       //     buildInputDecoration(Icons.lock, "Confirm Password"),
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Please re-enter password';
+                          return AppLocalizations.of(context)!.pwagain;
                         }
                         print(_passwordController.text);
                         print(_passwordController2.text);
                         if (_passwordController.text !=
                             _passwordController2.text) {
-                          return "Password does not match";
+                          return AppLocalizations.of(context)!.pwnotmatch;
                         }
                         return null;
                       },
@@ -182,10 +183,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   SizedBox(
                     height: 44.0,
                   ),
-                  Row(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Radio(
+                      RadioListTile(
+                        title: Text(
+                          AppLocalizations.of(context)!.teacher,
+                          style: new TextStyle(fontSize: 16),
+                        ),
                         value: 1,
                         groupValue: id,
                         onChanged: (val) {
@@ -195,11 +201,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           });
                         },
                       ),
-                      Text(
-                        'Teacher',
-                        style: new TextStyle(fontSize: 16),
-                      ),
-                      Radio(
+                      RadioListTile(
+                        title: Text(
+                          AppLocalizations.of(context)!.student,
+                          style: new TextStyle(fontSize: 16),
+                        ),
                         value: 2,
                         groupValue: id,
                         onChanged: (val) {
@@ -209,13 +215,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           });
                         },
                       ),
-                      Text(
-                        'Student',
-                        style: new TextStyle(
-                          fontSize: 16,
+                      RadioListTile(
+                        title: Text(
+                          AppLocalizations.of(context)!.teacher,
+                          style: new TextStyle(fontSize: 16),
                         ),
-                      ),
-                      Radio(
                         value: 3,
                         groupValue: id,
                         onChanged: (val) {
@@ -224,12 +228,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             id = 3;
                           });
                         },
-                      ),
-                      Text(
-                        'Parent',
-                        style: new TextStyle(
-                          fontSize: 16,
-                        ),
                       ),
                     ],
                   ),
@@ -264,14 +262,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               print('The password provided is too weak.');
                               final snackBar = SnackBar(
                                   content: Text(
-                                      'The password provided is too weak. (min 8 chars)'));
+                                      AppLocalizations.of(context)!.weakpw));
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                             } else if (e.code == 'email-already-in-use') {
                               print('email-already-in-use');
                               final snackBar = SnackBar(
-                                  content:
-                                      Text('The account already exists!!'));
+                                  content: Text(AppLocalizations.of(context)!
+                                      .accalreadyexist));
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                             }
@@ -279,13 +277,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             print(e);
                           }
                         } else {
-                          final snackBar =
-                              SnackBar(content: Text('Passwords do not match'));
+                          final snackBar = SnackBar(
+                              content: Text(
+                                  AppLocalizations.of(context)!.pwnotmatch));
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
                       },
                       child: Text(
-                        "Register",
+                        AppLocalizations.of(context)!.register,
                         style: TextStyle(color: Colors.white, fontSize: 18.0),
                       ),
                     ),

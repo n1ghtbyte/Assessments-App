@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StudentProfile extends StatefulWidget {
   @override
@@ -46,25 +47,25 @@ class _StudentProfileState extends State<StudentProfile> {
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Color(0xFF29D09E),
-            title: Text('Student\'s Account'),
+            title: Text(AppLocalizations.of(context)!.account),
             centerTitle: true,
           ),
           body: Column(
             children: [
               ListTile(
-                title: Text("Account Type"),
-                subtitle: Text("Student"),
+                title: Text(AppLocalizations.of(context)!.acctype),
+                subtitle: Text(AppLocalizations.of(context)!.student),
               ),
               ListTile(
-                title: Text("Email"),
+                title: Text(AppLocalizations.of(context)!.email),
                 subtitle: Text(data['Email']),
               ),
               ListTile(
-                title: Text("Name"),
+                title: Text(AppLocalizations.of(context)!.name),
                 subtitle: Text(data['FirstName'] + ' ' + data['LastName']),
               ),
               ListTile(
-                title: Text("Since"),
+                title: Text(AppLocalizations.of(context)!.since),
                 subtitle: Text(DateFormat('yyyy-MM-dd')
                     .format((data['Created'] as Timestamp).toDate())),
               )

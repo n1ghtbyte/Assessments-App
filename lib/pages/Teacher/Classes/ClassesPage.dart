@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../InovWidgets/NavBarTeacher.dart';
 
@@ -43,7 +44,7 @@ class _ClassesPageState extends State<ClassesPage> {
           return Scaffold(
             drawer: NavBarTeacher(),
             appBar: AppBar(
-              title: Text('Classes'),
+              title: Text(AppLocalizations.of(context)!.classes),
               centerTitle: true,
               backgroundColor: Color(0xFF29D09E),
             ),
@@ -61,7 +62,7 @@ class _ClassesPageState extends State<ClassesPage> {
             ),
             body: Center(
               child: Text(
-                "Classes will be displayed here, once they are created",
+                AppLocalizations.of(context)!.classdisplayhere,
                 style: TextStyle(fontStyle: FontStyle.italic),
                 textAlign: TextAlign.center,
               ),
@@ -71,7 +72,7 @@ class _ClassesPageState extends State<ClassesPage> {
         return Scaffold(
           drawer: NavBarTeacher(),
           appBar: AppBar(
-            title: Text('Classes'),
+            title: Text(AppLocalizations.of(context)!.classes),
             centerTitle: true,
             backgroundColor: Color(0xFF29D09E),
           ),
@@ -105,14 +106,15 @@ class _ClassesPageState extends State<ClassesPage> {
                 isThreeLine: true,
                 title: Text(data['Name']),
                 subtitle: Text(
-                    "Students: ${data['NumStudents'].toString()}\nJoin code: ${data['documentID'].toString()}"),
+                    "${AppLocalizations.of(context)!.students}: ${data['NumStudents'].toString()}\n${AppLocalizations.of(context)!.joinc}: ${data['documentID'].toString()}"),
                 onLongPress: () async {
                   await Clipboard.setData(
                     ClipboardData(text: data['documentID'].toString()),
                   );
 
-                  final snackBar =
-                      SnackBar(content: Text('Join code on clipboard'));
+                  final snackBar = SnackBar(
+                      content:
+                          Text(AppLocalizations.of(context)!.copyclipboard));
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
               );

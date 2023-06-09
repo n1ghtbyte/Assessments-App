@@ -4,6 +4,8 @@ import 'package:assessments_app/pages/Student/Classes/StudentClassInside.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StudClassesMain extends StatefulWidget {
   const StudClassesMain({Key? key}) : super(key: key);
@@ -41,7 +43,7 @@ class _StudClassesMainState extends State<StudClassesMain> {
           return Scaffold(
             drawer: NavBarStudent(),
             appBar: AppBar(
-              title: Text('Classes'),
+              title: Text(AppLocalizations.of(context)!.classes),
               centerTitle: true,
               backgroundColor: Color(0xFF29D09E),
             ),
@@ -59,7 +61,7 @@ class _StudClassesMainState extends State<StudClassesMain> {
             ),
             body: Center(
               child: Text(
-                "Classes will be displayed here, once you join any",
+                AppLocalizations.of(context)!.classdisplayhere,
                 style: TextStyle(fontStyle: FontStyle.italic),
                 textAlign: TextAlign.center,
               ),
@@ -69,7 +71,7 @@ class _StudClassesMainState extends State<StudClassesMain> {
         return Scaffold(
           drawer: NavBarStudent(),
           appBar: AppBar(
-            title: Text('Classes'),
+            title: Text(AppLocalizations.of(context)!.classes),
             centerTitle: true,
             backgroundColor: Color(0xFF29D09E),
           ),
@@ -106,8 +108,6 @@ class _StudClassesMainState extends State<StudClassesMain> {
                 leading: Icon(Icons.school),
                 isThreeLine: true,
                 title: Text(data['Name']),
-                subtitle: Text(
-                    "Students: ${data['NumStudents'].toString()} \nClass Code: ${data['documentID'].toString()}"),
               );
             }).toList(),
           ),

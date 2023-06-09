@@ -11,6 +11,7 @@ import 'package:assessments_app/pages/Teacher/Classes/ClassesSettingsPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../Assessments/AssessmentCheck.dart';
 import '../Assessments/AssessmentFormative.dart';
@@ -86,19 +87,19 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                     //   value: _MenuValues.AddStuddent,
                     // ),
                     PopupMenuItem(
-                      child: Text('Add a Student'),
+                      child: Text(AppLocalizations.of(context)!.addstud),
                       value: _MenuValues.AddStuddent,
                     ),
                     PopupMenuItem(
-                      child: Text('Add Competences'),
+                      child: Text(AppLocalizations.of(context)!.addcomps),
                       value: _MenuValues.CompetenceAdd,
                     ),
                     PopupMenuItem(
-                      child: Text('Setup the weights'),
+                      child: Text(AppLocalizations.of(context)!.setupweights),
                       value: _MenuValues.Setup,
                     ),
                     PopupMenuItem(
-                      child: Text('Settings'),
+                      child: Text(AppLocalizations.of(context)!.settings),
                       value: _MenuValues.Settings,
                     ),
                   ],
@@ -143,7 +144,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
             ),
             body: Center(
               child: Text(
-                "Your students will appear here, once they have joined this class.\n You can also add your students manually. (Pro tip: up right corner)",
+                AppLocalizations.of(context)!.classtip2,
                 style: TextStyle(fontStyle: FontStyle.italic),
                 textAlign: TextAlign.center,
               ),
@@ -220,7 +221,8 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                             Tab(icon: Icon(Icons.info)),
                           ],
                         ),
-                        title: Text("Class ${data['Name'].toString()}"),
+                        title: Text(
+                            "${AppLocalizations.of(context)!.classConcept} ${data['Name'].toString()}"),
                         centerTitle: true,
                         actions: [
                           PopupMenuButton<_MenuValues>(
@@ -231,19 +233,23 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                               //   value: _MenuValues.ReviewAssess,
                               // ),
                               PopupMenuItem(
-                                child: Text('Add a Student'),
+                                child:
+                                    Text(AppLocalizations.of(context)!.addstud),
                                 value: _MenuValues.AddStuddent,
                               ),
                               PopupMenuItem(
-                                child: Text('Add Competences'),
+                                child: Text(
+                                    AppLocalizations.of(context)!.addcomps),
                                 value: _MenuValues.CompetenceAdd,
                               ),
                               PopupMenuItem(
-                                child: Text('Setup the weights'),
+                                child: Text(
+                                    AppLocalizations.of(context)!.setupweights),
                                 value: _MenuValues.Setup,
                               ),
                               PopupMenuItem(
-                                child: Text('Settings'),
+                                child: Text(
+                                    AppLocalizations.of(context)!.settings),
                                 value: _MenuValues.Settings,
                               ),
                             ],
@@ -311,7 +317,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                           SpeedDialChild(
                             child: Icon(Icons.summarize),
                             backgroundColor: Color(0xFF29D09E),
-                            label: 'Summative',
+                            label: AppLocalizations.of(context)!.summative,
                             elevation: 5.0,
                             onTap: () {
                               Navigator.push(
@@ -327,18 +333,18 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                               child: Icon(Icons.self_improvement),
                               backgroundColor:
                                   Color.fromARGB(135, 41, 208, 158),
-                              label: 'Self',
+                              label: AppLocalizations.of(context)!.self,
                               elevation: 5.0),
                           SpeedDialChild(
                               child: Icon(Icons.group),
                               backgroundColor:
                                   Color.fromARGB(135, 41, 208, 158),
-                              label: 'Peer',
+                              label: AppLocalizations.of(context)!.peer,
                               elevation: 5.0),
                           SpeedDialChild(
                             child: Icon(Icons.quiz),
                             backgroundColor: Color(0xFF29D09E),
-                            label: 'Formative',
+                            label: AppLocalizations.of(context)!.formative,
                             elevation: 5.0,
                             onTap: () {
                               print(widget.passedClassName);
@@ -368,7 +374,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                 Container(
                                   padding: EdgeInsets.all(16.0),
                                   child: Text(
-                                    "Class' students",
+                                    AppLocalizations.of(context)!.classstuds,
                                     style: TextStyle(fontSize: 16),
                                   ),
                                 ),
@@ -385,7 +391,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                         subtitle: studs[index] ==
                                                 namedStuds[
                                                     studs[index].toString()]
-                                            ? Text("Has no account")
+                                            ? Text("")
                                             : Text(studs[index]),
                                         onTap: () {
                                           Navigator.push(
@@ -421,7 +427,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                               Container(
                                 padding: EdgeInsets.all(16.0),
                                 child: Text(
-                                  "All assessments regarding this class' students",
+                                  AppLocalizations.of(context)!.assessments,
                                   style: TextStyle(fontSize: 16),
                                 ),
                               ),
@@ -467,9 +473,9 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                       subtitle: data['Target'].toString() ==
                                               'Single'
                                           ? Text(
-                                              "Student: ${data['Students'].keys.toList()[0].toString()}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}")
+                                              "${AppLocalizations.of(context)!.student}: ${data['Students'].keys.toList()[0].toString()}\n${AppLocalizations.of(context)!.date}: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}")
                                           : Text(
-                                              "Done: ${data['Count'].toString()}/${data['Students'].values.toList().length}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}"),
+                                              "${AppLocalizations.of(context)!.done}: ${data['Count'].toString()}/${data['Students'].values.toList().length}\n${AppLocalizations.of(context)!.date}: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}"),
                                     );
                                   }).toList(),
                                 ),
@@ -484,7 +490,7 @@ class _TurmaExemploState extends State<TurmaExemplo> {
                                 Container(
                                   padding: EdgeInsets.all(20.0),
                                   child: Text(
-                                    "Weights of each competence",
+                                    AppLocalizations.of(context)!.wec,
                                     style: TextStyle(fontSize: 16),
                                   ),
                                 ),

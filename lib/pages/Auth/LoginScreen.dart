@@ -6,6 +6,7 @@ import 'package:assessments_app/pages/Teacher/Classes/ClassesPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -31,8 +32,9 @@ class _LoginScreenState extends State<LoginScreen> {
     } on FirebaseAuthException catch (e) {
       if (e.code == "user-not-found") {
         Navigator.pop(context);
-        const snackBar = SnackBar(
-          content: Text('No user found for that email'),
+
+        final snackBar = SnackBar(
+          content: Text(AppLocalizations.of(context)!.emailwrong),
         );
 
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -40,8 +42,8 @@ class _LoginScreenState extends State<LoginScreen> {
         print("No user found for that email");
       } else if (e.code == 'wrong-password') {
         Navigator.pop(context);
-        const snackBar = SnackBar(
-          content: Text('Wrong password provided for that user'),
+        final snackBar = SnackBar(
+          content: Text(AppLocalizations.of(context)!.pwwrong),
         );
 
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -69,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "ASSESS APP v4.1",
+              "ASSESS APP v5.0",
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 28.0,
@@ -82,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                hintText: "User Email",
+                hintText: AppLocalizations.of(context)!.useremail,
                 prefixIcon: Icon(Icons.mail, color: Colors.black),
               ),
             ),
@@ -93,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(
-                hintText: "User Password",
+                hintText: AppLocalizations.of(context)!.userpw,
                 prefixIcon: Icon(Icons.lock, color: Colors.black),
               ),
             ),
@@ -147,15 +149,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     } else {
                       Navigator.pop(context);
 
-                      final snackBar =
-                          SnackBar(content: Text('That user does not exist'));
+                      final snackBar = SnackBar(
+                          content: Text(
+                              AppLocalizations.of(context)!.wrongerror404));
+
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       print('Document does not exist on the database');
                     }
                   });
                 },
                 child: Text(
-                  "Login",
+                  AppLocalizations.of(context)!.login,
                   style: TextStyle(color: Colors.white, fontSize: 20.0),
                 ),
               ),
@@ -169,7 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => RegisterScreen()));
               },
-              child: const Text("New user? Register here"),
+              child: Text(AppLocalizations.of(context)!.greetregister),
             ),
           ],
         ),
@@ -184,7 +188,8 @@ showLoaderDialog(BuildContext context) {
       children: [
         CircularProgressIndicator(),
         Container(
-            margin: EdgeInsets.only(left: 7), child: Text("Logging you in...")),
+            margin: EdgeInsets.only(left: 7),
+            child: Text(AppLocalizations.of(context)!.loggin)),
       ],
     ),
   );

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChildParentDash extends StatefulWidget {
   const ChildParentDash({Key? key}) : super(key: key);
@@ -48,7 +49,7 @@ class _ChildParentDashState extends State<ChildParentDash> {
         if (data['Parents'] != null) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Parents'),
+              title: Text(AppLocalizations.of(context)!.parents),
               centerTitle: true,
               backgroundColor: Color(0xFF29D09E),
             ),
@@ -65,7 +66,7 @@ class _ChildParentDashState extends State<ChildParentDash> {
                 Navigator.pop(context);
               },
               icon: Icon(Icons.create),
-              label: Text('Add'),
+              label: Text(AppLocalizations.of(context)!.add),
             ),
             body: SafeArea(
               child: Column(
@@ -77,7 +78,7 @@ class _ChildParentDashState extends State<ChildParentDash> {
                       labelStyle: TextStyle(
                         color: Color(0xFF29D09E),
                       ),
-                      helperText: 'Enter your parents\' account email address',
+                      helperText: AppLocalizations.of(context)!.parentemail,
                       suffixIcon: Icon(Icons.check_circle),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Color(0xFF29D09E)),
@@ -157,7 +158,7 @@ class _ChildParentDashState extends State<ChildParentDash> {
         } else {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Parents'),
+              title: Text(AppLocalizations.of(context)!.parents),
               centerTitle: true,
               backgroundColor: Color(0xFF29D09E),
             ),
@@ -174,7 +175,7 @@ class _ChildParentDashState extends State<ChildParentDash> {
                 Navigator.pop(context);
               },
               icon: Icon(Icons.create),
-              label: Text('Add'),
+              label: Text(AppLocalizations.of(context)!.add),
             ),
             body: SafeArea(
               child: Column(
@@ -186,7 +187,7 @@ class _ChildParentDashState extends State<ChildParentDash> {
                       labelStyle: TextStyle(
                         color: Color(0xFF29D09E),
                       ),
-                      helperText: 'Enter your parents\' account email address',
+                      helperText: AppLocalizations.of(context)!.parentemail,
                       suffixIcon: Icon(Icons.check_circle),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Color(0xFF29D09E)),
