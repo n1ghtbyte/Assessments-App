@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:assessments_app/assets/group_radio_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import "package:assessments_app/utils/Competences.dart";
 
 class ReviewAssessment extends StatefulWidget {
   final String passedAssessmentIdName;
@@ -42,7 +43,7 @@ class _ReviewAssessmentState extends State<ReviewAssessment> {
   Map<dynamic, dynamic> kek = Map();
   Map<dynamic, dynamic> _mapinha = {};
   Stream<QuerySnapshot> _stream =
-      FirebaseFirestore.instance.collection('CompetencesPT').snapshots();
+      FirebaseFirestore.instance.collection(getCompetencesPath()).snapshots();
 
   final CollectionReference _assess =
       FirebaseFirestore.instance.collection('assessments');

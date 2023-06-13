@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'ClassSetup.dart';
+import "package:assessments_app/utils/Competences.dart";
 
 class AddCompToClass extends StatefulWidget {
   final String passedClassName;
@@ -18,7 +19,7 @@ class AddCompToClass extends StatefulWidget {
 
 class _AddStudentToClassState extends State<AddCompToClass> {
   late Stream<QuerySnapshot> _stream =
-      FirebaseFirestore.instance.collection('CompetencesPT').snapshots();
+      FirebaseFirestore.instance.collection(getCompetencesPath()).snapshots();
 
   final _controllerName = TextEditingController();
   Map<String?, List<String?>> _competences =

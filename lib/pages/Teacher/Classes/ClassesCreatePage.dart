@@ -6,6 +6,7 @@ import 'package:assessments_app/assets/Mypluggin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import "package:assessments_app/utils/Competences.dart";
 
 class ClassesCreatePage extends StatefulWidget {
   const ClassesCreatePage({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
   final _formKey = GlobalKey<FormState>();
 
   late Stream<QuerySnapshot> _stream =
-      FirebaseFirestore.instance.collection('CompetencesPT').snapshots();
+      FirebaseFirestore.instance.collection(getCompetencesPath()).snapshots();
 
   final _controllerName = TextEditingController();
   Map<String?, List<String?>> _competences =

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:assessments_app/assets/group_radio_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:assessments_app/utils/Competences.dart';
 
 class AssessReview extends StatefulWidget {
   final String passedAssessmentIdName;
@@ -20,13 +21,20 @@ class AssessReview extends StatefulWidget {
 }
 
 class _AssessReviewState extends State<AssessReview> {
-  final Stream<QuerySnapshot> _compsStream =
-      FirebaseFirestore.instance.collection('/CompetencesPT').snapshots();
+  Stream<QuerySnapshot> _compsStream =
+      FirebaseFirestore.instance.collection(getCompetencesPath()).snapshots();
   final CollectionReference _assess =
       FirebaseFirestore.instance.collection('/assessments');
   final CollectionReference _formative =
       FirebaseFirestore.instance.collection('/classes');
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
+
+  @override
+  void initState() {
+    super.initState();
+    _compsStream =
+        FirebaseFirestore.instance.collection(getCompetencesPath()).snapshots();
+  }
 
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
@@ -297,66 +305,64 @@ class _AssessReviewState extends State<AssessReview> {
                                                         horizontalAlignment:
                                                             MainAxisAlignment
                                                                 .start,
-                                                        onChanged: (value) =>
-                                                            setState(
-                                                          () {
-                                                            // var docId =
-                                                            //     formativenp
-                                                            //         .data!
-                                                            //         .docs[0]
-                                                            //         .reference
-                                                            //         .id
-                                                            //         .toString();
+                                                        onChanged: null,
+                                                        // var docId =
+                                                        //     formativenp
+                                                        //         .data!
+                                                        //         .docs[0]
+                                                        //         .reference
+                                                        //         .id
+                                                        //         .toString();
 
-                                                            print(k);
-                                                            print(x);
-                                                            print("PATH: " +
-                                                                "Competences.$k.$x");
-                                                            print(value
-                                                                .toString()
-                                                                .substring(
-                                                                    0, 1));
-                                                            print(savedGrade
-                                                                .toString());
-                                                            // _formative
-                                                            //     .doc(widget
-                                                            //         .passedClassName)
-                                                            //     .collection(
-                                                            //         'grading')
-                                                            //     .doc(widget
-                                                            //         .passedStudName)
-                                                            //     .collection(
-                                                            //         'formative')
-                                                            //     .doc(docId)
-                                                            //     .update(
-                                                            //   {
-                                                            //     "Competences": {
-                                                            //       k: {
-                                                            //         x: value
-                                                            //             .toString()
-                                                            //             .substring(
-                                                            //                 0,
-                                                            //                 1)
-                                                            //       },
-                                                            //     },
-                                                            //   },
-                                                            // ).then(
-                                                            //   (value) {
-                                                            //     print(
-                                                            //         "DocumentSnapshot successfully updated!");
-                                                            //     print(docId);
-                                                            //     print(
-                                                            //       savedGrade
-                                                            //           .toString(),
-                                                            //     );
-                                                            //     print(
-                                                            //         "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                                                            //   },
-                                                            //   onError: (e) => print(
-                                                            //       "Error updating document $e"),
-                                                            // );
-                                                          },
-                                                        ),
+                                                        // print(k);
+                                                        // print(x);
+                                                        // print("PATH: " +
+                                                        //     "Competences.$k.$x");
+                                                        // print(value
+                                                        //     .toString()
+                                                        //     .substring(
+                                                        //         0, 1));
+                                                        // print(savedGrade
+                                                        //     .toString());
+                                                        // _formative
+                                                        //     .doc(widget
+                                                        //         .passedClassName)
+                                                        //     .collection(
+                                                        //         'grading')
+                                                        //     .doc(widget
+                                                        //         .passedStudName)
+                                                        //     .collection(
+                                                        //         'formative')
+                                                        //     .doc(docId)
+                                                        //     .update(
+                                                        //   {
+                                                        //     "Competences": {
+                                                        //       k: {
+                                                        //         x: value
+                                                        //             .toString()
+                                                        //             .substring(
+                                                        //                 0,
+                                                        //                 1)
+                                                        //       },
+                                                        //     },
+                                                        //   },
+                                                        // ).then(
+                                                        //   (value) {
+                                                        //     print(
+                                                        //         "DocumentSnapshot successfully updated!");
+                                                        //     print(docId);
+                                                        //     print(
+                                                        //       savedGrade
+                                                        //           .toString(),
+                                                        //     );
+                                                        //     print(
+                                                        //         "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                                        //   },
+                                                        //   onError: (e) => print(
+                                                        //       "Error updating document $e"),
+                                                        // );
+                                                        // },
+
                                                         activeColor:
                                                             Color(0xFF29D09E),
                                                         items: textifier(
