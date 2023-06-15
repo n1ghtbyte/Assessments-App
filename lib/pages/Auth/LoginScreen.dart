@@ -18,6 +18,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isObscure = true;
 
   static Future<User?> loginUsingEmailPassword(
       {required String email,
@@ -93,11 +94,18 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             TextField(
               controller: _passwordController,
-              obscureText: true,
+              obscureText: _isObscure,
               decoration: InputDecoration(
-                hintText: AppLocalizations.of(context)!.userpw,
-                prefixIcon: Icon(Icons.lock, color: Colors.black),
-              ),
+                  hintText: AppLocalizations.of(context)!.userpw,
+                  prefixIcon: Icon(Icons.lock, color: Colors.black),
+                  suffixIcon: IconButton(
+                      icon: Icon(
+                          _isObscure ? Icons.visibility : Icons.visibility_off),
+                      onPressed: () {
+                        setState(() {
+                          _isObscure = !_isObscure;
+                        });
+                      })),
             ),
             SizedBox(
               height: 18.0,

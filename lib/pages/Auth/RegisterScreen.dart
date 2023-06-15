@@ -21,6 +21,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _passwordController2 = TextEditingController();
 
+  bool _isObscure1 = true;
+  bool _isObscure2 = true;
+
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -134,12 +137,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         const EdgeInsets.only(bottom: 15, left: 10, right: 10),
                     child: TextFormField(
                       controller: _passwordController,
-                      obscureText: true,
+                      obscureText: _isObscure1,
 
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         hintText: AppLocalizations.of(context)!.password,
                         prefixIcon: Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                          icon: Icon(_isObscure1
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                          onPressed: () {
+                            setState(() {
+                              _isObscure1 = !_isObscure1;
+                            });
+                          },
+                        ),
                       ),
                       // decoration: buildInputDecoration(Icons.lock, "Password"),
                       validator: (value) {
@@ -158,11 +171,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         const EdgeInsets.only(bottom: 15, left: 10, right: 10),
                     child: TextFormField(
                       controller: _passwordController2,
-                      obscureText: true,
+                      obscureText: _isObscure2,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         hintText: AppLocalizations.of(context)!.pwconfirm,
                         prefixIcon: Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                          icon: Icon(_isObscure2
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                          onPressed: () {
+                            setState(
+                              () {
+                                _isObscure2 = !_isObscure2;
+                              },
+                            );
+                          },
+                        ),
                       ),
                       // decoration:
                       //     buildInputDecoration(Icons.lock, "Confirm Password"),
