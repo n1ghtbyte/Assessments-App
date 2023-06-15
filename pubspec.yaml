@@ -49,6 +49,7 @@ dependencies:
   firebase_crashlytics: ^3.0.16
   flutter_localizations:
     sdk: flutter
+  universal_io: ^2.2.0
     
   
 
