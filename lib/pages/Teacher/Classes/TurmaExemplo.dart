@@ -33,7 +33,10 @@ class TurmaExemplo extends StatefulWidget {
   State<TurmaExemplo> createState() => _TurmaExemploState();
 }
 
-class _TurmaExemploState extends State<TurmaExemplo> {
+class _TurmaExemploState extends State<TurmaExemplo>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
   final db = FirebaseFirestore.instance;
   late CollectionReference _class = db.collection('classes');
@@ -44,6 +47,10 @@ class _TurmaExemploState extends State<TurmaExemplo> {
   ValueNotifier<bool> isDialOpen = ValueNotifier(false);
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
+    /// Remember to add this line!!!
+
     // db.settings = const Settings(
     //   persistenceEnabled: true,
     //   cacheSizeBytes: 2048576,

@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:universal_io/io.dart';
 
 String getCompetencesPath() {
   String locale = Platform.localeName.toUpperCase().substring(0, 2);
