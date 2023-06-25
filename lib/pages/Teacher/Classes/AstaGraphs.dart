@@ -444,7 +444,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     Container(
                       padding: EdgeInsets.all(20),
                       child: Text(
-                        "${AppLocalizations.of(context)!.ovr}: 0 \nAppLocalizations.of(context)!.avg: 0",
+                        "${AppLocalizations.of(context)!.ovr}: 0 \n${AppLocalizations.of(context)!.avg}: 0",
                         style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w400),
                         textAlign: TextAlign.left,
