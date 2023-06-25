@@ -13,85 +13,90 @@ class ParentMainScreen extends StatefulWidget {
 }
 
 class _ParentMainScreenState extends State<ParentMainScreen> {
-  String? currentUser = FirebaseAuth.instance.currentUser!.email;
+  String? currentUser;
+  Map<String, dynamic>? data;
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = FirebaseAuth.instance.currentUser!.email;
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    try {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser)
+          .get();
+      setState(() {
+        data = snapshot.data() as Map<String, dynamic>;
+      });
+    } catch (error) {
+      // Handle the error condition
+      print('Error: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
-
-    return FutureBuilder<DocumentSnapshot>(
-      future: users.doc(currentUser).get(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return Text("Something went wrong");
-        }
-
-        if (snapshot.hasData && !snapshot.data!.exists) {
-          return Text("Document does not exist");
-        }
-
-        Map? data = snapshot.data?.data() as Map?;
-
-        if (data!['children'] == null) {
-          return Scaffold(
-            drawer: NavBarParent(),
-            appBar: AppBar(
-              title: Text(AppLocalizations.of(context)!.children),
-              centerTitle: true,
-              backgroundColor: Color(0xFF29D09E),
-            ),
-            // floatingActionButton: FloatingActionButton(
-            //   child: Icon(Icons.add),
-            //   backgroundColor: Color(0xFF29D09E),
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => StudentAddClass(),
-            //       ),
-            //     );
-            //   },
-            // ),
-            body: Center(
-              child: Text(
-                "...",
-                style: TextStyle(fontStyle: FontStyle.italic),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          );
-        } else {
-          return Scaffold(
-            drawer: NavBarParent(),
-            appBar: AppBar(
-              title: Text(AppLocalizations.of(context)!.children),
-              centerTitle: true,
-              backgroundColor: Color(0xFF29D09E),
-            ),
-            body: ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: data['children'].length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text("${data['children'][index]}"),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChildClasses(
-                          passedEmail: data['children'][index].toString(),
-                        ),
-                      ),
-                    );
-                  },
+    if (data == null) {
+      return Scaffold(
+        drawer: NavBarParent(),
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.children),
+          centerTitle: true,
+          backgroundColor: Color(0xFF29D09E),
+        ),
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    } else if (data!['children'] == null) {
+      return Scaffold(
+        drawer: NavBarParent(),
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.children),
+          centerTitle: true,
+          backgroundColor: Color(0xFF29D09E),
+        ),
+        body: Center(
+          child: Text(
+            ".......",
+            style: TextStyle(fontStyle: FontStyle.italic),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
+        drawer: NavBarParent(),
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.children),
+          centerTitle: true,
+          backgroundColor: Color(0xFF29D09E),
+        ),
+        body: ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: data!['children'].length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text("${data!['children'][index]}"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChildClasses(
+                      passedEmail: data!['children'][index].toString(),
+                    ),
+                  ),
                 );
               },
-            ),
-          );
-        }
-      },
-    );
+            );
+          },
+        ),
+      );
+    }
   }
 }
