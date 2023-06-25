@@ -242,7 +242,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       RadioListTile(
                         title: Text(
-                          AppLocalizations.of(context)!.teacher,
+                          AppLocalizations.of(context)!.parent,
                           style: new TextStyle(fontSize: 16),
                         ),
                         value: 3,
