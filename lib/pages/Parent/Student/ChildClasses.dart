@@ -1,3 +1,4 @@
+import 'package:assessments_app/InovWidgets/NavBarParent.dart';
 import 'package:assessments_app/InovWidgets/NavBarStudent.dart';
 import 'package:assessments_app/pages/Student/Classes/StudentClassInside.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,6 @@ class _ChildClassesState extends State<ChildClasses> {
           );
         }
         return Scaffold(
-          drawer: NavBarStudent(),
           appBar: AppBar(
             title: Text(AppLocalizations.of(context)!.classes),
             centerTitle: true,
@@ -78,10 +78,8 @@ class _ChildClassesState extends State<ChildClasses> {
                     );
                   },
                   leading: Icon(Icons.school),
-                  isThreeLine: true,
+                  isThreeLine: false,
                   title: Text(data['Name']),
-                  subtitle: Text(
-                      "${data['NumStudents'].toString()} / ${data['MaxStudents'].toString()}"),
                 );
               },
             ).toList(),
