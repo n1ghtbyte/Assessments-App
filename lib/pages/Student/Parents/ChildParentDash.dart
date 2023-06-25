@@ -71,22 +71,22 @@ class _ChildParentDashState extends State<ChildParentDash> {
             body: SafeArea(
               child: Column(
                 children: [
-                  TextFormField(
-                    controller: _controllerParent,
-                    decoration: InputDecoration(
-                      icon: Icon(Icons.family_restroom_sharp),
-                      labelStyle: TextStyle(
-                        color: Color(0xFF29D09E),
-                      ),
-                      helperText: AppLocalizations.of(context)!.parentemail,
-                      suffixIcon: Icon(Icons.check_circle),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFF29D09E)),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TextFormField(
+                      controller: _controllerParent,
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.family_restroom_sharp),
+                        labelStyle: TextStyle(
+                          color: Color(0xFF29D09E),
+                        ),
+                        helperText: AppLocalizations.of(context)!.parentemail,
+                        suffixIcon: Icon(Icons.check_circle),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF29D09E)),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 16,
                   ),
                   Divider(),
                   const SizedBox(
@@ -180,17 +180,20 @@ class _ChildParentDashState extends State<ChildParentDash> {
             body: SafeArea(
               child: Column(
                 children: [
-                  TextFormField(
-                    controller: _controllerParent,
-                    decoration: InputDecoration(
-                      icon: Icon(Icons.family_restroom_sharp),
-                      labelStyle: TextStyle(
-                        color: Color(0xFF29D09E),
-                      ),
-                      helperText: AppLocalizations.of(context)!.parentemail,
-                      suffixIcon: Icon(Icons.check_circle),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFF29D09E)),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TextFormField(
+                      controller: _controllerParent,
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.family_restroom_sharp),
+                        labelStyle: TextStyle(
+                          color: Color(0xFF29D09E),
+                        ),
+                        helperText: AppLocalizations.of(context)!.parentemail,
+                        suffixIcon: Icon(Icons.check_circle),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF29D09E)),
+                        ),
                       ),
                     ),
                   ),
