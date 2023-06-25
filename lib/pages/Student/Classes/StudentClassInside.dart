@@ -396,7 +396,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                     Container(
                       padding: EdgeInsets.all(20),
                       child: Text(
-                        "{AppLocalizations.of(context)!.ovr}: 0 \n{AppLocalizations.of(context)!.avg}: 0",
+                        "${AppLocalizations.of(context)!.ovr}: 0 \n${AppLocalizations.of(context)!.avg}: 0",
                         style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w400),
                         textAlign: TextAlign.left,
@@ -686,7 +686,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                     Container(
                       padding: EdgeInsets.all(20),
                       child: Text(
-                        "{AppLocalizations.of(context)!.ovr}: ${fsum.length} \n{AppLocalizations.of(context)!.avg}: ${(fsum.map((e) => e['Result']).reduce((value, element) => value + element) / fsum.length).toStringAsFixed(2)}",
+                        "${AppLocalizations.of(context)!.ovr}: ${fsum.length} \n${AppLocalizations.of(context)!.avg}: ${(fsum.map((e) => e['Result']).reduce((value, element) => value + element) / fsum.length).toStringAsFixed(2)}",
                         style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w400),
                         textAlign: TextAlign.left,
