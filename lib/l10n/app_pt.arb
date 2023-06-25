@@ -107,12 +107,12 @@
      "setupweights": "Atribuir pesos",
      "valsstored": "Os valores foram salvos",
      "summhundred": "A soma dos valores deve ser 100!",
-     "attrweigh": "Por favor",
+     "attrweigh": "Por favor, defina a ponderação das competências que selecionou",
      "percentage": "Percentagem",
-     "stats": "Estatística da turma X",
+     "stats": "Estatística da turma",
      "formasse": "Avaliação formativa",
      "summasse": "Avaliação sumativa",
-     "avg": "Média: X",
+     "avg": "Média:",
      "ovr": "Total",
      "teacherid": "IDProfessor",
      "userupdated": "Utilizador atualizado",
@@ -181,6 +181,6 @@
      "display": "Mostrar",
      "bugreport": "Reportar um erro",
      "reqticket": "Enviar um bilhete de solicitação",
-     "formtext": "Uma avaliação formativa é: o processo de dar feedback aos alunos durante o processo de aprendizagem.  Trata-se frequentemente de actividades de baixo risco que permitem ao professor verificar o trabalho dos alunos e dar-lhes feedback. A avaliação formativa refere-se a uma grande variedade de métodos que os professores utilizam para realizar avaliações durante o processo de compreensão dos alunos, necessidades de aprendizagem e progresso académico durante uma aula, unidade ou curso. As avaliações formativas ajudam os professores a identificar os conceitos que os alunos têm dificuldade em compreender, as competências que têm dificuldade em adquirir ou os padrões de aprendizagem que ainda não atingiram, para que possam ser feitos ajustes nas aulas, nas técnicas de instrução e no apoio académico.\\nO objectivo geral da avaliação formativa é recolher informação detalhada que possa ser utilizada para melhorar a instrução e a aprendizagem dos alunos enquanto esta decorre. O que torna uma avaliação \"formativa\" não é a concepção de um teste, técnica ou auto-avaliação, por si só, mas a forma como é utilizada - ou seja, para informar modificações no ensino e na aprendizagem em curso.\"\\n (Weimer, 2013)'\"",
-     "summtext": "Uma avaliação sumativa é uma avaliação que ocorre num determinado momento e é efectuada para resumir os resultados obtidos nesse momento. Frequentemente mais estruturada do que a avaliação formativa, fornece aos professores, aos alunos e aos pais informações sobre os progressos e o nível de aproveitamento dos alunos. As avaliações sumativas são utilizadas para avaliar a aprendizagem dos alunos, a aquisição de competências e os resultados académicos na conclusão de um período de instrução definido - normalmente no final de um projecto, unidade, curso, semestre, programa ou ano lectivo. \\n(NCVER, 2014)'\""
+     "formtext": "Uma avaliação formativa é: o processo de dar feedback aos alunos durante o processo de aprendizagem.  Trata-se frequentemente de actividades de baixo risco que permitem ao professor verificar o trabalho dos alunos e dar-lhes feedback. A avaliação formativa refere-se a uma grande variedade de métodos que os professores utilizam para realizar avaliações durante o processo de compreensão dos alunos, necessidades de aprendizagem e progresso académico durante uma aula, unidade ou curso. As avaliações formativas ajudam os professores a identificar os conceitos que os alunos têm dificuldade em compreender, as competências que têm dificuldade em adquirir ou os padrões de aprendizagem que ainda não atingiram, para que possam ser feitos ajustes nas aulas, nas técnicas de instrução e no apoio académico.\nO objectivo geral da avaliação formativa é recolher informação detalhada que possa ser utilizada para melhorar a instrução e a aprendizagem dos alunos enquanto esta decorre. O que torna uma avaliação \"formativa\" não é a concepção de um teste, técnica ou auto-avaliação, por si só, mas a forma como é utilizada - ou seja, para informar modificações no ensino e na aprendizagem em curso.\"\n (Weimer, 2013)'\"",
+     "summtext": "Uma avaliação sumativa é uma avaliação que ocorre num determinado momento e é efectuada para resumir os resultados obtidos nesse momento. Frequentemente mais estruturada do que a avaliação formativa, fornece aos professores, aos alunos e aos pais informações sobre os progressos e o nível de aproveitamento dos alunos. As avaliações sumativas são utilizadas para avaliar a aprendizagem dos alunos, a aquisição de competências e os resultados académicos na conclusão de um período de instrução definido - normalmente no final de um projecto, unidade, curso, semestre, programa ou ano lectivo. \n(NCVER, 2014)'\""
 }
