@@ -39,8 +39,8 @@ class _ParentChildDashState extends State<ParentChildDash> {
         if (!snapshot.hasData) {
           return Container(
             child: Center(
-                // child: CircularProgressIndicator(),
-                ),
+              child: CircularProgressIndicator(),
+            ),
           );
         }
         print(snapshot.data?.data());
@@ -58,34 +58,12 @@ class _ParentChildDashState extends State<ParentChildDash> {
               onPressed: () {
                 FirebaseFirestore.instance
                     .collection('users')
-                    .doc(_controllerParent.text)
-                    .get()
-                    .then((DocumentSnapshot documentSnapshot) {
-                  if (documentSnapshot.exists) {
-                    if (documentSnapshot['Parents']
-                        .contains(currentUser.toString())) {
-                      FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(FirebaseAuth.instance.currentUser?.email
-                              .toString())
-                          .update({
-                        "children":
-                            FieldValue.arrayUnion([_controllerParent.text]),
-                      });
-                    }
-                    // childred did not insert parent email
-                    else {
-                      // final snackBar = SnackBar(
-                      //     content: Text(
-                      //         'The student did not mention you in his account....'));
-                      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    }
-                  } else {
-                    // final snackBar = SnackBar(
-                    //     content: Text('The student does not exist ?!?!(...)'));
-                    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }
-                });
+                    .doc(FirebaseAuth.instance.currentUser?.email.toString())
+                    .update(
+                  {
+                    "children": FieldValue.arrayUnion([_controllerParent.text]),
+                  },
+                );
 
                 Navigator.pop(context);
               },
@@ -95,17 +73,21 @@ class _ParentChildDashState extends State<ParentChildDash> {
             body: SafeArea(
               child: Column(
                 children: [
-                  TextFormField(
-                    controller: _controllerParent,
-                    decoration: InputDecoration(
-                      icon: Icon(Icons.family_restroom_sharp),
-                      labelStyle: TextStyle(
-                        color: Color(0xFF29D09E),
-                      ),
-                      helperText: AppLocalizations.of(context)!.childemail,
-                      suffixIcon: Icon(Icons.check_circle),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFF29D09E)),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TextFormField(
+                      controller: _controllerParent,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(20),
+                        icon: Icon(Icons.family_restroom_sharp),
+                        labelStyle: TextStyle(
+                          color: Color(0xFF29D09E),
+                        ),
+                        helperText: AppLocalizations.of(context)!.childemail,
+                        suffixIcon: Icon(Icons.check_circle),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF29D09E)),
+                        ),
                       ),
                     ),
                   ),
@@ -191,36 +173,10 @@ class _ParentChildDashState extends State<ParentChildDash> {
               onPressed: () {
                 FirebaseFirestore.instance
                     .collection('users')
-                    .doc(_controllerParent.text)
-                    .get()
-                    .then(
-                  (DocumentSnapshot documentSnapshot) {
-                    if (documentSnapshot.exists) {
-                      if (documentSnapshot['Parents']
-                          .contains(currentUser.toString())) {
-                        FirebaseFirestore.instance
-                            .collection('users')
-                            .doc(FirebaseAuth.instance.currentUser?.email
-                                .toString())
-                            .update({
-                          "children":
-                              FieldValue.arrayUnion([_controllerParent.text]),
-                        });
-                      }
-                      // childred did not insert parent email
-                      else {
-                        // final snackBar = SnackBar(
-                        //     content: Text(
-                        //         'The student did not mention you in his account....'));
-                        // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      }
-                    } else {
-                      // final snackBar = SnackBar(
-                      //     content: Text('The student does not exist ?!?!(...)'));
-                      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    }
-                  },
-                );
+                    .doc(FirebaseAuth.instance.currentUser?.email.toString())
+                    .update({
+                  "children": FieldValue.arrayUnion([_controllerParent.text]),
+                });
 
                 Navigator.pop(context);
               },
