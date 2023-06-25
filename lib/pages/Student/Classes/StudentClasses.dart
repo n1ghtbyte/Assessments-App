@@ -105,7 +105,7 @@ class _StudClassesMainState extends State<StudClassesMain> {
                   );
                 },
                 leading: Icon(Icons.school),
-                isThreeLine: true,
+                isThreeLine: false,
                 title: Text(data['Name']),
               );
             }).toList(),
