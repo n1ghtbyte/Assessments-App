@@ -1,5 +1,3 @@
-import 'package:assessments_app/InovWidgets/NavBarParent.dart';
-import 'package:assessments_app/InovWidgets/NavBarStudent.dart';
 import 'package:assessments_app/pages/Student/Classes/StudentClassInside.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
