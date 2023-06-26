@@ -48,12 +48,6 @@ class _TurmaExemploState extends State<TurmaExemplo>
   Widget build(BuildContext context) {
     super.build(context);
 
-    /// Remember to add this line!!!
-
-    // db.settings = const Settings(
-    //   persistenceEnabled: true,
-    //   cacheSizeBytes: 2048576,
-    // );
     final _assessClassStream = db
         .collection('assessments')
         .where('ClassId', isEqualTo: widget.passedClassName)
@@ -69,8 +63,8 @@ class _TurmaExemploState extends State<TurmaExemplo>
         if (!snapshot.hasData) {
           return Container(
             child: Center(
-                // child: CircularProgressIndicator(),
-                ),
+              child: CircularProgressIndicator(),
+            ),
           );
         }
 
@@ -88,10 +82,6 @@ class _TurmaExemploState extends State<TurmaExemplo>
                 PopupMenuButton<_MenuValues>(
                   icon: Icon(Icons.more_vert),
                   itemBuilder: (BuildContext context) => [
-                    // PopupMenuItem(
-                    //   child: Text('Review Assessments'),
-                    //   value: _MenuValues.AddStuddent,
-                    // ),
                     PopupMenuItem(
                       child: Text(AppLocalizations.of(context)!.addstud),
                       value: _MenuValues.AddStuddent,
@@ -111,13 +101,6 @@ class _TurmaExemploState extends State<TurmaExemplo>
                   ],
                   onSelected: (value) {
                     switch (value) {
-                      // case _MenuValues.ReviewAssess:
-                      //   Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //           builder: (context) =>
-                      //               ReviewAssessments(widget.passedClassName)));
-                      //   break;
                       case _MenuValues.CompetenceAdd:
                         Navigator.of(context)
                             .push(MaterialPageRoute(
@@ -234,10 +217,6 @@ class _TurmaExemploState extends State<TurmaExemplo>
                           PopupMenuButton<_MenuValues>(
                             icon: Icon(Icons.more_vert),
                             itemBuilder: (BuildContext context) => [
-                              // PopupMenuItem(
-                              //   child: Text('Review Assessments'),
-                              //   value: _MenuValues.ReviewAssess,
-                              // ),
                               PopupMenuItem(
                                 child:
                                     Text(AppLocalizations.of(context)!.addstud),
@@ -507,20 +486,11 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                       data['Competences'].keys.toList().length,
                                   itemBuilder: (context, index) {
                                     return ListTile(
-                                      title:
-                                          // data['Weights']
-                                          //         .keys
-                                          //         .toList()
-                                          //         .contains(data['Competences']
-                                          //             .keys
-                                          //             .toList()[index])
-                                          // ?
-                                          Text(
+                                      title: Text(
                                         data['Competences']
                                             .keys
                                             .toList()[index],
                                       ),
-                                      // : Text("Need to be defined"),
                                       subtitle: Text(
                                         data['Weights'][data['Competences']
                                                     .keys
