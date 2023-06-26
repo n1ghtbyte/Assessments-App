@@ -245,7 +245,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
           for (var comp in foo['Competences'].keys) {
             // getColourFromComp(comp);
             // for each indicator in a given competence
-
             for (var indicator in foo['Competences'][comp].keys) {
               print(foo['Competences'][comp][indicator]);
 
@@ -397,7 +396,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                 widget.passedClassId,
                                 widget.passedClassName,
                                 widget.passedCompetences,
-                                widget.passedLegitName),
+                                widget.passedEmail),
                           ),
                         );
                       },
