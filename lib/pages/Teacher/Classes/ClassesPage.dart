@@ -108,14 +108,21 @@ class _ClassesPageState extends State<ClassesPage> {
                 subtitle: Text(
                     "${AppLocalizations.of(context)!.students}: ${data['NumStudents'].toString()}\n${AppLocalizations.of(context)!.joinc}: ${data['documentID'].toString()}"),
                 onLongPress: () async {
-                  await Clipboard.setData(
-                    ClipboardData(text: data['documentID'].toString()),
-                  );
-
+                  final docId = data['documentID'];
                   final snackBar = SnackBar(
                       content:
                           Text(AppLocalizations.of(context)!.copyclipboard));
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  await Clipboard.setData(ClipboardData(text: docId))
+                      .then((value) {
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }).catchError((error) {
+                    // Handle clipboard operation errors
+                    print('Error copying to clipboard: $error');
+                  });
+                  print(docId);
+                  await Clipboard.getData(Clipboard.kTextPlain).then((value) {
+                    print(value?.text); //value is clipbarod data
+                  });
                 },
               );
             }).toList(),
