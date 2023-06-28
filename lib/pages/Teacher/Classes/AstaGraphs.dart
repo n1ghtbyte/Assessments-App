@@ -14,6 +14,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../Assessments/GenFormAssessment.dart';
 import '../Assessments/GenSingleSummAssessment.dart';
+import '../Assessments/GenSingleSelfAssessment.dart';
 
 class AstaGraphs extends StatefulWidget {
   final String passedLegitName;
@@ -374,10 +375,23 @@ class _AstaGraphsState extends State<AstaGraphs> {
                       },
                     ),
                     SpeedDialChild(
-                        child: Icon(Icons.self_improvement),
-                        backgroundColor: Color.fromARGB(135, 41, 208, 158),
-                        label: AppLocalizations.of(context)!.self,
-                        elevation: 5.0),
+                      child: Icon(Icons.self_improvement),
+                      backgroundColor: Color(0xFF29D09E),
+                      label: AppLocalizations.of(context)!.self,
+                      elevation: 5.0,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => GenSingleSelfAssessment(
+                                widget.passedClassId,
+                                widget.passedClassName,
+                                widget.passedCompetences,
+                                widget.passedEmail),
+                          ),
+                        );
+                      },
+                    ),
                     SpeedDialChild(
                         child: Icon(Icons.group),
                         backgroundColor: Color.fromARGB(135, 41, 208, 158),
