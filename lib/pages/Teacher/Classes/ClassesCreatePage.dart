@@ -199,29 +199,35 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                     children: [
                       Form(
                         key: _formKey,
-                        child: TextFormField(
-                          controller: _controllerName,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return AppLocalizations.of(context)!.entertxt;
-                            }
-                            return null;
-                          },
-                          keyboardType: TextInputType.name,
-                          decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xff388e3c)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: TextFormField(
+                            controller: _controllerName,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return AppLocalizations.of(context)!.entertxt;
+                              }
+                              return null;
+                            },
+                            keyboardType: TextInputType.name,
+                            decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xff388e3c)),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xff388e3c)),
+                              ),
+                              icon: Icon(Icons.person),
+                              labelText:
+                                  AppLocalizations.of(context)!.classname,
+                              labelStyle: TextStyle(
+                                color: Color(0xFF29D09E),
+                              ),
+                              helperText:
+                                  AppLocalizations.of(context)!.enterclassname,
                             ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xff388e3c)),
-                            ),
-                            icon: Icon(Icons.person),
-                            labelText: AppLocalizations.of(context)!.classname,
-                            labelStyle: TextStyle(
-                              color: Color(0xFF29D09E),
-                            ),
-                            helperText:
-                                AppLocalizations.of(context)!.enterclassname,
                           ),
                         ),
                       ),
