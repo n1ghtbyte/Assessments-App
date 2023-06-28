@@ -37,8 +37,7 @@ class _NavBarStudentState extends State<NavBarStudent> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => AssessmentsStudentAll()),
+                MaterialPageRoute(builder: (context) => AssessmentsStudent()),
               );
             },
           ),
