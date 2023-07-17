@@ -32,47 +32,24 @@ class _GenSingleSelfAssessmentState extends State<GenSingleSelfAssessment> {
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
 
   String? _iD;
-  Future<void> addAssessment(Map X, Map comp, var curr) {
-    if (widget.passedStudName != "class") {
-      return assessments.add({
-        'Created': FieldValue.serverTimestamp(),
-        'ClassId': widget.passedClassName,
-        'ClassName': widget.passedName,
-        'Creator': currentUser,
-        'Type': _typeAssess,
-        'Target': "Single",
-        'Competences': comp,
-        'Students': {widget.passedStudName: false},
-        'DONE': false,
-        'documentID': _iD,
-        'Name': _controllerName.text
-      }).then((value) {
-        print(value.id);
-        docID = value.id;
-        updateAssessment(value.id);
-      });
-    } else {
-      // Call the user's CollectionReference to add a new assessment
-      return assessments.add({
-        'Created': FieldValue.serverTimestamp(),
-        'ClassId': widget.passedClassName,
-        'ClassName': widget.passedName,
-        'Creator': currentUser,
-        'Type': _typeAssess,
-        'Target': "Multiple",
-        'Competences': comp,
-        'Students': X,
-        'DONE': false,
-        'Count': 0,
-        'currentNumber': curr,
-        'documentID': _iD,
-        'Name': _controllerName.text
-      }).then((value) {
-        print(value.id);
-        docID = value.id;
-        updateAssessment(value.id);
-      });
-    }
+  Future<void> addAssessment(String X, Map comp) {
+    // Call the user's CollectionReference to add a new assessment
+    return assessments.add({
+      'Created': FieldValue.serverTimestamp(),
+      'ClassId': widget.passedClassName,
+      'ClassName': widget.passedName,
+      'Creator': currentUser,
+      'Type': _typeAssess,
+      'Competences': comp,
+      'Students': [X],
+      'DONE': false,
+      'documentID': _iD,
+      'Name': _controllerName.text
+    }).then((value) {
+      print(value.id);
+      docID = value.id;
+      updateAssessment(value.id);
+    });
   }
 
   Future<void> updateAssessment(String _docid) {
@@ -111,8 +88,6 @@ class _GenSingleSelfAssessmentState extends State<GenSingleSelfAssessment> {
         var comp = data['Competences'];
         List<String?> list = [];
         comp.entries.forEach((e) => list.add(e.key));
-        var studsList = data['StudentList'];
-        var resultMap = {for (var v in studsList) v: false};
 
         return Scaffold(
           appBar: AppBar(
@@ -209,7 +184,8 @@ class _GenSingleSelfAssessmentState extends State<GenSingleSelfAssessment> {
                         competencesFirebase[x.key] = x.value;
                       }
                     }
-                    await addAssessment(resultMap, competencesFirebase, "777");
+                    await addAssessment(
+                        widget.passedStudName, competencesFirebase);
                     print(docID);
                     final snackBar = SnackBar(
                         content:
