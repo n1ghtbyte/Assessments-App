@@ -131,38 +131,49 @@ class _LoginScreenState extends State<LoginScreen> {
                       context: context);
 
                   print(user);
-                  FirebaseFirestore.instance
+                  await FirebaseFirestore.instance
                       .collection('users')
                       .doc(_emailController.text)
                       .get()
                       .then((DocumentSnapshot documentSnapshot) {
                     if (documentSnapshot.exists) {
-                      print('Document data: ${documentSnapshot['Status']}');
+                      final status = documentSnapshot['Status'] as String?;
+                      print('Document data: $status');
                       if (user != null &&
-                          documentSnapshot['Status'] == "Teacher") {
+                          status != null &&
+                          status == "Teacher") {
                         Navigator.pop(context);
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => ClassesPage()));
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) => ClassesPage()),
+                        );
                       } else if (user != null &&
-                          documentSnapshot['Status'] == 'Student') {
+                          status != null &&
+                          status == 'Student') {
                         Navigator.pop(context);
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => StudClassesMain()));
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) => StudClassesMain()),
+                        );
                       } else if (user != null &&
-                          documentSnapshot['Status'] == 'Parent') {
+                          status != null &&
+                          status == 'Parent') {
                         Navigator.pop(context);
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => ParentMainScreen()));
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) => ParentMainScreen()),
+                        );
                       }
                     } else {
                       Navigator.pop(context);
 
                       final snackBar = SnackBar(
-                          content: Text(
-                              AppLocalizations.of(context)!.wrongerror404));
+                        content:
+                            Text(AppLocalizations.of(context)!.wrongerror404),
+                      );
 
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      print('Document does not exist on the database');
+                      print('Document does not exist in the database');
                     }
                   });
                 },
