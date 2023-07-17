@@ -51,6 +51,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
     final _assessClassStream = db
         .collection('assessments')
         .where('ClassId', isEqualTo: widget.passedClassName)
+        .where('Type', isEqualTo: 'Formative')
         .orderBy('Created', descending: true);
 
     return FutureBuilder<DocumentSnapshot>(
@@ -429,11 +430,12 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AssessmentFormative(
-                                                      passedAssessmentIdName:
-                                                          data['documentID'],
-                                                    )),
+                                              builder: (context) =>
+                                                  AssessmentFormative(
+                                                passedAssessmentIdName:
+                                                    data['documentID'],
+                                              ),
+                                            ),
                                           ).then((value) => setState(() {}));
                                         }
                                         if (data['Type'] == 'Formative' &&
@@ -441,11 +443,12 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AssessmentCheck(
-                                                      passedAssessmentIdName:
-                                                          data['documentID'],
-                                                    )),
+                                              builder: (context) =>
+                                                  AssessmentCheck(
+                                                passedAssessmentIdName:
+                                                    data['documentID'],
+                                              ),
+                                            ),
                                           );
                                         }
                                       },
