@@ -6,8 +6,8 @@ import 'package:assessments_app/pages/Teacher/Classes/ClassesPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -19,14 +19,14 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  FlutterError.onError = (errorDetails) {
-    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-  };
-  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
+  // FlutterError.onError = (errorDetails) {
+  //   FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  // };
+  // // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  // PlatformDispatcher.instance.onError = (error, stack) {
+  //   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+  //   return true;
+  // };
   runApp(MyApp());
 }
 
@@ -95,28 +95,33 @@ class _MyAppState extends State<MyApp> {
                       .collection('users')
                       .doc(user.email)
                       .get()
-                      .then(
-                    (DocumentSnapshot documentSnapshot) {
-                      if (documentSnapshot.exists) {
-                        print('Document data: ${documentSnapshot['Status']}');
-                        if (documentSnapshot['Status'] == "Teacher") {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => ClassesPage()));
-                        } else if (documentSnapshot['Status'] == 'Student') {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => StudClassesMain()));
-                        } else if (documentSnapshot['Status'] == 'Parent') {
+                      .then((DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists) {
+                      print('Document data: ${documentSnapshot['Status']}');
+                      if (documentSnapshot['Status'] == "Teacher") {
+                        Future.microtask(() {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
-                              builder: (context) => ParentMainScreen(),
-                            ),
+                                builder: (context) => ClassesPage()),
                           );
-                        }
+                        });
+                      } else if (documentSnapshot['Status'] == 'Student') {
+                        Future.microtask(() {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => StudClassesMain()),
+                          );
+                        });
+                      } else if (documentSnapshot['Status'] == 'Parent') {
+                        Future.microtask(() {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => ParentMainScreen()),
+                          );
+                        });
                       }
-                    },
-                  );
+                    }
+                  });
                 }
               },
             );
