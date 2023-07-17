@@ -1,5 +1,5 @@
 import 'package:assessments_app/pages/Student/Account/AccountStudentPage.dart';
-import 'package:assessments_app/pages/Student/AssessmentsStudent.dart';
+import 'package:assessments_app/pages/Student/Assessments/AssessmentsStudent.dart';
 import 'package:assessments_app/pages/Settings/SettingsPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
