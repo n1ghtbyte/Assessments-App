@@ -16,7 +16,6 @@ import '../Assessments/GenFormAssessment.dart';
 import '../Assessments/GenSingleSummAssessment.dart';
 import '../Assessments/GenSingleSelfAssessment.dart';
 
-
 class AstaGraphs extends StatefulWidget {
   final String passedLegitName;
   final String passedClassName;
@@ -84,6 +83,9 @@ class _AstaGraphsState extends State<AstaGraphs> {
   late CollectionReference _selfCollection = FirebaseFirestore.instance
       .collection(
           '/classes/${widget.passedClassId}/grading/${widget.passedEmail}/self');
+  late CollectionReference _peerCollection = FirebaseFirestore.instance
+      .collection(
+          '/classes/${widget.passedClassId}/grading/${widget.passedEmail}/peer');
 
   late CollectionReference _summativeCollection = FirebaseFirestore.instance
       .collection(
@@ -238,902 +240,958 @@ class _AstaGraphsState extends State<AstaGraphs> {
                 ),
               );
             }
-            List selfAssess = snpSelf.data!.docs;
-            List formAssess = snapshot.data!.docs;
-            List faa = [];
-            faa = selfAssess + formAssess;
-            faa.sort((a, b) {
-              return a['Created'].compareTo(b['Created']);
-            });
-            print(widget.passedCompetences);
-
-            double fakeIndex = 0;
-            for (var ini in widget.passedCompetences.keys) {
-              _bigData[ini] = [];
-              _smallData[ini] = [];
-            }
-            for (var _doc in faa) {
-              var foo = _doc.data()! as Map<dynamic, dynamic>;
-              print(foo['AssessID']);
-              print("HAKI");
-              List<double> helper = [];
-              // for each competence in a given assessment
-
-              for (var comp in foo['Competences'].keys) {
-                // getColourFromComp(comp);
-                // for each indicator in a given competence
-                for (var indicator in foo['Competences'][comp].keys) {
-                  print(foo['Competences'][comp][indicator]);
-
-                  helper.add(double.parse(foo['Competences'][comp][indicator]));
-
-                  // print((foo['Created'] as Timestamp).toDate());
-                  if (foo['Created'] == null) {
-                    return Container(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  }
-
-                  if (_bigData[comp]!.isEmpty) {
-                    _bigData[comp]?.add(DataItem(
-                        index: _ind,
-                        hash: indicatorToHash(indicator),
-                        x: indicator,
-                        y: [foo['Competences'][comp][indicator]]));
-                  } else {
-                    for (var i = 0; i < _bigData[comp]!.length; i++) {
-                      if (_bigData[comp]![i].x == indicator) {
-                        var tempora = _bigData[comp]![i].y;
-                        print(tempora);
-                        tempora.add(foo['Competences'][comp][indicator]);
-                        _bigData[comp]![i].y = tempora;
-                      }
-                    }
-                  }
-                  _ind++;
-                }
-
-                var _res = helper.average;
-                _smallData[comp]?.add(PointLinex(
-                    index: fakeIndex,
-                    hash: indicatorToHash(comp),
-                    competence: comp,
-                    value: _res,
-                    timestampDate: foo['Created']));
-
-                _ind = 0;
-                helper = [];
-              }
-              fakeIndex++;
-            }
-
-            inspect(_smallData);
-            inspect(_bigData);
-            var thevalue = 0;
-
-            _smallData.forEach((k, v) {
-              if (v.length > thevalue) {
-                thevalue = v.length;
-              }
-            });
-
-            for (var comp in widget.passedCompetences.keys) {
-              for (var i = 0; i < _bigData[comp]!.length; i++) {
-                if (_bigData[comp]![i].y.length > _max) {
-                  _max = _bigData[comp]![i].y.length;
-                }
-              }
-              _comp2cardinal[comp] = _max;
-              _max = 0;
-            }
-            inspect(_comp2cardinal);
-
-            //Fetch summative data
             return StreamBuilder<QuerySnapshot>(
-              stream: _summativeCollection
+              stream: _peerCollection
                   .orderBy('Created', descending: false)
                   .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshotSumm) {
-                if (snapshotSumm.hasError) {
+              builder:
+                  (BuildContext context, AsyncSnapshot<QuerySnapshot> snpPeer) {
+                if (snpPeer.hasError) {
                   return Text("Something went wrong");
                 }
-                if (!snapshotSumm.hasData) {
+                if (!snpPeer.hasData) {
                   return Container(
                     child: Center(
                       child: CircularProgressIndicator(),
                     ),
                   );
                 }
-                List<Map<dynamic, dynamic>> fsum = [];
-                if (snapshotSumm.data!.docs.isEmpty) {
-                  print("no summative here");
-                  return Scaffold(
-                    appBar: AppBar(
-                      title: Text('${widget.passedLegitName}'),
-                      centerTitle: true,
-                      backgroundColor: Color(0xFF29D09E),
-                    ),
-                    floatingActionButton: SpeedDial(
-                      icon: Icons.assessment,
-                      activeIcon: Icons.arrow_back,
-                      spacing: 5,
-                      openCloseDial: isDialOpen,
-                      curve: Curves.bounceInOut,
-                      childPadding: const EdgeInsets.all(5),
-                      spaceBetweenChildren: 4,
-                      backgroundColor: Color(0xFF29D09E),
-                      foregroundColor: Color.fromARGB(255, 255, 255, 255),
-                      overlayColor: Colors.black,
-                      elevation: 8.0,
-                      onOpen: () => debugPrint('OPENING DIAL'),
-                      onClose: () => debugPrint('DIAL CLOSED'),
-                      shape: CircleBorder(),
-                      children: [
-                        SpeedDialChild(
-                          child: Icon(Icons.summarize),
-                          backgroundColor: Color(0xFF29D09E),
-                          label: AppLocalizations.of(context)!.summative,
-                          elevation: 5.0,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => GenSingleSummAssessment(
-                                    widget.passedClassId,
-                                    widget.passedClassName,
-                                    widget.passedCompetences,
-                                    widget.passedEmail),
-                              ),
-                            );
-                          },
-                        ),
-                        SpeedDialChild(
-                          child: Icon(Icons.self_improvement),
-                          backgroundColor: Color(0xFF29D09E),
-                          label: AppLocalizations.of(context)!.self,
-                          elevation: 5.0,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => GenSingleSelfAssessment(
-                                    widget.passedClassId,
-                                    widget.passedClassName,
-                                    widget.passedCompetences,
-                                    widget.passedEmail),
-                              ),
-                            );
-                          },
-                        ),
-                        SpeedDialChild(
-                            child: Icon(Icons.group),
-                            backgroundColor: Color.fromARGB(135, 41, 208, 158),
-                            label: AppLocalizations.of(context)!.peer,
-                            elevation: 5.0),
-                        SpeedDialChild(
-                          child: Icon(Icons.quiz),
-                          backgroundColor: Color(0xFF29D09E),
-                          label: AppLocalizations.of(context)!.formative,
-                          elevation: 5.0,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => GenFormAssessment(
-                                    widget.passedClassId,
-                                    widget.passedClassName,
-                                    widget.passedCompetences,
-                                    widget.passedEmail),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    body: ListView(
-                      children: [
-                        SizedBox(
-                          height: 6,
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(20),
-                          child: Text(
-                            AppLocalizations.of(context)!.summa,
-                            style: TextStyle(
-                                fontSize: 21, fontWeight: FontWeight.w800),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                List selfAssess = snpSelf.data!.docs;
+                List formAssess = snapshot.data!.docs;
+                List peerAssess = snpPeer.data!.docs;
+                List faa = [];
+                faa = selfAssess + formAssess + peerAssess;
+                faa.sort((a, b) {
+                  return a['Created'].compareTo(b['Created']);
+                });
+                print(widget.passedCompetences);
 
-                        // SizedBox(
-                        //   height: 24,
-                        // ),
-                        DataTable(
-                          columns: [
-                            DataColumn(
-                              label: Text(
-                                AppLocalizations.of(context)!.grade,
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
+                double fakeIndex = 0;
+                for (var ini in widget.passedCompetences.keys) {
+                  _bigData[ini] = [];
+                  _smallData[ini] = [];
+                }
+                for (var _doc in faa) {
+                  var foo = _doc.data()! as Map<dynamic, dynamic>;
+                  print(foo['AssessID']);
+                  print("HAKI");
+                  List<double> helper = [];
+                  // for each competence in a given assessment
+
+                  for (var comp in foo['Competences'].keys) {
+                    // getColourFromComp(comp);
+                    // for each indicator in a given competence
+                    for (var indicator in foo['Competences'][comp].keys) {
+                      print(foo['Competences'][comp][indicator]);
+
+                      helper.add(
+                          double.parse(foo['Competences'][comp][indicator]));
+
+                      // print((foo['Created'] as Timestamp).toDate());
+                      if (foo['Created'] == null) {
+                        return Container(
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+
+                      if (_bigData[comp]!.isEmpty) {
+                        _bigData[comp]?.add(DataItem(
+                            index: _ind,
+                            hash: indicatorToHash(indicator),
+                            x: indicator,
+                            y: [foo['Competences'][comp][indicator]]));
+                      } else {
+                        for (var i = 0; i < _bigData[comp]!.length; i++) {
+                          if (_bigData[comp]![i].x == indicator) {
+                            var tempora = _bigData[comp]![i].y;
+                            print(tempora);
+                            tempora.add(foo['Competences'][comp][indicator]);
+                            _bigData[comp]![i].y = tempora;
+                          }
+                        }
+                      }
+                      _ind++;
+                    }
+
+                    var _res = helper.average;
+                    _smallData[comp]?.add(PointLinex(
+                        index: fakeIndex,
+                        hash: indicatorToHash(comp),
+                        competence: comp,
+                        value: _res,
+                        timestampDate: foo['Created']));
+
+                    _ind = 0;
+                    helper = [];
+                  }
+                  fakeIndex++;
+                }
+
+                inspect(_smallData);
+                inspect(_bigData);
+                var thevalue = 0;
+
+                _smallData.forEach((k, v) {
+                  if (v.length > thevalue) {
+                    thevalue = v.length;
+                  }
+                });
+
+                for (var comp in widget.passedCompetences.keys) {
+                  for (var i = 0; i < _bigData[comp]!.length; i++) {
+                    if (_bigData[comp]![i].y.length > _max) {
+                      _max = _bigData[comp]![i].y.length;
+                    }
+                  }
+                  _comp2cardinal[comp] = _max;
+                  _max = 0;
+                }
+                inspect(_comp2cardinal);
+
+                //Fetch summative data
+                return StreamBuilder<QuerySnapshot>(
+                  stream: _summativeCollection
+                      .orderBy('Created', descending: false)
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshotSumm) {
+                    if (snapshotSumm.hasError) {
+                      return Text("Something went wrong");
+                    }
+                    if (!snapshotSumm.hasData) {
+                      return Container(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
+                    List<Map<dynamic, dynamic>> fsum = [];
+                    if (snapshotSumm.data!.docs.isEmpty) {
+                      print("no summative here");
+                      return Scaffold(
+                        appBar: AppBar(
+                          title: Text('${widget.passedLegitName}'),
+                          centerTitle: true,
+                          backgroundColor: Color(0xFF29D09E),
+                        ),
+                        floatingActionButton: SpeedDial(
+                          icon: Icons.assessment,
+                          activeIcon: Icons.arrow_back,
+                          spacing: 5,
+                          openCloseDial: isDialOpen,
+                          curve: Curves.bounceInOut,
+                          childPadding: const EdgeInsets.all(5),
+                          spaceBetweenChildren: 4,
+                          backgroundColor: Color(0xFF29D09E),
+                          foregroundColor: Color.fromARGB(255, 255, 255, 255),
+                          overlayColor: Colors.black,
+                          elevation: 8.0,
+                          onOpen: () => debugPrint('OPENING DIAL'),
+                          onClose: () => debugPrint('DIAL CLOSED'),
+                          shape: CircleBorder(),
+                          children: [
+                            SpeedDialChild(
+                              child: Icon(Icons.summarize),
+                              backgroundColor: Color(0xFF29D09E),
+                              label: AppLocalizations.of(context)!.summative,
+                              elevation: 5.0,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        GenSingleSummAssessment(
+                                            widget.passedClassId,
+                                            widget.passedClassName,
+                                            widget.passedCompetences,
+                                            widget.passedEmail),
+                                  ),
+                                );
+                              },
                             ),
-                            DataColumn(
-                              label: Text(
-                                AppLocalizations.of(context)!.date,
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
+                            SpeedDialChild(
+                              child: Icon(Icons.self_improvement),
+                              backgroundColor: Color(0xFF29D09E),
+                              label: AppLocalizations.of(context)!.self,
+                              elevation: 5.0,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        GenSingleSelfAssessment(
+                                            widget.passedClassId,
+                                            widget.passedClassName,
+                                            widget.passedCompetences,
+                                            widget.passedEmail),
+                                  ),
+                                );
+                              },
+                            ),
+                            SpeedDialChild(
+                                child: Icon(Icons.group),
+                                backgroundColor:
+                                    Color.fromARGB(135, 41, 208, 158),
+                                label: AppLocalizations.of(context)!.peer,
+                                elevation: 5.0),
+                            SpeedDialChild(
+                              child: Icon(Icons.quiz),
+                              backgroundColor: Color(0xFF29D09E),
+                              label: AppLocalizations.of(context)!.formative,
+                              elevation: 5.0,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => GenFormAssessment(
+                                        widget.passedClassId,
+                                        widget.passedClassName,
+                                        widget.passedCompetences,
+                                        widget.passedEmail),
+                                  ),
+                                );
+                              },
                             ),
                           ],
-                          rows: [],
                         ),
-                        Container(
-                          padding: EdgeInsets.all(20),
-                          child: Text(
-                            "${AppLocalizations.of(context)!.ovr}: 0 \n${AppLocalizations.of(context)!.avg}: 0",
-                            style: TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w400),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 14,
-                        ),
-                        Divider(height: 2),
-                        SizedBox(
-                          height: 14,
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(20),
-                          child: Text(
-                            AppLocalizations.of(context)!.forma,
-                            style: TextStyle(
-                                fontSize: 21, fontWeight: FontWeight.w800),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        Column(
+                        body: ListView(
                           children: [
-                            for (var _comp in _bigData.keys)
-                              Column(
-                                children: [
-                                  Text(
-                                    _comp.toString(),
-                                    style: TextStyle(
-                                        fontSize: 21,
-                                        fontWeight: FontWeight.w400),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  LegendsListWidget(
-                                    legends: [
-                                      for (var i = 0;
-                                          i < _comp2cardinal[_comp]!;
-                                          i++)
-                                        Legend(
-                                            "${DateFormat.MEd().format(_smallData[_comp]![i].timestampDate.toDate())}",
-                                            _leColours[i]),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 14),
-                                  SizedBox(height: 16),
-                                  SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Container(
-                                      padding: EdgeInsets.only(
-                                          left: 20,
-                                          right: 20,
-                                          top: 20,
-                                          bottom: 20),
-                                      height: 300,
-                                      width: 100 +
-                                          (_bigData[_comp]!.length * 200) +
-                                          _smallData[_comp]!.length * 15,
-                                      child: BarChart(
-                                        BarChartData(
-                                          baselineY: 0,
-                                          titlesData: FlTitlesData(
-                                            bottomTitles: AxisTitles(
-                                                sideTitles: _bottomTitles),
-                                            leftTitles: AxisTitles(
-                                                sideTitles: SideTitles(
-                                                    showTitles: true)),
-                                            topTitles: AxisTitles(
-                                                sideTitles: SideTitles(
-                                                    showTitles: false)),
-                                            rightTitles: AxisTitles(
-                                                sideTitles: SideTitles(
-                                                    showTitles: false)),
-                                          ),
-                                          gridData: FlGridData(
-                                              drawHorizontalLine: true,
-                                              drawVerticalLine: false),
-                                          maxY: 5,
-                                          minY: 0,
-                                          groupsSpace: 10,
-                                          barGroups: _bigData[_comp]
-                                              ?.map(
-                                                (dataItem) => BarChartGroupData(
-                                                  x: dataItem.hash,
-                                                  barRods: [
-                                                    for (var ind = 0;
-                                                        ind < dataItem.y.length;
-                                                        ind++)
-                                                      BarChartRodData(
-                                                          borderRadius:
-                                                              BorderRadius.zero,
-                                                          backDrawRodData:
-                                                              BackgroundBarChartRodData(
-                                                            show: true,
-                                                            toY: 0.1,
-                                                            color:
-                                                                _leColours[ind],
-                                                          ),
-                                                          toY: double.parse(
-                                                              dataItem.y[ind]),
-                                                          width: 15,
-                                                          color:
-                                                              _leColours[ind]),
-                                                  ],
-                                                ),
-                                              )
-                                              .toList(),
-                                        ),
-                                        swapAnimationDuration: Duration(
-                                            milliseconds: 150), // Optional
-                                        swapAnimationCurve:
-                                            Curves.linear, // Optional
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 32,
-                                  ),
-                                  Divider(
-                                    thickness: 2,
-                                    height: 4,
-                                  ),
-                                  SizedBox(
-                                    height: 32,
-                                  ),
-                                ],
+                            SizedBox(
+                              height: 6,
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                AppLocalizations.of(context)!.summa,
+                                style: TextStyle(
+                                    fontSize: 21, fontWeight: FontWeight.w800),
+                                textAlign: TextAlign.center,
                               ),
+                            ),
+
+                            // SizedBox(
+                            //   height: 24,
+                            // ),
+                            DataTable(
+                              columns: [
+                                DataColumn(
+                                  label: Text(
+                                    AppLocalizations.of(context)!.grade,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Text(
+                                    AppLocalizations.of(context)!.date,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                              rows: [],
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                "${AppLocalizations.of(context)!.ovr}: 0 \n${AppLocalizations.of(context)!.avg}: 0",
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w400),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 14,
+                            ),
+                            Divider(height: 2),
+                            SizedBox(
+                              height: 14,
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                AppLocalizations.of(context)!.forma,
+                                style: TextStyle(
+                                    fontSize: 21, fontWeight: FontWeight.w800),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
                             Column(
                               children: [
-                                Text(
-                                  AppLocalizations.of(context)!.studentprog,
-                                  style: TextStyle(
-                                      fontSize: 21,
-                                      fontWeight: FontWeight.w400),
-                                  textAlign: TextAlign.left,
-                                ),
-                                const SizedBox(height: 8),
-                                LegendsListWidget(
-                                  legends: [
-                                    for (var i in _smallData.keys)
-                                      Legend(i, getColourFromComp(i)),
+                                for (var _comp in _bigData.keys)
+                                  Column(
+                                    children: [
+                                      Text(
+                                        _comp.toString(),
+                                        style: TextStyle(
+                                            fontSize: 21,
+                                            fontWeight: FontWeight.w400),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                      const SizedBox(height: 8),
+                                      LegendsListWidget(
+                                        legends: [
+                                          for (var i = 0;
+                                              i < _comp2cardinal[_comp]!;
+                                              i++)
+                                            Legend(
+                                                "${DateFormat.MEd().format(_smallData[_comp]![i].timestampDate.toDate())}",
+                                                _leColours[i]),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 14),
+                                      SizedBox(height: 16),
+                                      SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Container(
+                                          padding: EdgeInsets.only(
+                                              left: 20,
+                                              right: 20,
+                                              top: 20,
+                                              bottom: 20),
+                                          height: 300,
+                                          width: 100 +
+                                              (_bigData[_comp]!.length * 200) +
+                                              _smallData[_comp]!.length * 15,
+                                          child: BarChart(
+                                            BarChartData(
+                                              baselineY: 0,
+                                              titlesData: FlTitlesData(
+                                                bottomTitles: AxisTitles(
+                                                    sideTitles: _bottomTitles),
+                                                leftTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: true)),
+                                                topTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false)),
+                                                rightTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false)),
+                                              ),
+                                              gridData: FlGridData(
+                                                  drawHorizontalLine: true,
+                                                  drawVerticalLine: false),
+                                              maxY: 5,
+                                              minY: 0,
+                                              groupsSpace: 10,
+                                              barGroups: _bigData[_comp]
+                                                  ?.map(
+                                                    (dataItem) =>
+                                                        BarChartGroupData(
+                                                      x: dataItem.hash,
+                                                      barRods: [
+                                                        for (var ind = 0;
+                                                            ind <
+                                                                dataItem
+                                                                    .y.length;
+                                                            ind++)
+                                                          BarChartRodData(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .zero,
+                                                              backDrawRodData:
+                                                                  BackgroundBarChartRodData(
+                                                                show: true,
+                                                                toY: 0.1,
+                                                                color:
+                                                                    _leColours[
+                                                                        ind],
+                                                              ),
+                                                              toY: double.parse(
+                                                                  dataItem
+                                                                      .y[ind]),
+                                                              width: 15,
+                                                              color: _leColours[
+                                                                  ind]),
+                                                      ],
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                            ),
+                                            swapAnimationDuration: Duration(
+                                                milliseconds: 150), // Optional
+                                            swapAnimationCurve:
+                                                Curves.linear, // Optional
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 32,
+                                      ),
+                                      Divider(
+                                        thickness: 2,
+                                        height: 4,
+                                      ),
+                                      SizedBox(
+                                        height: 32,
+                                      ),
+                                    ],
+                                  ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      AppLocalizations.of(context)!.studentprog,
+                                      style: TextStyle(
+                                          fontSize: 21,
+                                          fontWeight: FontWeight.w400),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    LegendsListWidget(
+                                      legends: [
+                                        for (var i in _smallData.keys)
+                                          Legend(i, getColourFromComp(i)),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 14),
+                                    // SizedBox(height: 16),
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Container(
+                                          padding: EdgeInsets.only(
+                                              left: 50,
+                                              right: 100,
+                                              top: 100,
+                                              bottom: 40),
+                                          height: 350,
+                                          width: 200 + thevalue * 100,
+                                          child: LineChart(
+                                            LineChartData(
+                                              titlesData: FlTitlesData(
+                                                bottomTitles: AxisTitles(
+                                                    sideTitles:
+                                                        _bottomTitlesTimestamps),
+                                                leftTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: true)),
+                                                topTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false)),
+                                                rightTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false)),
+                                              ),
+                                              minY: 0,
+                                              maxY: 5,
+                                              gridData: FlGridData(
+                                                  show: true,
+                                                  drawHorizontalLine: true,
+                                                  drawVerticalLine: true),
+                                              borderData:
+                                                  FlBorderData(show: true),
+                                              lineBarsData: [
+                                                for (var _comp
+                                                    in _smallData.keys)
+                                                  LineChartBarData(
+                                                    spots: _smallData[_comp]
+                                                        ?.map((point) => FlSpot(
+                                                            point.index,
+                                                            point.value))
+                                                        .toList(),
+                                                    isCurved: false,
+                                                    barWidth: 2,
+                                                    color: getColourFromComp(
+                                                        _comp),
+                                                  ),
+                                              ],
+                                            ),
+                                            swapAnimationDuration: Duration(
+                                                milliseconds: 150), // Optional
+                                            swapAnimationCurve:
+                                                Curves.linear, // Optional
+                                          )),
+                                    ),
+                                    const SizedBox(height: 16),
                                   ],
                                 ),
-                                const SizedBox(height: 14),
-                                // SizedBox(height: 16),
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Container(
-                                      padding: EdgeInsets.only(
-                                          left: 50,
-                                          right: 100,
-                                          top: 100,
-                                          bottom: 40),
-                                      height: 350,
-                                      width: 200 + thevalue * 100,
-                                      child: LineChart(
-                                        LineChartData(
-                                          titlesData: FlTitlesData(
-                                            bottomTitles: AxisTitles(
-                                                sideTitles:
-                                                    _bottomTitlesTimestamps),
-                                            leftTitles: AxisTitles(
-                                                sideTitles: SideTitles(
-                                                    showTitles: true)),
-                                            topTitles: AxisTitles(
-                                                sideTitles: SideTitles(
-                                                    showTitles: false)),
-                                            rightTitles: AxisTitles(
-                                                sideTitles: SideTitles(
-                                                    showTitles: false)),
-                                          ),
-                                          minY: 0,
-                                          maxY: 5,
-                                          gridData: FlGridData(
-                                              show: true,
-                                              drawHorizontalLine: true,
-                                              drawVerticalLine: true),
-                                          borderData: FlBorderData(show: true),
-                                          lineBarsData: [
-                                            for (var _comp in _smallData.keys)
-                                              LineChartBarData(
-                                                spots: _smallData[_comp]
-                                                    ?.map((point) => FlSpot(
-                                                        point.index,
-                                                        point.value))
-                                                    .toList(),
-                                                isCurved: false,
-                                                barWidth: 2,
-                                                color: getColourFromComp(_comp),
-                                              ),
-                                          ],
-                                        ),
-                                        swapAnimationDuration: Duration(
-                                            milliseconds: 150), // Optional
-                                        swapAnimationCurve:
-                                            Curves.linear, // Optional
-                                      )),
-                                ),
-                                const SizedBox(height: 16),
                               ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  );
-                } else {
-                  for (var _doc in snapshotSumm.data!.docs) {
-                    fsum.add(_doc.data()! as Map<dynamic, dynamic>);
-                  }
+                      );
+                    } else {
+                      for (var _doc in snapshotSumm.data!.docs) {
+                        fsum.add(_doc.data()! as Map<dynamic, dynamic>);
+                      }
 
-                  return Scaffold(
-                    appBar: AppBar(
-                      title: Text('${widget.passedLegitName}'),
-                      centerTitle: true,
-                      backgroundColor: Color(0xFF29D09E),
-                    ),
-                    floatingActionButton: SpeedDial(
-                      icon: Icons.assessment,
-                      activeIcon: Icons.arrow_back,
-                      spacing: 5,
-                      openCloseDial: isDialOpen,
-                      curve: Curves.bounceInOut,
-                      childPadding: const EdgeInsets.all(5),
-                      spaceBetweenChildren: 4,
-                      backgroundColor: Color(0xFF29D09E),
-                      foregroundColor: Color.fromARGB(255, 255, 255, 255),
-                      overlayColor: Colors.black,
-                      elevation: 8.0,
-                      onOpen: () => debugPrint('OPENING DIAL'),
-                      onClose: () => debugPrint('DIAL CLOSED'),
-                      shape: CircleBorder(),
-                      children: [
-                        SpeedDialChild(
-                          child: Icon(Icons.summarize),
+                      return Scaffold(
+                        appBar: AppBar(
+                          title: Text('${widget.passedLegitName}'),
+                          centerTitle: true,
                           backgroundColor: Color(0xFF29D09E),
-                          label: AppLocalizations.of(context)!.summative,
-                          elevation: 5.0,
-                          onTap: () {
-                            print(widget.passedClassId);
-                            print(widget.passedLegitName);
-                            print(widget.passedCompetences);
-                            print(widget.passedEmail);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => GenSingleSummAssessment(
-                                    widget.passedClassId,
-                                    widget.passedClassName,
-                                    widget.passedCompetences,
-                                    widget.passedEmail),
-                              ),
-                            );
-                          },
                         ),
-                        SpeedDialChild(
-                            child: Icon(Icons.self_improvement),
-                            backgroundColor: Color.fromARGB(135, 41, 208, 158),
-                            label: AppLocalizations.of(context)!.self,
-                            elevation: 5.0),
-                        SpeedDialChild(
-                            child: Icon(Icons.group),
-                            backgroundColor: Color.fromARGB(135, 41, 208, 158),
-                            label: AppLocalizations.of(context)!.peer,
-                            elevation: 5.0),
-                        SpeedDialChild(
-                          child: Icon(Icons.quiz),
+                        floatingActionButton: SpeedDial(
+                          icon: Icons.assessment,
+                          activeIcon: Icons.arrow_back,
+                          spacing: 5,
+                          openCloseDial: isDialOpen,
+                          curve: Curves.bounceInOut,
+                          childPadding: const EdgeInsets.all(5),
+                          spaceBetweenChildren: 4,
                           backgroundColor: Color(0xFF29D09E),
-                          label: AppLocalizations.of(context)!.formative,
-                          elevation: 5.0,
-                          onTap: () {
-                            print(widget.passedClassId);
-                            print(widget.passedLegitName);
-                            print(widget.passedCompetences);
-                            print(widget.passedEmail);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => GenFormAssessment(
-                                    widget.passedClassId,
-                                    widget.passedClassName,
-                                    widget.passedCompetences,
-                                    widget.passedLegitName),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    body: ListView(
-                      children: [
-                        SizedBox(
-                          height: 6,
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(20),
-                          child: Text(
-                            AppLocalizations.of(context)!.summa,
-                            style: TextStyle(
-                                fontSize: 21, fontWeight: FontWeight.w800),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-
-                        // SizedBox(
-                        //   height: 24,
-                        // ),
-                        DataTable(
-                          showCheckboxColumn: false, // <-- this is important
-
-                          columns: [
-                            DataColumn(
-                                label: Text(AppLocalizations.of(context)!.grade,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold))),
-                            DataColumn(
-                                label: Text(AppLocalizations.of(context)!.date,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold))),
-                          ],
-                          rows: [
-                            for (var dt in fsum)
-                              DataRow(
-                                cells: [
-                                  DataCell(
-                                      Text(dt['Result'].toStringAsFixed(2))),
-                                  DataCell(dt['Created'] == null
-                                      ? Text(
-                                          AppLocalizations.of(context)!.loading)
-                                      : Text(DateFormat.yMMMEd()
-                                          .format(dt['Created'].toDate())
-                                          .toString()))
-                                ],
-                                onSelectChanged: (newValue) {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => AstaSubGraph(
-                                        passedSummDate:
-                                            dt['Created'] as Timestamp,
-                                        passedClassId: widget.passedClassId,
-                                        passedClassName: widget.passedClassName,
-                                        passedCompetences:
+                          foregroundColor: Color.fromARGB(255, 255, 255, 255),
+                          overlayColor: Colors.black,
+                          elevation: 8.0,
+                          onOpen: () => debugPrint('OPENING DIAL'),
+                          onClose: () => debugPrint('DIAL CLOSED'),
+                          shape: CircleBorder(),
+                          children: [
+                            SpeedDialChild(
+                              child: Icon(Icons.summarize),
+                              backgroundColor: Color(0xFF29D09E),
+                              label: AppLocalizations.of(context)!.summative,
+                              elevation: 5.0,
+                              onTap: () {
+                                print(widget.passedClassId);
+                                print(widget.passedLegitName);
+                                print(widget.passedCompetences);
+                                print(widget.passedEmail);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        GenSingleSummAssessment(
+                                            widget.passedClassId,
+                                            widget.passedClassName,
                                             widget.passedCompetences,
-                                        passedEmail: widget.passedEmail,
-                                        passedFromatives: dt['Formatives'],
-                                        passedLegitName: widget.passedLegitName,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                onLongPress: () => showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      Dialog.fullscreen(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Container(
-                                          padding: EdgeInsets.all(14),
-                                          child: Text(
-                                            AppLocalizations.of(context)!
-                                                .formsarg,
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w800),
-                                            textAlign: TextAlign.center,
+                                            widget.passedEmail),
+                                  ),
+                                );
+                              },
+                            ),
+                            SpeedDialChild(
+                                child: Icon(Icons.self_improvement),
+                                backgroundColor:
+                                    Color.fromARGB(135, 41, 208, 158),
+                                label: AppLocalizations.of(context)!.self,
+                                elevation: 5.0),
+                            SpeedDialChild(
+                                child: Icon(Icons.group),
+                                backgroundColor:
+                                    Color.fromARGB(135, 41, 208, 158),
+                                label: AppLocalizations.of(context)!.peer,
+                                elevation: 5.0),
+                            SpeedDialChild(
+                              child: Icon(Icons.quiz),
+                              backgroundColor: Color(0xFF29D09E),
+                              label: AppLocalizations.of(context)!.formative,
+                              elevation: 5.0,
+                              onTap: () {
+                                print(widget.passedClassId);
+                                print(widget.passedLegitName);
+                                print(widget.passedCompetences);
+                                print(widget.passedEmail);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => GenFormAssessment(
+                                        widget.passedClassId,
+                                        widget.passedClassName,
+                                        widget.passedCompetences,
+                                        widget.passedLegitName),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                        body: ListView(
+                          children: [
+                            SizedBox(
+                              height: 6,
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                AppLocalizations.of(context)!.summa,
+                                style: TextStyle(
+                                    fontSize: 21, fontWeight: FontWeight.w800),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+
+                            // SizedBox(
+                            //   height: 24,
+                            // ),
+                            DataTable(
+                              showCheckboxColumn:
+                                  false, // <-- this is important
+
+                              columns: [
+                                DataColumn(
+                                    label: Text(
+                                        AppLocalizations.of(context)!.grade,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold))),
+                                DataColumn(
+                                    label: Text(
+                                        AppLocalizations.of(context)!.date,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold))),
+                              ],
+                              rows: [
+                                for (var dt in fsum)
+                                  DataRow(
+                                    cells: [
+                                      DataCell(Text(
+                                          dt['Result'].toStringAsFixed(2))),
+                                      DataCell(dt['Created'] == null
+                                          ? Text(AppLocalizations.of(context)!
+                                              .loading)
+                                          : Text(DateFormat.yMMMEd()
+                                              .format(dt['Created'].toDate())
+                                              .toString()))
+                                    ],
+                                    onSelectChanged: (newValue) {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => AstaSubGraph(
+                                            passedSummDate:
+                                                dt['Created'] as Timestamp,
+                                            passedClassId: widget.passedClassId,
+                                            passedClassName:
+                                                widget.passedClassName,
+                                            passedCompetences:
+                                                widget.passedCompetences,
+                                            passedEmail: widget.passedEmail,
+                                            passedFromatives: dt['Formatives'],
+                                            passedLegitName:
+                                                widget.passedLegitName,
                                           ),
                                         ),
-                                        StreamBuilder<QuerySnapshot>(
-                                          stream: FirebaseFirestore.instance
-                                              .collection("assessments")
-                                              .where('documentID',
-                                                  whereIn: dt['Formatives'])
-                                              .snapshots(),
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot<QuerySnapshot>
-                                                  snapshot) {
-                                            if (!snapshot.hasData)
-                                              return Text(
-                                                  AppLocalizations.of(context)!
-                                                      .connecting);
-                                            var assessForms =
-                                                snapshot.data?.docs;
-                                            return ListView.builder(
+                                      );
+                                    },
+                                    onLongPress: () => showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          Dialog.fullscreen(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Container(
+                                              padding: EdgeInsets.all(14),
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .formsarg,
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w800),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                            StreamBuilder<QuerySnapshot>(
+                                              stream: FirebaseFirestore.instance
+                                                  .collection("assessments")
+                                                  .where('documentID',
+                                                      whereIn: dt['Formatives'])
+                                                  .snapshots(),
+                                              builder: (BuildContext context,
+                                                  AsyncSnapshot<QuerySnapshot>
+                                                      snapshot) {
+                                                if (!snapshot.hasData)
+                                                  return Text(
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .connecting);
+                                                var assessForms =
+                                                    snapshot.data?.docs;
+                                                return ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount:
+                                                      assessForms?.length,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int index) {
+                                                    return ListTile(
+                                                      title: Text(
+                                                          "${AppLocalizations.of(context)!.name}: ${assessForms![index]['Name'].toString()}"),
+                                                      subtitle: Text(
+                                                          "${AppLocalizations.of(context)!.date}: ${DateFormat('yyyy-MM-dd').format((assessForms[index]['Created'] as Timestamp).toDate())}"),
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Container(
+                                              padding: EdgeInsets.all(14),
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .weightsargs,
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w800),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                            ListView.builder(
                                               shrinkWrap: true,
-                                              itemCount: assessForms?.length,
+                                              itemCount: dt['Weights']
+                                                  .keys
+                                                  .toList()
+                                                  .length,
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
+                                                String key = dt['Weights']
+                                                    .keys
+                                                    .toList()
+                                                    .elementAt(index);
                                                 return ListTile(
-                                                  title: Text(
-                                                      "${AppLocalizations.of(context)!.name}: ${assessForms![index]['Name'].toString()}"),
+                                                  title: Text("$key"),
                                                   subtitle: Text(
-                                                      "${AppLocalizations.of(context)!.date}: ${DateFormat('yyyy-MM-dd').format((assessForms[index]['Created'] as Timestamp).toDate())}"),
+                                                      "${AppLocalizations.of(context)!.weights}: ${dt['Weights'][key]} %"),
                                                 );
                                               },
-                                            );
-                                          },
+                                            ),
+                                            const SizedBox(height: 15),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                  AppLocalizations.of(context)!
+                                                      .close),
+                                            ),
+                                          ],
                                         ),
-                                        const SizedBox(height: 8),
-                                        Container(
-                                          padding: EdgeInsets.all(14),
-                                          child: Text(
-                                            AppLocalizations.of(context)!
-                                                .weightsargs,
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w800),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                        ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: dt['Weights']
-                                              .keys
-                                              .toList()
-                                              .length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            String key = dt['Weights']
-                                                .keys
-                                                .toList()
-                                                .elementAt(index);
-                                            return ListTile(
-                                              title: Text("$key"),
-                                              subtitle: Text(
-                                                  "${AppLocalizations.of(context)!.weights}: ${dt['Weights'][key]} %"),
-                                            );
-                                          },
-                                        ),
-                                        const SizedBox(height: 15),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                              AppLocalizations.of(context)!
-                                                  .close),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(20),
-                          child: Text(
-                            "${AppLocalizations.of(context)!.ovr}: ${fsum.length} \n ${AppLocalizations.of(context)!.avg}: ${(fsum.map((e) => e['Result']).reduce((value, element) => value + element) / fsum.length).toStringAsFixed(2)}",
-                            style: TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w400),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 14,
-                        ),
-                        Divider(height: 2),
-                        SizedBox(
-                          height: 14,
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(20),
-                          child: Text(
-                            AppLocalizations.of(context)!.forma,
-                            style: TextStyle(
-                                fontSize: 21, fontWeight: FontWeight.w800),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        Column(
-                          children: [
-                            for (var _comp in _bigData.keys)
-                              Column(
-                                children: [
-                                  Text(
-                                    _comp.toString(),
-                                    style: TextStyle(
-                                        fontSize: 21,
-                                        fontWeight: FontWeight.w400),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  LegendsListWidget(
-                                    legends: [
-                                      for (var i = 0;
-                                          i < _comp2cardinal[_comp]!;
-                                          i++)
-                                        Legend(
-                                            "${DateFormat.MEd().format(_smallData[_comp]![i].timestampDate.toDate())}",
-                                            _leColours[i]),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 14),
-                                  SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Container(
-                                      padding: EdgeInsets.only(
-                                          left: 20,
-                                          right: 20,
-                                          top: 55,
-                                          bottom: 20),
-                                      height: 300,
-                                      width: 100 +
-                                          (_bigData[_comp]!.length * 200) +
-                                          _smallData[_comp]!.length * 15,
-                                      child: BarChart(
-                                        BarChartData(
-                                          baselineY: 0,
-                                          titlesData: FlTitlesData(
-                                            bottomTitles: AxisTitles(
-                                                sideTitles: _bottomTitles),
-                                            leftTitles: AxisTitles(
-                                                sideTitles: SideTitles(
-                                                    showTitles: true)),
-                                            topTitles: AxisTitles(
-                                                sideTitles: SideTitles(
-                                                    showTitles: false)),
-                                            rightTitles: AxisTitles(
-                                                sideTitles: SideTitles(
-                                                    showTitles: false)),
-                                          ),
-                                          gridData: FlGridData(
-                                              drawHorizontalLine: true,
-                                              drawVerticalLine: false),
-                                          maxY: 5,
-                                          minY: 0,
-                                          groupsSpace: 10,
-                                          barGroups: _bigData[_comp]
-                                              ?.map(
-                                                (dataItem) => BarChartGroupData(
-                                                  x: dataItem.hash,
-                                                  barRods: [
-                                                    for (var ind = 0;
-                                                        ind < dataItem.y.length;
-                                                        ind++)
-                                                      BarChartRodData(
-                                                          borderRadius:
-                                                              BorderRadius.zero,
-                                                          backDrawRodData:
-                                                              BackgroundBarChartRodData(
-                                                            show: true,
-                                                            toY: 0.1,
-                                                            color:
-                                                                _leColours[ind],
-                                                          ),
-                                                          toY: double.parse(
-                                                              dataItem.y[ind]),
-                                                          width: 15,
-                                                          color:
-                                                              _leColours[ind]),
-                                                  ],
-                                                ),
-                                              )
-                                              .toList(),
-                                        ),
-                                        swapAnimationDuration: Duration(
-                                            milliseconds: 150), // Optional
-                                        swapAnimationCurve:
-                                            Curves.linear, // Optional
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 32,
-                                  ),
-                                  Divider(
-                                    thickness: 2,
-                                    height: 4,
-                                  ),
-                                  SizedBox(
-                                    height: 32,
-                                  ),
-                                ],
+                              ],
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                "${AppLocalizations.of(context)!.ovr}: ${fsum.length} \n ${AppLocalizations.of(context)!.avg}: ${(fsum.map((e) => e['Result']).reduce((value, element) => value + element) / fsum.length).toStringAsFixed(2)}",
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.w400),
+                                textAlign: TextAlign.left,
                               ),
+                            ),
+                            SizedBox(
+                              height: 14,
+                            ),
+                            Divider(height: 2),
+                            SizedBox(
+                              height: 14,
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                AppLocalizations.of(context)!.forma,
+                                style: TextStyle(
+                                    fontSize: 21, fontWeight: FontWeight.w800),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
                             Column(
                               children: [
-                                Text(
-                                  AppLocalizations.of(context)!.studentprog,
-                                  style: TextStyle(
-                                      fontSize: 21,
-                                      fontWeight: FontWeight.w400),
-                                  textAlign: TextAlign.left,
-                                ),
-                                const SizedBox(height: 8),
-                                LegendsListWidget(
-                                  legends: [
-                                    for (var i in _smallData.keys)
-                                      Legend(i, getColourFromComp(i)),
-                                  ],
-                                ),
-                                const SizedBox(height: 14),
-                                // SizedBox(height: 16),
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Container(
-                                    padding: EdgeInsets.only(
-                                        left: 50,
-                                        right: 100,
-                                        top: 100,
-                                        bottom: 40),
-                                    height: 350,
-                                    width: 200 + thevalue * 100,
-                                    child: LineChart(
-                                      LineChartData(
-                                        titlesData: FlTitlesData(
-                                          bottomTitles: AxisTitles(
-                                              sideTitles:
-                                                  _bottomTitlesTimestamps),
-                                          leftTitles: AxisTitles(
-                                              sideTitles:
-                                                  SideTitles(showTitles: true)),
-                                          topTitles: AxisTitles(
-                                              sideTitles: SideTitles(
-                                                  showTitles: false)),
-                                          rightTitles: AxisTitles(
-                                              sideTitles: SideTitles(
-                                                  showTitles: false)),
-                                        ),
-                                        minY: 0,
-                                        maxY: 5,
-                                        gridData: FlGridData(
-                                            show: true,
-                                            drawHorizontalLine: true,
-                                            drawVerticalLine: true),
-                                        borderData: FlBorderData(show: true),
-                                        lineBarsData: [
-                                          for (var _comp in _smallData.keys)
-                                            LineChartBarData(
-                                              spots: _smallData[_comp]
-                                                  ?.map((point) => FlSpot(
-                                                      point.index, point.value))
-                                                  .toList(),
-                                              isCurved: false,
-                                              barWidth: 2,
-                                              color: getColourFromComp(_comp),
-                                            ),
+                                for (var _comp in _bigData.keys)
+                                  Column(
+                                    children: [
+                                      Text(
+                                        _comp.toString(),
+                                        style: TextStyle(
+                                            fontSize: 21,
+                                            fontWeight: FontWeight.w400),
+                                        textAlign: TextAlign.left,
+                                      ),
+                                      const SizedBox(height: 8),
+                                      LegendsListWidget(
+                                        legends: [
+                                          for (var i = 0;
+                                              i < _comp2cardinal[_comp]!;
+                                              i++)
+                                            Legend(
+                                                "${DateFormat.MEd().format(_smallData[_comp]![i].timestampDate.toDate())}",
+                                                _leColours[i]),
                                         ],
                                       ),
-                                      swapAnimationDuration: Duration(
-                                          milliseconds: 150), // Optional
-                                      swapAnimationCurve:
-                                          Curves.linear, // Optional
-                                    ),
+                                      const SizedBox(height: 14),
+                                      SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Container(
+                                          padding: EdgeInsets.only(
+                                              left: 20,
+                                              right: 20,
+                                              top: 55,
+                                              bottom: 20),
+                                          height: 300,
+                                          width: 100 +
+                                              (_bigData[_comp]!.length * 200) +
+                                              _smallData[_comp]!.length * 15,
+                                          child: BarChart(
+                                            BarChartData(
+                                              baselineY: 0,
+                                              titlesData: FlTitlesData(
+                                                bottomTitles: AxisTitles(
+                                                    sideTitles: _bottomTitles),
+                                                leftTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: true)),
+                                                topTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false)),
+                                                rightTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false)),
+                                              ),
+                                              gridData: FlGridData(
+                                                  drawHorizontalLine: true,
+                                                  drawVerticalLine: false),
+                                              maxY: 5,
+                                              minY: 0,
+                                              groupsSpace: 10,
+                                              barGroups: _bigData[_comp]
+                                                  ?.map(
+                                                    (dataItem) =>
+                                                        BarChartGroupData(
+                                                      x: dataItem.hash,
+                                                      barRods: [
+                                                        for (var ind = 0;
+                                                            ind <
+                                                                dataItem
+                                                                    .y.length;
+                                                            ind++)
+                                                          BarChartRodData(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .zero,
+                                                              backDrawRodData:
+                                                                  BackgroundBarChartRodData(
+                                                                show: true,
+                                                                toY: 0.1,
+                                                                color:
+                                                                    _leColours[
+                                                                        ind],
+                                                              ),
+                                                              toY: double.parse(
+                                                                  dataItem
+                                                                      .y[ind]),
+                                                              width: 15,
+                                                              color: _leColours[
+                                                                  ind]),
+                                                      ],
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                            ),
+                                            swapAnimationDuration: Duration(
+                                                milliseconds: 150), // Optional
+                                            swapAnimationCurve:
+                                                Curves.linear, // Optional
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 32,
+                                      ),
+                                      Divider(
+                                        thickness: 2,
+                                        height: 4,
+                                      ),
+                                      SizedBox(
+                                        height: 32,
+                                      ),
+                                    ],
                                   ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      AppLocalizations.of(context)!.studentprog,
+                                      style: TextStyle(
+                                          fontSize: 21,
+                                          fontWeight: FontWeight.w400),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    LegendsListWidget(
+                                      legends: [
+                                        for (var i in _smallData.keys)
+                                          Legend(i, getColourFromComp(i)),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 14),
+                                    // SizedBox(height: 16),
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Container(
+                                        padding: EdgeInsets.only(
+                                            left: 50,
+                                            right: 100,
+                                            top: 100,
+                                            bottom: 40),
+                                        height: 350,
+                                        width: 200 + thevalue * 100,
+                                        child: LineChart(
+                                          LineChartData(
+                                            titlesData: FlTitlesData(
+                                              bottomTitles: AxisTitles(
+                                                  sideTitles:
+                                                      _bottomTitlesTimestamps),
+                                              leftTitles: AxisTitles(
+                                                  sideTitles: SideTitles(
+                                                      showTitles: true)),
+                                              topTitles: AxisTitles(
+                                                  sideTitles: SideTitles(
+                                                      showTitles: false)),
+                                              rightTitles: AxisTitles(
+                                                  sideTitles: SideTitles(
+                                                      showTitles: false)),
+                                            ),
+                                            minY: 0,
+                                            maxY: 5,
+                                            gridData: FlGridData(
+                                                show: true,
+                                                drawHorizontalLine: true,
+                                                drawVerticalLine: true),
+                                            borderData:
+                                                FlBorderData(show: true),
+                                            lineBarsData: [
+                                              for (var _comp in _smallData.keys)
+                                                LineChartBarData(
+                                                  spots: _smallData[_comp]
+                                                      ?.map((point) => FlSpot(
+                                                          point.index,
+                                                          point.value))
+                                                      .toList(),
+                                                  isCurved: false,
+                                                  barWidth: 2,
+                                                  color:
+                                                      getColourFromComp(_comp),
+                                                ),
+                                            ],
+                                          ),
+                                          swapAnimationDuration: Duration(
+                                              milliseconds: 150), // Optional
+                                          swapAnimationCurve:
+                                              Curves.linear, // Optional
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                  ],
                                 ),
-                                const SizedBox(height: 16),
                               ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  );
-                }
+                      );
+                    }
+                  },
+                );
               },
             );
           },
