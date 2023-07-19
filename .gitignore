@@ -1,3 +1,6 @@
+# Do not remove or rename entries in this file, only add new ones
+# See https://github.com/flutter/flutter/issues/128635 for more context.
+
 # Miscellaneous
 *.class
 *.lock
@@ -9,7 +12,17 @@
 .buildlog/
 .history
 .svn/
-Rubrics/
+
+
+# Google API key and other resources
+GoogleService-Info.plist
+google-services.json
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
 
 # IntelliJ related
 *.iml
@@ -21,7 +34,7 @@ Rubrics/
 .classpath
 .project
 .settings/
-.vscode/
+.vscode/*
 
 # Flutter repo-specific
 /bin/cache/
@@ -33,6 +46,7 @@ Rubrics/
 /dev/bots/android_tools/
 /dev/devicelab/ABresults*.json
 /dev/docs/doc/
+/dev/docs/api_docs.zip
 /dev/docs/flutter.docs.zip
 /dev/docs/lib/
 /dev/docs/pubspec.yaml
@@ -52,6 +66,7 @@ analysis_benchmark.json
 .flutter-plugins-dependencies
 **/generated_plugin_registrant.dart
 .packages
+.pub-preload-cache/
 .pub-cache/
 .pub/
 build/
@@ -108,6 +123,16 @@ unlinked_spec.ds
 **/macos/Flutter/ephemeral
 **/xcuserdata/
 
+# Windows
+**/windows/flutter/generated_plugin_registrant.cc
+**/windows/flutter/generated_plugin_registrant.h
+**/windows/flutter/generated_plugins.cmake
+
+# Linux
+**/linux/flutter/generated_plugin_registrant.cc
+**/linux/flutter/generated_plugin_registrant.h
+**/linux/flutter/generated_plugins.cmake
+
 # Coverage
 coverage/
 
@@ -121,6 +146,4 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
-.firebase/hosting.cHVibGlj.cache
-.firebase/hosting.YnVpbGQvd2Vi.cache
-ios/Runner/GoogleService-Info.plist
+!.vscode/settings.json
