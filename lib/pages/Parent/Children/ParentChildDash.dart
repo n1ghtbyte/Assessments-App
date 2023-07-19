@@ -64,8 +64,6 @@ class _ParentChildDashState extends State<ParentChildDash> {
                     "children": FieldValue.arrayUnion([_controllerParent.text]),
                   },
                 );
-
-                Navigator.pop(context);
               },
               icon: Icon(Icons.create),
               label: Text(AppLocalizations.of(context)!.add),
