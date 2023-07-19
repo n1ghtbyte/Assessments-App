@@ -12,11 +12,11 @@
 .buildlog/
 .history
 .svn/
-
+*.json
 
 # Google API key and other resources
 GoogleService-Info.plist
-google-services.json
+**/android/app/google-services.json
 lib/firebase_options.dart
 
 # Crashlytics plugin (for Android Studio and IntelliJ)
