@@ -1,3 +1,4 @@
+import 'package:assessments_app/pages/Teacher/Assessments/GenPeerAssessment.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/GenSummAssessment.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AddCompToClass.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AstaGraphs.dart';
@@ -206,9 +207,15 @@ class _TurmaExemploState extends State<TurmaExemplo>
                         bottom: const TabBar(
                           indicatorColor: Colors.green,
                           tabs: [
-                            Tab(icon: Icon(Icons.people)),
-                            Tab(icon: Icon(Icons.school)),
-                            Tab(icon: Icon(Icons.info)),
+                            Tab(
+                              icon: Icon(Icons.people),
+                            ),
+                            Tab(
+                              icon: Icon(Icons.school),
+                            ),
+                            Tab(
+                              icon: Icon(Icons.info),
+                            ),
                           ],
                         ),
                         title: Text(
@@ -243,18 +250,30 @@ class _TurmaExemploState extends State<TurmaExemplo>
                               switch (value) {
                                 case _MenuValues.CompetenceAdd:
                                   Navigator.of(context)
-                                      .push(MaterialPageRoute(
+                                      .push(
+                                        MaterialPageRoute(
                                           builder: (c) => AddCompToClass(
                                               widget.passedClassName,
-                                              competences)))
-                                      .then((value) => setState(() {}));
+                                              competences),
+                                        ),
+                                      )
+                                      .then(
+                                        (value) => setState(
+                                          () {},
+                                        ),
+                                      );
                                   break;
                                 case _MenuValues.AddStuddent:
                                   Navigator.of(context)
-                                      .push(MaterialPageRoute(
+                                      .push(
+                                        MaterialPageRoute(
                                           builder: (c) => AddStudentToClass(
-                                              widget.passedClassName)))
-                                      .then((value) => setState(() {}));
+                                              widget.passedClassName),
+                                        ),
+                                      )
+                                      .then(
+                                        (value) => setState(() {}),
+                                      );
                                   break;
                                 case _MenuValues.Settings:
                                   Navigator.of(context)
@@ -264,7 +283,11 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                               widget.passedClassName),
                                         ),
                                       )
-                                      .then((value) => setState(() {}));
+                                      .then(
+                                        (value) => setState(
+                                          () {},
+                                        ),
+                                      );
                                   break;
                                 case _MenuValues.Setup:
                                   Navigator.of(context)
@@ -276,7 +299,11 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                           ),
                                         ),
                                       )
-                                      .then((value) => setState(() {}));
+                                      .then(
+                                        (value) => setState(
+                                          () {},
+                                        ),
+                                      );
                                   break;
                               }
                             },
@@ -312,7 +339,11 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                   builder: (context) =>
                                       GenSummAssessment(widget.passedClassName),
                                 ),
-                              ).then((value) => setState(() {}));
+                              ).then(
+                                (value) => setState(
+                                  () {},
+                                ),
+                              );
                             },
                           ),
                           SpeedDialChild(
@@ -322,11 +353,30 @@ class _TurmaExemploState extends State<TurmaExemplo>
                               label: AppLocalizations.of(context)!.self,
                               elevation: 5.0),
                           SpeedDialChild(
-                              child: Icon(Icons.group),
-                              backgroundColor:
-                                  Color.fromARGB(135, 41, 208, 158),
-                              label: AppLocalizations.of(context)!.peer,
-                              elevation: 5.0),
+                            child: Icon(Icons.group),
+                            backgroundColor: Color(0xFF29D09E),
+                            label: AppLocalizations.of(context)!.peer,
+                            elevation: 5.0,
+                            onTap: () {
+                              print(widget.passedClassName);
+                              print(data['Name']);
+                              print(competences);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => GenPeerAssessment(
+                                      widget.passedClassName,
+                                      data['Name'].toString(),
+                                      competences,
+                                      data['StudentList']),
+                                ),
+                              ).then(
+                                (value) => setState(
+                                  () {},
+                                ),
+                              );
+                            },
+                          ),
                           SpeedDialChild(
                             child: Icon(Icons.quiz),
                             backgroundColor: Color(0xFF29D09E),
@@ -345,7 +395,11 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                       competences,
                                       "class"),
                                 ),
-                              ).then((value) => setState(() {}));
+                              ).then(
+                                (value) => setState(
+                                  () {},
+                                ),
+                              );
                             },
                           ),
                         ],
