@@ -35,6 +35,51 @@ class TurmaExemplo extends StatefulWidget {
 
 class _TurmaExemploState extends State<TurmaExemplo>
     with AutomaticKeepAliveClientMixin {
+  final TextEditingController _textFieldController = TextEditingController();
+  Future<void> _displayTextInputDialog(
+      BuildContext context, String docId) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(AppLocalizations.of(context)!.formasse),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                });
+              },
+              controller: _textFieldController,
+              decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)!.formative +
+                      " " +
+                      AppLocalizations.of(context)!.name),
+            ),
+            actions: <Widget>[
+              MaterialButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                child: const Text('OK'),
+                onPressed: () {
+                  setState(() {
+                    db.collection("assessments").doc(docId).update({
+                      "Name": valueText
+                    }).then(
+                        (value) =>
+                            print("Updated form name successfully updated!"),
+                        onError: (e) => print("Error updating document $e"));
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  String? codeDialog;
+  String? valueText;
+
   @override
   bool get wantKeepAlive => true;
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
@@ -77,7 +122,8 @@ class _TurmaExemploState extends State<TurmaExemplo>
         if (data['StudentList'].isEmpty) {
           return Scaffold(
             appBar: AppBar(
-              title: Text("Class ${data['Name'].toString()}"),
+              title: Text(AppLocalizations.of(context)!.classConcept +
+                  "${data['Name'].toString()}"),
               centerTitle: true,
               backgroundColor: Color(0xFF29D09E),
               actions: [
@@ -478,6 +524,49 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                     Map<String, dynamic> data = document.data()!
                                         as Map<String, dynamic>;
                                     return ListTile(
+                                      trailing: Wrap(
+                                        spacing: -16,
+                                        children: [
+                                          IconButton(
+                                            icon: const Icon(
+                                              Icons.edit,
+                                              size: 20.0,
+                                            ),
+                                            onPressed: () {
+                                              _displayTextInputDialog(
+                                                  context, data['documentID']);
+                                            },
+                                          ),
+                                          data['Count'] == 0
+                                              ? IconButton(
+                                                  icon: Icon(
+                                                    Icons.delete,
+                                                    size: 20.0,
+                                                    color: Colors.red,
+                                                  ),
+                                                  onPressed: () {
+                                                    db
+                                                        .collection(
+                                                            "assessments")
+                                                        .doc(data['documentID'])
+                                                        .delete()
+                                                        .then(
+                                                          (doc) => print(
+                                                              "Document deleted"),
+                                                          onError: (e) => print(
+                                                              "Error updating document $e"),
+                                                        );
+                                                  },
+                                                )
+                                              : IconButton(
+                                                  icon: Icon(
+                                                    Icons.delete,
+                                                    size: 0.0,
+                                                    color: Colors.grey,
+                                                  ),
+                                                  onPressed: null),
+                                        ],
+                                      ),
                                       onTap: () {
                                         if (data['Type'] == 'Formative' &&
                                             data['DONE'] == false) {
