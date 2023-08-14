@@ -34,6 +34,7 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
       growable: true); // 100 assessments... TOO MUCH
 
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
+  TextEditingController _controllerName = TextEditingController();
 
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
@@ -105,7 +106,27 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                               color: Color(0xFF29D09E)),
                         ),
                       ),
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        child: TextFormField(
+                          maxLength: 30,
+                          controller: _controllerName,
+                          decoration: InputDecoration(
+                            icon: Icon(Icons.comment),
+                            labelText: AppLocalizations.of(context)!.assessname,
+                            labelStyle: TextStyle(
+                              color: Color(0xFF29D09E),
+                            ),
+                            helperText: AppLocalizations.of(context)!
+                                .assessnamequestion,
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFF29D09E)),
+                            ),
+                          ),
+                        ),
+                      ),
                       ListView.builder(
+                        padding: EdgeInsets.all(20),
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: comp.keys.toList().length,
@@ -124,6 +145,7 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                             style: TextStyle(fontSize: 18.0)),
                       ),
                       ListView.builder(
+                        padding: EdgeInsets.all(20.0),
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: _assessmentsFormativeMultiple.length,
@@ -255,7 +277,8 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                                 'Formatives': selectedAssessUpload,
                                 'Result': result,
                                 'Weights': weigths,
-                                'Targets': 'Class'
+                                'Targets': 'Class',
+                                'Name': _controllerName.text
                               },
                             );
 
