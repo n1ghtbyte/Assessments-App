@@ -196,48 +196,48 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
                     backgroundColor: Color(0xFF29D09E),
                   ),
                   onPressed: () async {
-                    if (data['prevAssess'] == data['currAssess']) {
-                      FirebaseFirestore.instance
-                          .collection('classes')
-                          .doc(widget.passedClassName)
-                          .update({'currAssess': FieldValue.increment(1)});
-                      _competencesAssess = [];
-                      _typeAssess = "Formative";
-                      for (int i = 0; i < list.length; i++) {
-                        if (isChecked[i] == true) {
-                          _competencesAssess.add(list[i]);
-                        }
+                    // if (data['prevAssess'] == data['currAssess']) {
+                    FirebaseFirestore.instance
+                        .collection('classes')
+                        .doc(widget.passedClassName)
+                        .update({'currAssess': FieldValue.increment(1)});
+                    _competencesAssess = [];
+                    _typeAssess = "Formative";
+                    for (int i = 0; i < list.length; i++) {
+                      if (isChecked[i] == true) {
+                        _competencesAssess.add(list[i]);
                       }
-
-                      Map<String, dynamic> competencesFirebase = {};
-                      for (var x in widget.passedCompetences.entries) {
-                        if (_competencesAssess.contains(x.key.toString()) ==
-                            true) {
-                          competencesFirebase[x.key] = x.value;
-                        }
-                      }
-                      await addAssessment(
-                          resultMap, competencesFirebase, data['currAssess']);
-                      print(docID);
-                      final snackBar = SnackBar(
-                          content:
-                              Text(AppLocalizations.of(context)!.issuedassess));
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AssessmentFormative(
-                            passedAssessmentIdName: docID,
-                          ),
-                        ),
-                      );
-                    } else {
-                      final snackBar = SnackBar(
-                          content: Text(
-                              AppLocalizations.of(context)!.finishassessfirst));
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
+
+                    Map<String, dynamic> competencesFirebase = {};
+                    for (var x in widget.passedCompetences.entries) {
+                      if (_competencesAssess.contains(x.key.toString()) ==
+                          true) {
+                        competencesFirebase[x.key] = x.value;
+                      }
+                    }
+                    await addAssessment(
+                        resultMap, competencesFirebase, data['currAssess']);
+                    print(docID);
+                    final snackBar = SnackBar(
+                        content:
+                            Text(AppLocalizations.of(context)!.issuedassess));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AssessmentFormative(
+                          passedAssessmentIdName: docID,
+                        ),
+                      ),
+                    );
+                    // } else {
+                    //   final snackBar = SnackBar(
+                    //       content: Text(
+                    //           AppLocalizations.of(context)!.finishassessfirst));
+                    //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    // }
                   },
                   child: Text((AppLocalizations.of(context)!.create),
                       style: new TextStyle(fontSize: 18)),

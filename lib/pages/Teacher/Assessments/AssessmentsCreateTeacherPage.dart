@@ -269,47 +269,47 @@ class _AssessmentsCreateTeacherPageState
                       backgroundColor: Color(0xFF29D09E),
                     ),
                     onPressed: () {
-                      if (data['prevAssess'] == data['currAssess']) {
-                        FirebaseFirestore.instance
-                            .collection('classes')
-                            .doc(widget.passedClassName)
-                            .update({'currAssess': FieldValue.increment(1)});
-                        _competencesAssess = [];
-                        //Navigator.pop(context);
-                        if (id == 3) {
-                          _typeAssess = "Formative";
-                          for (int i = 0; i < list.length; i++) {
-                            if (isChecked[i] == true) {
-                              _competencesAssess.add(list[i]);
-                            }
+                      // if (data['prevAssess'] == data['currAssess']) {
+                      FirebaseFirestore.instance
+                          .collection('classes')
+                          .doc(widget.passedClassName)
+                          .update({'currAssess': FieldValue.increment(1)});
+                      _competencesAssess = [];
+                      //Navigator.pop(context);
+                      if (id == 3) {
+                        _typeAssess = "Formative";
+                        for (int i = 0; i < list.length; i++) {
+                          if (isChecked[i] == true) {
+                            _competencesAssess.add(list[i]);
                           }
-
-                          Map<String, dynamic> competencesFirebase = {};
-                          for (var x in widget.passedCompetences.entries) {
-                            if (_competencesAssess.contains(x.key.toString()) ==
-                                true) {
-                              competencesFirebase[x.key] = x.value;
-                            }
-                          }
-                          addAssessment(resultMap, competencesFirebase,
-                              data['currAssess']);
-                          final snackBar = SnackBar(
-                            content: Text(
-                                AppLocalizations.of(context)!.issuedassess),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          Navigator.pop(context);
-                        } else {
-                          final snackBar =
-                              SnackBar(content: Text('Still in dev.'));
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
-                      } else {
+
+                        Map<String, dynamic> competencesFirebase = {};
+                        for (var x in widget.passedCompetences.entries) {
+                          if (_competencesAssess.contains(x.key.toString()) ==
+                              true) {
+                            competencesFirebase[x.key] = x.value;
+                          }
+                        }
+                        addAssessment(
+                            resultMap, competencesFirebase, data['currAssess']);
                         final snackBar = SnackBar(
-                            content: Text(AppLocalizations.of(context)!
-                                .finishassessfirst));
+                          content:
+                              Text(AppLocalizations.of(context)!.issuedassess),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        Navigator.pop(context);
+                      } else {
+                        final snackBar =
+                            SnackBar(content: Text('Still in dev.'));
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       }
+                      // } else {
+                      //   final snackBar = SnackBar(
+                      //       content: Text(AppLocalizations.of(context)!
+                      //           .finishassessfirst));
+                      //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      // }
                     },
                     child: Text(AppLocalizations.of(context)!.create,
                         style: new TextStyle(fontSize: 18)),
