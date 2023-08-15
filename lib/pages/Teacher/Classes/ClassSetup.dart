@@ -13,8 +13,11 @@ class ClassSetup extends StatefulWidget {
 }
 
 class _ClassSetupState extends State<ClassSetup> {
+  String total = "0";
+
   List<TextEditingController> _controllers =
       List.generate(11, (i) => new TextEditingController());
+
   late CollectionReference _class =
       FirebaseFirestore.instance.collection('/classes');
 
@@ -65,7 +68,6 @@ class _ClassSetupState extends State<ClassSetup> {
                 for (int i = 0; i < numComp; i++) {
                   sum += int.parse(_controllers[i].text);
                 }
-                print(map1);
                 if (sum == 100) {
                   for (int i = 0; i < numComp; i++) {
                     map1[list[i].toString()] = int.parse(_controllers[i].text);
@@ -109,8 +111,13 @@ class _ClassSetupState extends State<ClassSetup> {
                     itemBuilder: (BuildContext context, int index) {
                       _controllers.add(new TextEditingController());
                       return Container(
-                        padding: EdgeInsets.all(16),
+                        padding: EdgeInsets.only(left: 50, right: 50),
                         child: TextFormField(
+                          onChanged: (value) {
+                            total = "0";
+                            total = _calculTotal(_controllers);
+                            setState(() {});
+                          },
                           keyboardType: TextInputType.number,
                           controller: _controllers[index],
                           decoration: InputDecoration(
@@ -118,11 +125,7 @@ class _ClassSetupState extends State<ClassSetup> {
                             labelStyle: TextStyle(
                               color: Color(0xFF29D09E),
                             ),
-                            // hintText: 'for ex ample, ${100 ~/ list.length}',
-                            counterText:
-                                AppLocalizations.of(context)!.percentage,
-                            //  helperText:
-                            //       '${list[index]} ${AppLocalizations.of(context)!.weight} ',
+                            counterText: "%",
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Color(0xFF29D09E)),
                             ),
@@ -130,9 +133,35 @@ class _ClassSetupState extends State<ClassSetup> {
                         ),
                       );
                     }),
+                Wrap(
+                  alignment: WrapAlignment.spaceAround, // set your alignment
+                  children: <Widget>[
+                    Text("Total: ",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600)),
+                    Text(
+                      total,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: double.tryParse(total)! != 100
+                            ? Colors.red
+                            : Colors.green,
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           );
         });
   }
+}
+
+String _calculTotal(var x) {
+  double total = 0;
+  for (var j = 0; j < x.length; j++) {
+    total += double.tryParse(x[j].text) ?? 0;
+  }
+  return total.toString();
 }
