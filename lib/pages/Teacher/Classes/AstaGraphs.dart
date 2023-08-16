@@ -513,6 +513,8 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                 : Column(
                                     children: [
                                       DataTable(
+                                        showCheckboxColumn:
+                                            false, // <-- this is important
                                         columns: [
                                           DataColumn(
                                               label: Text(
