@@ -56,6 +56,7 @@ class PointLinex {
   String competence;
   int hash;
   double value;
+  String type;
   Timestamp timestampDate;
 
   PointLinex(
@@ -63,6 +64,7 @@ class PointLinex {
       required this.hash,
       required this.competence,
       required this.value,
+      required this.type,
       required this.timestampDate});
 }
 
@@ -140,10 +142,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
   SideTitles get _bottomTitles => SideTitles(
         showTitles: true,
         reservedSize: 50,
-        // getTextStyles: (context, value) => const TextStyle(
-        //   color: Color(0xff939393),
-        //   fontSize: 10,
-        // ),
         getTitlesWidget: (value, meta) {
           var key = _leTitles.keys.firstWhere((k) => _leTitles[k] == value,
               orElse: () => "ERROR CONTACT O3");
@@ -161,10 +159,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
   // Relative to Line charts
   SideTitles get _bottomTitlesTimestamps => SideTitles(
         showTitles: true,
-        // getTextStyles: (context, value) => const TextStyle(
-        //   color: Color(0xff939393),
-        //   fontSize: 10,
-        // ),
         getTitlesWidget: (value, meta) {
           for (var _ in _smallData.keys) {
             for (var v in _smallData[_]!) {
@@ -183,24 +177,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
             }
           }
 
-          var ret = "";
-          if (value % 1 != 0) {
-            return Text(ret);
-          }
-          if (value == 0) {
-            ret = "1st Assess";
-            return Text(ret);
-          } else if (value == 1) {
-            ret = "2nd Assess";
-            return Text(ret);
-          } else if (value == 2) {
-            ret = "3rd Assess";
-            return Text(ret);
-          } else {
-            var k = value + 1;
-            ret = k.toString() + "th Assess";
-            return Text(ret);
-          }
+          return Text("");
         },
       );
 
@@ -316,12 +293,40 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     }
 
                     var _res = helper.average;
-                    _smallData[comp]?.add(PointLinex(
-                        index: fakeIndex,
-                        hash: indicatorToHash(comp),
-                        competence: comp,
-                        value: _res,
-                        timestampDate: foo['Created']));
+                    // VERIFICAR SE O DOC ESTA EM QUAL LISTA PEAR SELF FORM
+
+                    if (selfAssess.contains(_doc)) {
+                      var type = AppLocalizations.of(context)!.self;
+
+                      _smallData[comp]?.add(PointLinex(
+                          index: fakeIndex,
+                          hash: indicatorToHash(comp),
+                          competence: comp,
+                          value: _res,
+                          type: type,
+                          timestampDate: foo['Created']));
+                    }
+                    if (peerAssess.contains(_doc)) {
+                      var type = AppLocalizations.of(context)!.peer;
+
+                      _smallData[comp]?.add(PointLinex(
+                          index: fakeIndex,
+                          hash: indicatorToHash(comp),
+                          competence: comp,
+                          value: _res,
+                          type: type,
+                          timestampDate: foo['Created']));
+                    }
+                    if (formAssess.contains(_doc)) {
+                      var type = AppLocalizations.of(context)!.formative;
+                      _smallData[comp]?.add(PointLinex(
+                          index: fakeIndex,
+                          hash: indicatorToHash(comp),
+                          competence: comp,
+                          value: _res,
+                          type: type,
+                          timestampDate: foo['Created']));
+                    }
 
                     _ind = 0;
                     helper = [];
@@ -470,10 +475,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                 textAlign: TextAlign.center,
                               ),
                             ),
-
-                            // SizedBox(
-                            //   height: 24,
-                            // ),
                             DataTable(
                               columns: [
                                 DataColumn(
@@ -715,9 +716,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                         ),
                       );
                     } else {
-                      for (var _doc in snapshotSumm.data!.docs) {
-                        fsum.add(_doc.data()! as Map<dynamic, dynamic>);
-                      }
+                      
 
                       return Scaffold(
                         appBar: AppBar(
@@ -814,10 +813,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                 textAlign: TextAlign.center,
                               ),
                             ),
-
-                            // SizedBox(
-                            //   height: 24,
-                            // ),
                             DataTable(
                               showCheckboxColumn:
                                   false, // <-- this is important
