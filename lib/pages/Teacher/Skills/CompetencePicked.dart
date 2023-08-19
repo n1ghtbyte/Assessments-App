@@ -1,5 +1,6 @@
 import 'package:assessments_app/pages/Teacher/Skills/SkillEdit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CompetencePicked extends StatefulWidget {
   final Map passedComp;
@@ -61,6 +62,21 @@ class _CompetencePickedState extends State<CompetencePicked> {
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
+              SizedBox(
+                height: 16,
+              ),
+              Container(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                  AppLocalizations.of(context)!.indicators,
+                  style: TextStyle(fontSize: 21, fontWeight: FontWeight.w800),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Divider(),
               SizedBox(
                 height: 8,
               ),
