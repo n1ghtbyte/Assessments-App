@@ -220,6 +220,9 @@ class _AstaGraphsState extends State<AstaGraphs> {
                 for (var ini in widget.passedCompetences.keys) {
                   _bigData[ini] = [];
                   _smallData[ini] = [];
+                  for (var bar in widget.passedCompetences[ini]) {
+                    tt[bar] = false;
+                  }
                 }
                 for (var _doc in faa) {
                   var foo = _doc.data()! as Map<dynamic, dynamic>;
