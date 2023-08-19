@@ -248,9 +248,14 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                 print(widget.passedCompetences);
 
                 double fakeIndex = 0;
+                Map<String, bool> tt = {};
+
                 for (var ini in widget.passedCompetences.keys) {
                   _bigData[ini] = [];
                   _smallData[ini] = [];
+                  for (var bar in widget.passedCompetences[ini]) {
+                    tt[bar] = false;
+                  }
                 }
                 for (var _doc in faa) {
                   var foo = _doc.data()! as Map<dynamic, dynamic>;
@@ -267,7 +272,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                           double.parse(foo['Competences'][comp][indicator]));
 
                       print((foo['Created'] as Timestamp).toDate());
-                      if (_bigData[comp]!.isEmpty) {
+                      if (_bigData[comp]!.isEmpty || !tt[indicator]!) {
                         _bigData[comp]?.add(DataItem(
                             index: _ind,
                             hash: indicatorToHash(indicator),
@@ -283,6 +288,8 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                         }
                       }
                       _ind++;
+                                            tt[indicator] = true;
+
                     }
 
                     var _res = helper.average;

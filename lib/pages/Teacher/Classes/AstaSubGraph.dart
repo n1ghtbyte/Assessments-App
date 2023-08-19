@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:assessments_app/InovWidgets/LegendWidget.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:assessments_app/InovWidgets/ChartData.dart';
 
 class AstaSubGraph extends StatefulWidget {
   final Timestamp passedSummDate;
@@ -30,36 +31,6 @@ class AstaSubGraph extends StatefulWidget {
 
   @override
   State<AstaSubGraph> createState() => _AstaSubGraphState();
-}
-
-// Define data structure for a bar group
-class DataItem {
-  int index;
-  int hash;
-  String x; //indicator
-  List<dynamic> y; //
-
-  DataItem(
-      {required this.index,
-      required this.hash,
-      required this.x,
-      required this.y});
-}
-
-// Define data structure for a line chart point
-class PointLinex {
-  double index;
-  String competence;
-  int hash;
-  double value;
-  Timestamp timestampDate;
-
-  PointLinex(
-      {required this.index,
-      required this.hash,
-      required this.competence,
-      required this.value,
-      required this.timestampDate});
 }
 
 class _AstaSubGraphState extends State<AstaSubGraph> {
@@ -172,9 +143,14 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
         print(widget.passedCompetences);
 
         double fakeIndex = 0;
+                        Map<String, bool> tt = {};
+
         for (var ini in widget.passedCompetences.keys) {
           _bigData[ini] = [];
           _smallData[ini] = [];
+           for (var bar in widget.passedCompetences[ini]) {
+                    tt[bar] = false;
+                  }
         }
         for (var _doc in snapshot.data!.docs) {
           var foo = _doc.data()! as Map<dynamic, dynamic>;
@@ -190,7 +166,7 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
 
               print((foo['Created'] as Timestamp).toDate());
 
-              if (_bigData[comp]!.isEmpty) {
+              if (_bigData[comp]!.isEmpty || !tt[indicator]!) {
                 _bigData[comp]?.add(DataItem(
                     index: _ind,
                     hash: indicatorToHash(indicator),
@@ -207,6 +183,8 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
                 }
               }
               _ind++;
+                                    tt[indicator] = true;
+
             }
 
             var _res = helper.average;
@@ -215,6 +193,7 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
                 hash: indicatorToHash(comp),
                 competence: comp,
                 value: _res,
+                type: "noTypeHere",
                 timestampDate: foo['Created']));
 
             _ind = 0;

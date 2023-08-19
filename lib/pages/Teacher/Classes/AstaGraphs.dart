@@ -12,9 +12,13 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'package:assessments_app/InovWidgets/ChartData.dart';
+import 'package:pdf/pdf.dart';
+import 'package:printing/printing.dart';
 import '../Assessments/GenFormAssessment.dart';
 import '../Assessments/GenSingleSummAssessment.dart';
 import '../Assessments/GenSingleSelfAssessment.dart';
+import 'AstaReport.dart';
 
 class AstaGraphs extends StatefulWidget {
   final String passedLegitName;
@@ -34,38 +38,6 @@ class AstaGraphs extends StatefulWidget {
 
   @override
   State<AstaGraphs> createState() => _AstaGraphsState();
-}
-
-// Define data structure for a bar group
-class DataItem {
-  int index;
-  int hash;
-  String x; //indicator
-  List<dynamic> y; //
-
-  DataItem(
-      {required this.index,
-      required this.hash,
-      required this.x,
-      required this.y});
-}
-
-// Define data structure for a line chart point
-class PointLinex {
-  double index;
-  String competence;
-  int hash;
-  double value;
-  String type;
-  Timestamp timestampDate;
-
-  PointLinex(
-      {required this.index,
-      required this.hash,
-      required this.competence,
-      required this.value,
-      required this.type,
-      required this.timestampDate});
 }
 
 class _AstaGraphsState extends State<AstaGraphs> {
@@ -244,36 +216,29 @@ class _AstaGraphsState extends State<AstaGraphs> {
                 print(widget.passedCompetences);
 
                 double fakeIndex = 0;
+                Map<String, bool> tt = {};
                 for (var ini in widget.passedCompetences.keys) {
                   _bigData[ini] = [];
                   _smallData[ini] = [];
                 }
                 for (var _doc in faa) {
                   var foo = _doc.data()! as Map<dynamic, dynamic>;
+
                   print(foo['AssessID']);
                   print("HAKI");
                   List<double> helper = [];
                   // for each competence in a given assessment
 
                   for (var comp in foo['Competences'].keys) {
-                    // getColourFromComp(comp);
-                    // for each indicator in a given competence
+                    _ind = 0;
+
                     for (var indicator in foo['Competences'][comp].keys) {
                       print(foo['Competences'][comp][indicator]);
 
                       helper.add(
                           double.parse(foo['Competences'][comp][indicator]));
 
-                      // print((foo['Created'] as Timestamp).toDate());
-                      if (foo['Created'] == null) {
-                        return Container(
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
-
-                      if (_bigData[comp]!.isEmpty) {
+                      if (_bigData[comp]!.isEmpty || !tt[indicator]!) {
                         _bigData[comp]?.add(DataItem(
                             index: _ind,
                             hash: indicatorToHash(indicator),
@@ -282,6 +247,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                       } else {
                         for (var i = 0; i < _bigData[comp]!.length; i++) {
                           if (_bigData[comp]![i].x == indicator) {
+                            print("entrou na meda do if");
                             var tempora = _bigData[comp]![i].y;
                             print(tempora);
                             tempora.add(foo['Competences'][comp][indicator]);
@@ -290,6 +256,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                         }
                       }
                       _ind++;
+                      tt[indicator] = true;
                     }
 
                     var _res = helper.average;
@@ -334,7 +301,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
                   fakeIndex++;
                 }
 
-                inspect(_smallData);
                 inspect(_bigData);
                 var thevalue = 0;
 
@@ -353,7 +319,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
                   _comp2cardinal[comp] = _max;
                   _max = 0;
                 }
-                inspect(_comp2cardinal);
 
                 //Fetch summative data
                 return StreamBuilder<QuerySnapshot>(
@@ -399,6 +364,26 @@ class _AstaGraphsState extends State<AstaGraphs> {
                         onClose: () => debugPrint('DIAL CLOSED'),
                         shape: CircleBorder(),
                         children: [
+                          SpeedDialChild(
+                            child: Icon(Icons.print),
+                            backgroundColor: Color(0xFF29D09E),
+                            label: "PDF",
+                            elevation: 5.0,
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PdfPreview(
+                                    canDebug: false,
+                                    initialPageFormat: PdfPageFormat.a4,
+                                    pdfFileName: "cona.pdf",
+                                    build: (format) =>
+                                        generateReport(_bigData, _smallData),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                           SpeedDialChild(
                             child: Icon(Icons.summarize),
                             backgroundColor: Color(0xFF29D09E),
@@ -700,17 +685,18 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                             ),
                                         ],
                                       ),
+                                      Container(
+                                        padding: EdgeInsets.all(20),
+                                        child: Text(
+                                          "${AppLocalizations.of(context)!.ovr}: ${fsum.length} \n${AppLocalizations.of(context)!.avg}: ${(fsum.map((e) => e['Result']).reduce((value, element) => value + element) / fsum.length).toStringAsFixed(2)}",
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ),
                                     ],
                                   ),
-                            Container(
-                              padding: EdgeInsets.all(20),
-                              child: Text(
-                                "${AppLocalizations.of(context)!.ovr}: ${fsum.length} \n${AppLocalizations.of(context)!.avg}: ${(fsum.map((e) => e['Result']).reduce((value, element) => value + element) / fsum.length).toStringAsFixed(2)}",
-                                style: TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.w400),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
                             SizedBox(
                               height: 14,
                             ),

@@ -61,15 +61,17 @@ class _TurmaExemploState extends State<TurmaExemplo>
                 textColor: Colors.white,
                 child: const Text('OK'),
                 onPressed: () {
-                  setState(() {
-                    db.collection("assessments").doc(docId).update({
-                      "Name": valueText
-                    }).then(
-                        (value) =>
-                            print("Updated form name successfully updated!"),
-                        onError: (e) => print("Error updating document $e"));
-                    Navigator.pop(context);
-                  });
+                  setState(
+                    () {
+                      db.collection("assessments").doc(docId).update({
+                        "Name": valueText
+                      }).then(
+                          (value) =>
+                              print("Updated form name successfully updated!"),
+                          onError: (e) => print("Error updating document $e"));
+                      Navigator.pop(context);
+                    },
+                  );
                 },
               ),
             ],
