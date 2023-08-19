@@ -250,7 +250,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
                       } else {
                         for (var i = 0; i < _bigData[comp]!.length; i++) {
                           if (_bigData[comp]![i].x == indicator) {
-                            print("entrou na meda do if");
                             var tempora = _bigData[comp]![i].y;
                             print(tempora);
                             tempora.add(foo['Competences'][comp][indicator]);
@@ -377,11 +376,16 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => PdfPreview(
+                                    canChangeOrientation: false,
+                                    canChangePageFormat: false,
                                     canDebug: false,
                                     initialPageFormat: PdfPageFormat.a4,
-                                    pdfFileName: "cona.pdf",
-                                    build: (format) =>
-                                        generateReport(_bigData, _smallData),
+                                    pdfFileName: "ASSESS.pdf",
+                                    build: (format) => generateReport(
+                                        _bigData, _smallData, fsum, [
+                                      widget.passedClassName,
+                                      widget.passedLegitName
+                                    ]),
                                   ),
                                 ),
                               );
