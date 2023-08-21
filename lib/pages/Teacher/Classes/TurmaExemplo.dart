@@ -1,11 +1,17 @@
+import 'dart:convert';
+
+import 'package:assessments_app/InovWidgets/ChartData.dart';
+import 'package:assessments_app/InovWidgets/LegendWidget.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/GenPeerAssessment.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/GenSummAssessment.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AddCompToClass.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AstaGraphs.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AddStudentClass.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/GenFormAssessment.dart';
+import 'package:collection/collection.dart';
 
 import 'package:assessments_app/pages/Teacher/Classes/ClassSetup.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassesSettingsPage.dart';
@@ -35,7 +41,15 @@ class TurmaExemplo extends StatefulWidget {
 
 class _TurmaExemploState extends State<TurmaExemplo>
     with AutomaticKeepAliveClientMixin {
-  final TextEditingController _textFieldController = TextEditingController();
+  Map<String, List<DataItem>> _bigData = {};
+  Map<String, int> _comp2cardinal = {};
+  Map<String, List<PointLinex>> _smallData = {};
+  Map<String, List<PointLinex>> _finalData = {};
+  Map<String, List<PointLinex>> averagedPointLinexList = {};
+
+  TextEditingController _textFieldController = TextEditingController();
+  Map<String, int> _leTitles = {};
+
   Future<void> _displayTextInputDialog(
       BuildContext context, String docId) async {
     return showDialog(
@@ -77,6 +91,179 @@ class _TurmaExemploState extends State<TurmaExemplo>
             ],
           );
         });
+  }
+
+  Future<Map<String, List<PointLinex>>> _fetchFormativeData(
+      var stds, var comps, var assess) async {
+    for (var ini in comps.keys) {
+      _finalData[ini] = [];
+    }
+    int indicatorToHash(String indicator) {
+      int _sum = 0;
+
+      var foo = ascii.encode(indicator);
+      for (var k in foo) {
+        _sum += k;
+      }
+      _leTitles[indicator] = _sum;
+      return _sum;
+    }
+
+    for (String user in stds) {
+      var _ind = 0;
+      var _max = 0;
+
+      QuerySnapshot formativeSnapshot = await FirebaseFirestore.instance
+          .collection('classes')
+          .doc(widget.passedClassName)
+          .collection('grading')
+          .doc(user)
+          .collection('formative')
+          .get();
+
+      var faa = formativeSnapshot.docs;
+      faa.sort((a, b) {
+        return a['Created'].compareTo(b['Created']);
+      });
+
+      double fakeIndex = 0;
+      Map<String, bool> tt = {};
+
+      //init
+      for (var ini in comps.keys) {
+        _bigData[ini] = [];
+        _smallData[ini] = [];
+        for (var bar in comps[ini]) {
+          tt[bar] = false;
+        }
+      }
+      for (var _doc in faa) {
+        var foo = _doc.data()! as Map<dynamic, dynamic>;
+
+        List<double> helper = [];
+        // for each competence in a given assessment
+
+        for (var comp in foo['Competences'].keys) {
+          _ind = 0;
+
+          for (var indicator in foo['Competences'][comp].keys) {
+            print(foo['Competences'][comp][indicator]);
+
+            helper.add(double.parse(foo['Competences'][comp][indicator]));
+
+            if (_bigData[comp]!.isEmpty || !tt[indicator]!) {
+              _bigData[comp]?.add(DataItem(
+                  index: _ind,
+                  hash: indicatorToHash(indicator),
+                  x: indicator,
+                  y: [foo['Competences'][comp][indicator]]));
+            } else {
+              for (var i = 0; i < _bigData[comp]!.length; i++) {
+                if (_bigData[comp]![i].x == indicator) {
+                  var tempora = _bigData[comp]![i].y;
+                  print(tempora);
+                  tempora.add(foo['Competences'][comp][indicator]);
+                  _bigData[comp]![i].y = tempora;
+                }
+              }
+            }
+            _ind++;
+            tt[indicator] = true;
+          }
+
+          var _res = helper.average;
+          // VERIFICAR SE O DOC ESTA EM QUAL LISTA PEAR SELF FORM
+
+          _finalData[comp]?.add(PointLinex(
+              index: fakeIndex,
+              hash: indicatorToHash(comp),
+              competence: comp,
+              value: _res,
+              type: foo['AssessID'],
+              timestampDate: foo['Created']));
+
+          _smallData[comp]?.add(PointLinex(
+              index: fakeIndex,
+              hash: indicatorToHash(comp),
+              competence: comp,
+              value: _res,
+              type: foo['AssessID'],
+              timestampDate: foo['Created']));
+
+          _ind = 0;
+          helper = [];
+        }
+        fakeIndex++;
+      }
+
+      var thevalue = 0;
+
+      _smallData.forEach((k, v) {
+        if (v.length > thevalue) {
+          thevalue = v.length;
+        }
+      });
+
+      for (var comp in comps.keys) {
+        for (var i = 0; i < _bigData[comp]!.length; i++) {
+          if (_bigData[comp]![i].y.length > _max) {
+            _max = _bigData[comp]![i].y.length;
+          }
+        }
+        _comp2cardinal[comp] = _max;
+        _max = 0;
+      }
+    }
+
+    for (var x in comps.keys) {
+      double inx = 0;
+      Map<String, Map<String, List<double>>> typeToValuesMap = {};
+      typeToValuesMap[x] = {};
+      averagedPointLinexList[x] = [];
+
+      for (PointLinex pointLinex in _finalData[x]!) {
+        if (!typeToValuesMap[x]!.containsKey(pointLinex.type)) {
+          typeToValuesMap[x]![pointLinex.type] = [pointLinex.value];
+        } else {
+          typeToValuesMap[x]![pointLinex.type]!.add(pointLinex.value);
+        }
+      }
+
+      // Initialize a Timestamp object from the DateTime
+      typeToValuesMap[x]!.forEach((type, values) {
+        DocumentSnapshot doc =
+            assess.firstWhere((document) => document['documentID'] == type);
+
+        double sum = values.reduce((a, b) => a + b);
+        double averageValue = sum / values.length;
+        print(values.first);
+
+        print(assess);
+
+        print("ASDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+        print(doc['Created']);
+
+        // Create a new PointLinex object with the averaged value
+        PointLinex averagedPointLinex = PointLinex(
+          index: inx, // You might need to adjust this
+          hash: indicatorToHash(x), // You might need to adjust this
+          competence: x, // You might need to adjust this
+          value: averageValue,
+          type: type,
+          timestampDate: doc['Created'], // You might need to adjust this
+        );
+        inx++;
+        averagedPointLinexList[x]!.add(averagedPointLinex);
+      });
+
+      print('Averaged PointLinex objects:');
+      for (PointLinex averagedPoint in averagedPointLinexList[x]!) {
+        print(
+            'Type: $x ${averagedPoint.type}, Average Value: ${averagedPoint.value}');
+      }
+    }
+
+    return averagedPointLinexList;
   }
 
   String? codeDialog;
@@ -616,40 +803,140 @@ class _TurmaExemploState extends State<TurmaExemplo>
                             ],
                           ),
                           SingleChildScrollView(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                const SizedBox(height: 16),
-                                Container(
-                                  padding: EdgeInsets.all(20.0),
-                                  child: Text(
-                                    AppLocalizations.of(context)!.wec,
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                                ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount:
-                                      data['Competences'].keys.toList().length,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      title: Text(
-                                        data['Competences']
-                                            .keys
-                                            .toList()[index],
-                                      ),
-                                      subtitle: Text(
-                                        data['Weights'][data['Competences']
+                            child: FutureBuilder<Map<String, List<PointLinex>>>(
+                              future: _fetchFormativeData(
+                                  studs, competences, snpAssess.data!.docs),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else if (!snapshot.hasData ||
+                                    snapshot.data!.isEmpty) {
+                                  return Text('No formative data found.');
+                                } else {
+                                  return SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        const SizedBox(height: 16),
+                                        Container(
+                                          padding: EdgeInsets.all(20.0),
+                                          child: Text(
+                                            AppLocalizations.of(context)!.wec,
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                        ),
+                                        ListView.builder(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: data['Competences']
+                                              .keys
+                                              .toList()
+                                              .length,
+                                          itemBuilder: (context, index) {
+                                            return ListTile(
+                                              title: Text(
+                                                data['Competences']
                                                     .keys
-                                                    .toList()[index]]
-                                                .toString() +
-                                            " %",
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
+                                                    .toList()[index],
+                                              ),
+                                              subtitle: Text(
+                                                data['Weights'][data[
+                                                                'Competences']
+                                                            .keys
+                                                            .toList()[index]]
+                                                        .toString() +
+                                                    " %",
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .studentprog,
+                                          style: TextStyle(
+                                              fontSize: 21,
+                                              fontWeight: FontWeight.w400),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        const SizedBox(height: 8),
+                                        LegendsListWidget(
+                                          legends: [
+                                            for (var i in competences.keys)
+                                              Legend(i, getColourFromComp(i)),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 14),
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 50,
+                                                  right: 100,
+                                                  top: 100,
+                                                  bottom: 40),
+                                              height: 350,
+                                              width: 460,
+                                              child: LineChart(
+                                                LineChartData(
+                                                  titlesData: FlTitlesData(
+                                                    bottomTitles: AxisTitles(
+                                                        sideTitles: SideTitles(
+                                                            showTitles: false)),
+                                                    leftTitles: AxisTitles(
+                                                        sideTitles: SideTitles(
+                                                            showTitles: true)),
+                                                    topTitles: AxisTitles(
+                                                        sideTitles: SideTitles(
+                                                            showTitles: false)),
+                                                    rightTitles: AxisTitles(
+                                                        sideTitles: SideTitles(
+                                                            showTitles: false)),
+                                                  ),
+                                                  minY: 0,
+                                                  maxY: 5,
+                                                  gridData: FlGridData(
+                                                      show: true,
+                                                      drawHorizontalLine: true,
+                                                      drawVerticalLine: true),
+                                                  borderData:
+                                                      FlBorderData(show: true),
+                                                  lineBarsData: [
+                                                    for (var _comp
+                                                        in averagedPointLinexList
+                                                            .keys)
+                                                      LineChartBarData(
+                                                        spots: averagedPointLinexList[
+                                                                _comp]
+                                                            ?.map((point) =>
+                                                                FlSpot(
+                                                                    point.index,
+                                                                    point
+                                                                        .value))
+                                                            .toList(),
+                                                        isCurved: true,
+                                                        barWidth: 2,
+                                                        color:
+                                                            getColourFromComp(
+                                                                _comp),
+                                                      ),
+                                                  ],
+                                                ),
+                                                swapAnimationDuration: Duration(
+                                                    milliseconds:
+                                                        150), // Optional
+                                                swapAnimationCurve:
+                                                    Curves.linear, // Optional
+                                              )),
+                                        ),
+                                        const SizedBox(height: 16),
+                                      ],
+                                    ),
+                                  );
+                                }
+                              },
                             ),
                           ),
                         ],
