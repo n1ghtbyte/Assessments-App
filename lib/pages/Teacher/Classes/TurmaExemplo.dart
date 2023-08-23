@@ -7,6 +7,7 @@ import 'package:assessments_app/pages/Teacher/Assessments/GenSummAssessment.dart
 import 'package:assessments_app/pages/Teacher/Classes/AddCompToClass.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AstaGraphs.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AddStudentClass.dart';
+import 'package:assessments_app/pages/Teacher/Classes/ClassReport.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -19,6 +20,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pdf/pdf.dart';
+import 'package:printing/printing.dart';
 
 import '../Assessments/AssessmentCheck.dart';
 import '../Assessments/AssessmentFormative.dart';
@@ -216,7 +219,6 @@ class _TurmaExemploState extends State<TurmaExemplo>
     }
 
     for (var x in comps.keys) {
-      double inx = 0;
       Map<String, Map<String, List<double>>> typeToValuesMap = {};
       typeToValuesMap[x] = {};
       averagedPointLinexList[x] = [];
@@ -240,19 +242,25 @@ class _TurmaExemploState extends State<TurmaExemplo>
 
         print(assess);
 
-        print("ASDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
         print(doc['Created']);
+        print(assess.indexOf(assess
+            .firstWhere((document) => document['Created'] == doc['Created'])));
+        print(assess.length);
+        print(assess);
+        var kappa = assess.indexOf(assess
+            .firstWhere((document) => document['Created'] == doc['Created']));
+        var indd = assess.length - kappa;
 
         // Create a new PointLinex object with the averaged value
         PointLinex averagedPointLinex = PointLinex(
-          index: inx, // You might need to adjust this
+          index: double.parse(indd.toString()) -
+              1, // You might need to adjust this
           hash: indicatorToHash(x), // You might need to adjust this
           competence: x, // You might need to adjust this
           value: averageValue,
           type: type,
           timestampDate: doc['Created'], // You might need to adjust this
         );
-        inx++;
         averagedPointLinexList[x]!.add(averagedPointLinex);
       });
 
@@ -562,6 +570,30 @@ class _TurmaExemploState extends State<TurmaExemplo>
                         onClose: () => debugPrint('DIAL CLOSED'),
                         shape: CircleBorder(),
                         children: [
+                          SpeedDialChild(
+                            child: Icon(Icons.print),
+                            backgroundColor: Color(0xFF29D09E),
+                            label: "PDF",
+                            elevation: 5.0,
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PdfPreview(
+                                    canChangeOrientation: false,
+                                    canChangePageFormat: false,
+                                    canDebug: false,
+                                    initialPageFormat: PdfPageFormat.a4,
+                                    pdfFileName: "ASSESS.pdf",
+                                    build: (format) => generateClassReport(
+                                        _bigData, averagedPointLinexList, [
+                                      data['Name'],
+                                    ]),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                           SpeedDialChild(
                             child: Icon(Icons.summarize),
                             backgroundColor: Color(0xFF29D09E),
@@ -896,7 +928,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                                             showTitles: false)),
                                                   ),
                                                   minY: 0,
-                                                  maxY: 5,
+                                                  maxY: 6,
                                                   gridData: FlGridData(
                                                       show: true,
                                                       drawHorizontalLine: true,
