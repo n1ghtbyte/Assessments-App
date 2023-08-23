@@ -49,6 +49,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
   Map<String, List<PointLinex>> _smallData = {};
   Map<String, List<PointLinex>> _finalData = {};
   Map<String, List<PointLinex>> averagedPointLinexList = {};
+  List<bool> _customTileExpanded = List<bool>.filled(10, false);
 
   TextEditingController _textFieldController = TextEditingController();
   Map<String, int> _leTitles = {};
@@ -868,20 +869,48 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                               .toList()
                                               .length,
                                           itemBuilder: (context, index) {
-                                            return ListTile(
-                                              title: Text(
-                                                data['Competences']
-                                                    .keys
-                                                    .toList()[index],
+                                            return ExpansionTile(
+                                              trailing: Icon(
+                                                _customTileExpanded[index]
+                                                    ? Icons
+                                                        .arrow_drop_down_circle
+                                                    : Icons.arrow_drop_down,
                                               ),
-                                              subtitle: Text(
-                                                data['Weights'][data[
-                                                                'Competences']
-                                                            .keys
-                                                            .toList()[index]]
-                                                        .toString() +
-                                                    " %",
-                                              ),
+                                              title: Text(data['Competences']
+                                                  .keys
+                                                  .toList()[index]),
+                                              subtitle: Text(data['Weights'][
+                                                          data['Competences']
+                                                              .keys
+                                                              .toList()[index]]
+                                                      .toString() +
+                                                  "%"),
+                                              children: [
+                                                ListView.builder(
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
+                                                  shrinkWrap: true,
+                                                  itemCount: data['Competences']
+                                                          [data['Competences']
+                                                              .keys
+                                                              .toList()[index]]
+                                                      .length,
+                                                  itemBuilder:
+                                                      (context, xipidi) {
+                                                    return ListTile(
+                                                      title: Text(data[
+                                                              'Competences'][
+                                                          data['Competences']
+                                                                  .keys
+                                                                  .toList()[
+                                                              index]][xipidi]),
+                                                      dense: true,
+                                                      visualDensity: VisualDensity
+                                                          .adaptivePlatformDensity,
+                                                    );
+                                                  },
+                                                ),
+                                              ],
                                             );
                                           },
                                         ),
