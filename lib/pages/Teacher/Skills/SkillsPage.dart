@@ -65,15 +65,6 @@ class _SkillsPageState extends State<SkillsPage> {
                 child: Icon(Icons.add),
                 backgroundColor: Color(0xFF29D09E),
                 onPressed: () {
-                  // for (var doc in vari.keys) {
-                  //   print(doc);
-                  //   await FirebaseFirestore.instance
-                  //       .collection("CompetencesES")
-                  //       .doc(doc)
-                  //       .set(vari[doc])
-                  //       .onError((e, _) => print("Error writing document: $e"));
-                  //   print("enviou");
-                  // }
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -91,20 +82,47 @@ class _SkillsPageState extends State<SkillsPage> {
                           return ListTile(
                             textColor: Color(0xFF29D09E),
                             visualDensity: VisualDensity.standard,
-                            onTap: () {
-                              print(data);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CompetencePicked(
-                                    passedComp: data,
-                                    passedName: data['Name'],
-                                    editable: true,
+                            trailing: Wrap(
+                              direction: Axis.horizontal,
+                              spacing: 10,
+                              children: [
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
                                   ),
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(currentUser)
+                                        .collection('PrivateCompetences')
+                                        .doc(data['Name'])
+                                        .delete()
+                                        .then(
+                                          (doc) => print("Document deleted"),
+                                          onError: (e) => print(
+                                              "Error updating document $e"),
+                                        );
+                                  },
                                 ),
-                              );
-                            },
-                            trailing: Icon(Icons.arrow_circle_right_rounded),
+                                IconButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              CompetencePicked(
+                                            passedComp: data,
+                                            passedName: data['Name'],
+                                            editable: true,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    icon:
+                                        Icon(Icons.arrow_circle_right_rounded)),
+                              ],
+                            ),
                             title: Text(
                               data['Name'],
                             ),
@@ -117,20 +135,28 @@ class _SkillsPageState extends State<SkillsPage> {
                               document.data()! as Map<String, dynamic>;
                           return ListTile(
                             visualDensity: VisualDensity.standard,
-                            onTap: () {
-                              print(data);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CompetencePicked(
-                                    passedComp: data,
-                                    passedName: data['Name'],
-                                    editable: false,
-                                  ),
-                                ),
-                              );
-                            },
-                            trailing: Icon(Icons.arrow_circle_right_rounded),
+                            trailing: Wrap(
+                              direction: Axis.horizontal,
+                              spacing: 10,
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              CompetencePicked(
+                                            passedComp: data,
+                                            passedName: data['Name'],
+                                            editable: false,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    icon:
+                                        Icon(Icons.arrow_circle_right_rounded)),
+                              ],
+                            ),
                             title: Text(
                               data['Name'],
                             ),
