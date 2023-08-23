@@ -35,6 +35,7 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
 
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
   TextEditingController _controllerName = TextEditingController();
+  TextEditingController _controllerDesc = TextEditingController();
 
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
@@ -119,6 +120,27 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                             ),
                             helperText: AppLocalizations.of(context)!
                                 .assessnamequestion,
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFF29D09E)),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        height: 150,
+                        child: TextFormField(
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          maxLength: 300,
+                          controller: _controllerDesc,
+                          decoration: InputDecoration(
+                            icon: Icon(Icons.description),
+                            labelText:
+                                AppLocalizations.of(context)!.description,
+                            labelStyle: TextStyle(
+                              color: Color(0xFF29D09E),
+                            ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Color(0xFF29D09E)),
                             ),
@@ -278,7 +300,8 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                                 'Result': result,
                                 'Weights': weigths,
                                 'Targets': 'Class',
-                                'Name': _controllerName.text
+                                'Name': _controllerName.text,
+                                'Description': _controllerDesc.text
                               },
                             );
 

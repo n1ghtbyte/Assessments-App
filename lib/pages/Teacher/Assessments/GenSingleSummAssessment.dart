@@ -25,6 +25,9 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
   final String content =
       'A summative assessement is one "that occurs at a point in time and is carried out to summarise achievement at that point in time. Often more structured than formative assessment, it provides teachers, students and parents with information on student progress and level of achievement. Summative assessments are used to evaluate student learning, skill acquisition, and academic achievement at the conclusion of a defined instructional period—typically at the end of a project, unit, course, semester, program, or school year. \n(NCVER, 2014)';
 
+  TextEditingController _controllerName = TextEditingController();
+  TextEditingController _controllerDesc = TextEditingController();
+
   final db = FirebaseFirestore.instance;
   late CollectionReference _formativeCollection = FirebaseFirestore.instance
       .collection(
@@ -78,6 +81,45 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
                         fontWeight: FontWeight.bold, color: Color(0xFF29D09E)),
                     moreStyle: TextStyle(
                         fontWeight: FontWeight.bold, color: Color(0xFF29D09E)),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(20),
+                  child: TextFormField(
+                    maxLength: 30,
+                    controller: _controllerName,
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.comment),
+                      labelText: AppLocalizations.of(context)!.assessname,
+                      labelStyle: TextStyle(
+                        color: Color(0xFF29D09E),
+                      ),
+                      helperText:
+                          AppLocalizations.of(context)!.assessnamequestion,
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFF29D09E)),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(20),
+                  height: 150,
+                  child: TextFormField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    maxLength: 300,
+                    controller: _controllerDesc,
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.description),
+                      labelText: AppLocalizations.of(context)!.description,
+                      labelStyle: TextStyle(
+                        color: Color(0xFF29D09E),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFF29D09E)),
+                      ),
+                    ),
                   ),
                 ),
                 Container(
@@ -230,7 +272,9 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
                             'Formatives': assessToUpload,
                             'Result': result,
                             'Weights': weigths,
-                            'Targets': 'Single'
+                            'Targets': 'Single',
+                            'Name': _controllerName.text,
+                            'Description': _controllerDesc.text
                           },
                         );
                         summComp = {};
