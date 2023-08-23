@@ -576,6 +576,28 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                                     children: <Widget>[
                                                       Container(
                                                         padding:
+                                                            EdgeInsets.all(6),
+                                                        child: Text(
+                                                          AppLocalizations.of(
+                                                                      context)!
+                                                                  .name +
+                                                              ": " +
+                                                              dt['Name'] +
+                                                              "\n" +
+                                                              AppLocalizations.of(
+                                                                      context)!
+                                                                  .description +
+                                                              ": " +
+                                                              dt['Description'],
+                                                          style: TextStyle(
+                                                            fontSize: 18,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        padding:
                                                             EdgeInsets.all(14),
                                                         child: Text(
                                                           AppLocalizations.of(
@@ -590,6 +612,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                                               TextAlign.center,
                                                         ),
                                                       ),
+                                                      // "${AppLocalizations.of(context)!.description}: ${assessForms[index]['Description'].toString()}"),
                                                       StreamBuilder<
                                                           QuerySnapshot>(
                                                         stream: FirebaseFirestore
@@ -625,7 +648,8 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                                                     int index) {
                                                               return ListTile(
                                                                 title: Text(
-                                                                    "${AppLocalizations.of(context)!.name}: ${assessForms![index]['Name'].toString()}"),
+                                                                    "${AppLocalizations.of(context)!.name}: ${assessForms![index]['Name'].toString()}" +
+                                                                        "\n"),
                                                                 subtitle: Text(
                                                                     "${AppLocalizations.of(context)!.date}: ${DateFormat('yyyy-MM-dd').format((assessForms[index]['Created'] as Timestamp).toDate())}"),
                                                               );
