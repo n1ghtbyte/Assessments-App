@@ -221,52 +221,29 @@ Future<Uint8List> generateReport(
   );
   print(charts.length);
 
-  for (var x = 0; x < charts.length; x = x + 2) {
+  for (var x = 0; x < charts.length; x++) {
     document.addPage(
       pw.Page(
-        pageFormat: PdfPageFormat.a4,
-        theme: theme,
-        build: (context) {
-          // Page layout
-          return pw.Column(
-            children: [
-              pw.Text(
-                "Formative assessments",
-                style: pw.TextStyle(
-                  color: baseColor,
-                  fontWeight: pw.FontWeight.bold,
-                  fontSize: 20,
+          pageFormat: PdfPageFormat.a4,
+          theme: theme,
+          build: (context) {
+            // Page layout
+            return pw.Column(
+              children: [
+                pw.Text(
+                  "Formative assessments",
+                  style: pw.TextStyle(
+                    color: baseColor,
+                    fontWeight: pw.FontWeight.bold,
+                    fontSize: 20,
+                  ),
                 ),
-              ),
-              pw.SizedBox(height: 10),
-              pw.SizedBox(height: 50),
-              pw.Container(
-                height: 250,
-                child: charts.asMap().containsKey(x)
-                    ? pw.Column(
-                        children: [
-                          pw.Expanded(child: charts[x]),
-                          pw.SizedBox(width: 50),
-                        ],
-                      )
-                    : pw.SizedBox(height: 600),
-              ),
-              pw.SizedBox(width: 100),
-              pw.Divider(),
-              pw.SizedBox(height: 50),
-              pw.Container(
-                height: 250,
-                child: pw.Column(
-                  children: [
-                    pw.Expanded(child: charts[x + 1]),
-                    pw.SizedBox(width: 50),
-                  ],
-                ),
-              ),
-            ],
-          );
-        },
-      ),
+                pw.SizedBox(height: 40),
+                pw.Expanded(child: charts[x]),
+                pw.SizedBox(height: 200),
+              ],
+            );
+          }),
     );
   }
 
