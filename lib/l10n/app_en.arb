@@ -149,7 +149,7 @@
      "compedited": "Competence edited",
      "compupdated": "The competence was updated!",
      "fieldsdead": "Some fields are missing",
-     "indicator": "Indicator $ind",
+     "indicator": "Indicator",
      "entercompname": "Enter the competence name",
      "compname": "Competence name",
      "compnamequestion": "What is the name of the competence?",

@@ -93,7 +93,7 @@ class _SkillsCreatePageState extends State<SkillsCreatePage> {
             value: _sliderDiscreteValue,
             min: 1,
             max: 5,
-            divisions: 5,
+            divisions: 4,
             label: _sliderDiscreteValue.round().toString(),
             onChanged: (value) {
               setState(() {

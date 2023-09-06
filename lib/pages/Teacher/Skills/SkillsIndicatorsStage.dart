@@ -104,12 +104,13 @@ class _SkillsIndicatorsStage extends State<SkillsIndicatorsStage> {
                         decoration: InputDecoration(
                           icon: Icon(Icons.comment),
                           labelText:
-                              '${AppLocalizations.of(context)!.indicator} ${ind + 1}',
+                              '${AppLocalizations.of(context)!.indicator} ' +
+                                  (ind + 1).toString(),
                           labelStyle: TextStyle(
                             color: Color(0xFF29D09E),
                           ),
-                          helperText:
-                              '${AppLocalizations.of(context)!.indicator} ${ind + 1} ${AppLocalizations.of(context)!.name}',
+                          // helperText:
+                          //     '${AppLocalizations.of(context)!.indicator} ${ind + 1} ${AppLocalizations.of(context)!.name}',
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFF29D09E)),
                           ),
