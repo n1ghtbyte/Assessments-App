@@ -428,12 +428,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
                             },
                           ),
                           SpeedDialChild(
-                              child: Icon(Icons.group),
-                              backgroundColor:
-                                  Color.fromARGB(135, 41, 208, 158),
-                              label: AppLocalizations.of(context)!.peer,
-                              elevation: 5.0),
-                          SpeedDialChild(
                             child: Icon(Icons.quiz),
                             backgroundColor: Color(0xFF29D09E),
                             label: AppLocalizations.of(context)!.formative,
