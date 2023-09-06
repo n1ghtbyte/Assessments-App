@@ -321,6 +321,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
           return Scaffold(
             appBar: AppBar(
               title: Text(AppLocalizations.of(context)!.classConcept +
+                  ' ' +
                   "${data['Name'].toString()}"),
               centerTitle: true,
               backgroundColor: Color(0xFF29D09E),
