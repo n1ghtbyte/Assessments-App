@@ -11,6 +11,8 @@ import 'package:assessments_app/InovWidgets/ChartData.dart';
 
 class AstaSubGraph extends StatefulWidget {
   final Timestamp passedSummDate;
+  final String passedSummName;
+  final String passedSummDesc;
   final String passedLegitName;
   final String passedClassName;
   final String passedClassId;
@@ -21,6 +23,8 @@ class AstaSubGraph extends StatefulWidget {
   const AstaSubGraph(
       {Key? key,
       required this.passedSummDate,
+      required this.passedSummName,
+      required this.passedSummDesc,
       required this.passedClassId,
       required this.passedClassName,
       required this.passedLegitName,
@@ -143,14 +147,14 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
         print(widget.passedCompetences);
 
         double fakeIndex = 0;
-                        Map<String, bool> tt = {};
+        Map<String, bool> tt = {};
 
         for (var ini in widget.passedCompetences.keys) {
           _bigData[ini] = [];
           _smallData[ini] = [];
-           for (var bar in widget.passedCompetences[ini]) {
-                    tt[bar] = false;
-                  }
+          for (var bar in widget.passedCompetences[ini]) {
+            tt[bar] = false;
+          }
         }
         for (var _doc in snapshot.data!.docs) {
           var foo = _doc.data()! as Map<dynamic, dynamic>;
@@ -183,8 +187,7 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
                 }
               }
               _ind++;
-                                    tt[indicator] = true;
-
+              tt[indicator] = true;
             }
 
             var _res = helper.average;
@@ -233,6 +236,48 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
           ),
           body: ListView(
             children: [
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(14.0),
+                child: Text(
+                  "${AppLocalizations.of(context)!.assessname}: " +
+                      widget.passedSummName,
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(14),
+                child: Text(
+                  AppLocalizations.of(context)!.formsarg,
+                  style: TextStyle(fontSize: 20),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection("assessments")
+                    .where('documentID', whereIn: widget.passedFromatives)
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData)
+                    return Text(AppLocalizations.of(context)!.connecting);
+                  var assessForms = snapshot.data?.docs;
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: assessForms?.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ListTile(
+                        title: Text(
+                            "${AppLocalizations.of(context)!.name}: ${assessForms![index]['Name'].toString()}" +
+                                "\n"),
+                        subtitle: Text(
+                            "${AppLocalizations.of(context)!.date}: ${DateFormat('yyyy-MM-dd').format((assessForms[index]['Created'] as Timestamp).toDate())}"),
+                      );
+                    },
+                  );
+                },
+              ),
               Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(14.0),

@@ -539,6 +539,10 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                                       passedSummDate:
                                                           dt['Created']
                                                               as Timestamp,
+                                                      passedSummName:
+                                                          dt['Name'],
+                                                          passedSummDesc:
+                                                          dt['Description'],
                                                       passedClassId:
                                                           widget.passedClassId,
                                                       passedClassName: widget
