@@ -149,6 +149,9 @@ class _ClassSetupState extends State<ClassSetup> {
                             : Colors.green,
                       ),
                     ),
+                    Text(" %",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600)),
                   ],
                 )
               ],
