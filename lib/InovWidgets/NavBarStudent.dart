@@ -82,16 +82,16 @@ class _NavBarStudentState extends State<NavBarStudent> {
               );
             },
           ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text(AppLocalizations.of(context)!.settings),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SettingsPage()),
-              );
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.settings),
+          //   title: Text(AppLocalizations.of(context)!.settings),
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => SettingsPage()),
+          //     );
+          //   },
+          // ),
           ListTile(
             leading: Icon(Icons.logout),
             title: Text(AppLocalizations.of(context)!.logout),
