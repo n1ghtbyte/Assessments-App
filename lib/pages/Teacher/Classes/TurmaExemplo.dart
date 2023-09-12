@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:assessments_app/InovWidgets/ChartData.dart';
 import 'package:assessments_app/InovWidgets/LegendWidget.dart';
+import 'package:assessments_app/pages/Teacher/Assessments/GenMultipleSelfAssessments.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/GenPeerAssessment.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/GenSummAssessment.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AddCompToClass.dart';
@@ -616,11 +617,32 @@ class _TurmaExemploState extends State<TurmaExemplo>
                             },
                           ),
                           SpeedDialChild(
-                              child: Icon(Icons.self_improvement),
-                              backgroundColor:
-                                  Color.fromARGB(135, 41, 208, 158),
-                              label: AppLocalizations.of(context)!.self,
-                              elevation: 5.0),
+                            child: Icon(Icons.self_improvement),
+                            backgroundColor: Color(0xFF29D09E),
+                            label: AppLocalizations.of(context)!.self,
+                            elevation: 5.0,
+                            onTap: () {
+                              print(widget.passedClassName);
+                              print(data['Name']);
+                              print(competences);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      GenMultipleSelfAssessment(
+                                    widget.passedClassName,
+                                    data['Name'].toString(),
+                                    competences,
+                                    data['StudentList'],
+                                  ),
+                                ),
+                              ).then(
+                                (value) => setState(
+                                  () {},
+                                ),
+                              );
+                            },
+                          ),
                           SpeedDialChild(
                             child: Icon(Icons.group),
                             backgroundColor: Color(0xFF29D09E),
@@ -958,7 +980,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                                             showTitles: false)),
                                                   ),
                                                   minY: 0,
-                                                  maxY: 6,
+                                                  maxY: 5,
                                                   gridData: FlGridData(
                                                       show: true,
                                                       drawHorizontalLine: true,
@@ -978,8 +1000,8 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                                                     point
                                                                         .value))
                                                             .toList(),
-                                                        isCurved: true,
-                                                        barWidth: 2,
+                                                        isCurved: false,
+                                                        barWidth: 1,
                                                         color:
                                                             getColourFromComp(
                                                                 _comp),
