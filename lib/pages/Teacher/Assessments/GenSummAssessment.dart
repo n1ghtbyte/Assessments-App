@@ -312,6 +312,10 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                           }
 
                           Navigator.pop(context);
+                          final snackBar = SnackBar(
+                              content: Text(
+                                  AppLocalizations.of(context)!.issuedassess));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         },
                         child: Text((AppLocalizations.of(context)!.generate),
                             style: new TextStyle(fontSize: 18)),
