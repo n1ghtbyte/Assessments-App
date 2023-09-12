@@ -35,8 +35,7 @@ dependencies:
   material: ^1.0.0+2
   firebase_auth: ^4.4.2
   firebase_auth_web: ^5.3.2
-  cloud_firestore: ^4.3.1
-  cloud_functions: ^4.0.7
+  cloud_firestore: ^4.8.5
   group_radio_button: ^1.2.0
   basic_utils: ^5.3.0
   string_to_hex: ^0.2.2
@@ -52,9 +51,6 @@ dependencies:
   universal_io: ^2.2.0
   pdf: ^3.10.4
   printing: ^5.11.0
-  open_document: ^1.0.6+1
-    
-  
 
 dev_dependencies:
   flutter_test:
