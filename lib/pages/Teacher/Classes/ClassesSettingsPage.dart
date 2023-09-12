@@ -141,7 +141,7 @@ class _ClassesSettingsPageState extends State<ClassesSettingsPage> {
                                           builder: (context) => ClassesPage()));
                                 },
                                 child: Text(
-                                  AppLocalizations.of(context)!.cancel,
+                                  AppLocalizations.of(context)!.delete,
                                 ),
                               ),
                             ],
