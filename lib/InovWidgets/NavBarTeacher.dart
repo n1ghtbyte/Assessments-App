@@ -1,5 +1,4 @@
 import 'package:assessments_app/pages/Auth/LoginScreen.dart';
-import 'package:assessments_app/pages/Settings/SettingsPage.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/AssessmentsMain.dart';
 import 'package:assessments_app/pages/Teacher/Skills/SkillsPage.dart';
 import 'package:assessments_app/pages/Teacher/Account/TeacherProfile.dart';

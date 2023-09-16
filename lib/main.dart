@@ -6,8 +6,6 @@ import 'package:assessments_app/pages/Teacher/Classes/ClassesPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -18,15 +16,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  // FlutterError.onError = (errorDetails) {
-  //   FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-  // };
-  // // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
-  // PlatformDispatcher.instance.onError = (error, stack) {
-  //   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-  //   return true;
-  // };
   runApp(MyApp());
 }
 
@@ -71,19 +60,6 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green)
             .copyWith(background: Colors.white),
       ),
-      // darkTheme: ThemeData(
-      //   primaryColor: Color(0xFF29D09E),
-      //   scaffoldBackgroundColor: Colors.black87,
-      //   pageTransitionsTheme: PageTransitionsTheme(
-      //     builders: Map<TargetPlatform, PageTransitionsBuilder>.fromIterable(
-      //       TargetPlatform.values,
-      //       value: (dynamic _) => const ZoomPageTransitionsBuilder(),
-      //     ),
-      //   ),
-      //   visualDensity: VisualDensity.adaptivePlatformDensity,
-      //   colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green)
-      //       .copyWith(background: Colors.black),
-      // ),
       home: FutureBuilder(
         future: _initializeFirebase(),
         builder: (context, snapshot) {
@@ -127,7 +103,7 @@ class _MyAppState extends State<MyApp> {
             );
             return LoginScreen();
           }
-          return const Center(
+          return Center(
             child: CircularProgressIndicator(),
           );
         },
