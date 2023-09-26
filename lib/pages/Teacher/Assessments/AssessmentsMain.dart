@@ -90,11 +90,12 @@ class _AssessmentsMainState extends State<AssessmentsMain> {
                       ? Color(0xFF29D09E)
                       : Color.fromARGB(255, 123, 123, 123),
                   title: Text('${data['Name']}'),
-                  subtitle: data['Target'].toString() == 'Single'
+                  // CHECK THIS OUT
+                  subtitle: data['Type'].toString() == 'Formative'
                       ? Text(
-                          "${AppLocalizations.of(context)!.classname}:${data['ClassName'].toString()}${AppLocalizations.of(context)!.student}:${data['Students'].keys.toList()[0].toString()}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}")
+                          "${AppLocalizations.of(context)!.classname}:${data['ClassName'].toString()}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}")
                       : Text(
-                          "${AppLocalizations.of(context)!.classname}:${data['ClassName'].toString()}${AppLocalizations.of(context)!.count}:${data['Count'].toString()}/${data['Students'].values.toList().length}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}"),
+                          "${AppLocalizations.of(context)!.classname}:${data['ClassName'].toString()}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}"),
                 );
               }).toList(),
             ),
