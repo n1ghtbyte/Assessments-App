@@ -271,6 +271,9 @@ class _TurmaExemploState extends State<TurmaExemplo>
         print(
             'Type: $x ${averagedPoint.type}, Average Value: ${averagedPoint.value}');
       }
+      averagedPointLinexList[x]!.sort((a, b) {
+        return a.index.compareTo(b.index);
+      });
     }
 
     return averagedPointLinexList;
@@ -956,64 +959,58 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                         SingleChildScrollView(
                                           scrollDirection: Axis.horizontal,
                                           child: Container(
-                                              padding: EdgeInsets.only(
-                                                  left: 50,
-                                                  right: 100,
-                                                  top: 100,
-                                                  bottom: 40),
-                                              height: 350,
-                                              width: 460,
-                                              child: LineChart(
-                                                LineChartData(
-                                                  titlesData: FlTitlesData(
-                                                    bottomTitles: AxisTitles(
-                                                        sideTitles: SideTitles(
-                                                            showTitles: false)),
-                                                    leftTitles: AxisTitles(
-                                                        sideTitles: SideTitles(
-                                                            showTitles: true)),
-                                                    topTitles: AxisTitles(
-                                                        sideTitles: SideTitles(
-                                                            showTitles: false)),
-                                                    rightTitles: AxisTitles(
-                                                        sideTitles: SideTitles(
-                                                            showTitles: false)),
-                                                  ),
-                                                  minY: 0,
-                                                  maxY: 5,
-                                                  gridData: FlGridData(
-                                                      show: true,
-                                                      drawHorizontalLine: true,
-                                                      drawVerticalLine: true),
-                                                  borderData:
-                                                      FlBorderData(show: true),
-                                                  lineBarsData: [
-                                                    for (var _comp
-                                                        in averagedPointLinexList
-                                                            .keys)
-                                                      LineChartBarData(
-                                                        spots: averagedPointLinexList[
-                                                                _comp]
-                                                            ?.map((point) =>
-                                                                FlSpot(
-                                                                    point.index,
-                                                                    point
-                                                                        .value))
-                                                            .toList(),
-                                                        isCurved: false,
-                                                        barWidth: 1,
-                                                        color:
-                                                            getColourFromComp(
-                                                                _comp),
-                                                      ),
-                                                  ],
+                                            padding: EdgeInsets.only(
+                                                left: 50,
+                                                right: 100,
+                                                top: 100,
+                                                bottom: 40),
+                                            height: 350,
+                                            width: 460,
+                                            child: LineChart(
+                                              LineChartData(
+                                                titlesData: FlTitlesData(
+                                                  bottomTitles: AxisTitles(
+                                                      sideTitles: SideTitles(
+                                                          showTitles: false)),
+                                                  leftTitles: AxisTitles(
+                                                      sideTitles: SideTitles(
+                                                          showTitles: true)),
+                                                  topTitles: AxisTitles(
+                                                      sideTitles: SideTitles(
+                                                          showTitles: false)),
+                                                  rightTitles: AxisTitles(
+                                                      sideTitles: SideTitles(
+                                                          showTitles: false)),
                                                 ),
-                                                swapAnimationDuration: Duration(
-                                                    milliseconds:
-                                                        150), // Optional
-                                                swapAnimationCurve:
-                                                    Curves.linear, // Optional
-                                              )),
+                                                minY: 0,
+                                                maxY: 5,
+                                                gridData: FlGridData(
+                                                    show: true,
+                                                    drawHorizontalLine: true,
+                                                    drawVerticalLine: true),
+                                                borderData:
+                                                    FlBorderData(show: true),
+                                                lineBarsData: [
+                                                  for (var _comp
+                                                      in averagedPointLinexList
+                                                          .keys)
+                                                    LineChartBarData(
+                                                      spots: averagedPointLinexList[
+                                                              _comp]
+                                                          ?.map((point) =>
+                                                              FlSpot(
+                                                                  point.index,
+                                                                  point.value))
+                                                          .toList(),
+                                                      isCurved: false,
+                                                      barWidth: 1,
+                                                      color: getColourFromComp(
+                                                          _comp),
+                                                    ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                         const SizedBox(height: 16),
                                       ],
