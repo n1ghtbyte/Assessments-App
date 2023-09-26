@@ -400,25 +400,3 @@ String wrapText(String inputText, int wrapLength) {
   intermidiateText.clear();
   return outputText.toString().trim();
 }
-
-Color getColourFromComp(String competence) {
-  final Map<String, Color> _compColour = {
-    "Writing Skills": Color.fromARGB(255, 167, 193, 53),
-    "Project Management": Color.fromARGB(255, 0, 157, 189),
-    "Problem Solving": Color.fromARGB(255, 131, 46, 164),
-    "Oral Communication": Color.fromARGB(255, 166, 229, 42),
-    "Learning Orientation": Color.fromARGB(255, 42, 76, 229),
-    "Interpersonal Communication": Color.fromARGB(255, 198, 152, 192),
-    "Ethical Sense": Color.fromARGB(255, 154, 119, 119),
-    "Diversity and Interculturality": Color.fromARGB(255, 98, 97, 135),
-    "Critical Thinking": Color.fromARGB(255, 229, 145, 42),
-    "Creativity": Color.fromARGB(255, 229, 42, 42),
-    "Collaboration - Teamwork": Color.fromARGB(255, 24, 126, 142),
-  };
-  var colour = _compColour[competence];
-  if (colour != null) {
-    return colour;
-  }
-
-  return Colors.black;
-}
