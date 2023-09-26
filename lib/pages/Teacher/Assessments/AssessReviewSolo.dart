@@ -44,6 +44,9 @@ class _AssessReviewState extends State<AssessReview> {
           if (snapshot.hasError) {
             return Text("Something went wrong");
           }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return new Text('');
+          }
 
           if (!snapshot.hasData) {
             return Container(
@@ -272,112 +275,103 @@ class _AssessReviewState extends State<AssessReview> {
                                                   Padding(
                                                     padding:
                                                         EdgeInsets.all(16.0),
-                                                    child: Column(children: <
-                                                        Widget>[
-                                                      Divider(
-                                                        height: 4,
-                                                      ),
-                                                      Text(
-                                                        x,
-                                                        style: TextStyle(
-                                                            fontSize: 18),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 12,
-                                                      ),
-                                                      RadioGroup<
-                                                          String>.builder(
-                                                        spacebetween: 65.0,
-                                                        direction:
-                                                            Axis.vertical,
-                                                        groupValue: int.parse(
+                                                    child: Column(
+                                                        children: <Widget>[
+                                                          Divider(
+                                                            height: 4,
+                                                          ),
+                                                          Text(
+                                                            x,
+                                                            style: TextStyle(
+                                                                fontSize: 18),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 12,
+                                                          ),
+                                                          RadioGroup<
+                                                              String>.builder(
+                                                            spacebetween: 65.0,
+                                                            direction:
+                                                                Axis.vertical,
+                                                            groupValue: int.parse(savedGrade[k]
+                                                                            [
+                                                                            x]) -
+                                                                        1 ==
+                                                                    -1
+                                                                ? "out of the list..."
+                                                                : _comps[x]
+                                                                    ?.toList()[int.parse(
                                                                         savedGrade[k]
                                                                             [
                                                                             x]) -
-                                                                    1 ==
-                                                                -1
-                                                            ? "out of the list..."
-                                                            : _comps[x]
-                                                                    ?.toList()[
-                                                                int.parse(savedGrade[
-                                                                        k][x]) -
                                                                     1],
-                                                        horizontalAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        onChanged: null,
-                                                        // var docId =
-                                                        //     formativenp
-                                                        //         .data!
-                                                        //         .docs[0]
-                                                        //         .reference
-                                                        //         .id
-                                                        //         .toString();
-
-                                                        // print(k);
-                                                        // print(x);
-                                                        // print("PATH: " +
-                                                        //     "Competences.$k.$x");
-                                                        // print(value
-                                                        //     .toString()
-                                                        //     .substring(
-                                                        //         0, 1));
-                                                        // print(savedGrade
-                                                        //     .toString());
-                                                        // _formative
-                                                        //     .doc(widget
-                                                        //         .passedClassName)
-                                                        //     .collection(
-                                                        //         'grading')
-                                                        //     .doc(widget
-                                                        //         .passedStudName)
-                                                        //     .collection(
-                                                        //         'formative')
-                                                        //     .doc(docId)
-                                                        //     .update(
-                                                        //   {
-                                                        //     "Competences": {
-                                                        //       k: {
-                                                        //         x: value
-                                                        //             .toString()
-                                                        //             .substring(
-                                                        //                 0,
-                                                        //                 1)
-                                                        //       },
-                                                        //     },
-                                                        //   },
-                                                        // ).then(
-                                                        //   (value) {
-                                                        //     print(
-                                                        //         "DocumentSnapshot successfully updated!");
-                                                        //     print(docId);
-                                                        //     print(
-                                                        //       savedGrade
-                                                        //           .toString(),
-                                                        //     );
-                                                        //     print(
-                                                        //         "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                                                        //   },
-                                                        //   onError: (e) => print(
-                                                        //       "Error updating document $e"),
-                                                        // );
-                                                        // },
-
-                                                        activeColor:
-                                                            Color(0xFF29D09E),
-                                                        items: textifier(
-                                                            _comps[x]),
-                                                        textStyle: TextStyle(
-                                                          fontSize: 14,
-                                                        ),
-                                                        itemBuilder: (item) =>
-                                                            RadioButtonBuilder(
-                                                                item.toString(),
-                                                                textPosition:
-                                                                    RadioButtonTextPosition
-                                                                        .left),
-                                                      ),
-                                                    ]),
+                                                            horizontalAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            onChanged:
+                                                                (value) =>
+                                                                    setState(
+                                                                        () {
+                                                              var docId =
+                                                                  formativenp
+                                                                      .data!
+                                                                      .docs[0]
+                                                                      .reference
+                                                                      .id
+                                                                      .toString();
+                                                              print(k);
+                                                              print(x);
+                                                              print(value
+                                                                  .toString()
+                                                                  .substring(
+                                                                      0, 1));
+                                                              print(savedGrade
+                                                                  .toString());
+                                                              _formative
+                                                                  .doc(widget
+                                                                      .passedClassName)
+                                                                  .collection(
+                                                                      'grading')
+                                                                  .doc(widget
+                                                                      .passedStudName)
+                                                                  .collection(
+                                                                      'formative')
+                                                                  .doc(docId)
+                                                                  .update({
+                                                                "Competences.$k.$x": value
+                                                                    .toString()
+                                                                    .substring(
+                                                                        0, 1)
+                                                              }).then((value) {
+                                                                print(
+                                                                    "DocumentSnapshot successfully updated!");
+                                                                print(docId);
+                                                                print(savedGrade
+                                                                    .toString());
+                                                                print(
+                                                                    "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                                              },
+                                                                      onError: (e) =>
+                                                                          print(
+                                                                              "Error updating document $e"));
+                                                            }),
+                                                            activeColor: Color(
+                                                                0xFF29D09E),
+                                                            items: textifier(
+                                                                _comps[x]),
+                                                            textStyle:
+                                                                TextStyle(
+                                                              fontSize: 14,
+                                                            ),
+                                                            itemBuilder: (item) =>
+                                                                RadioButtonBuilder(
+                                                                    item
+                                                                        .toString(),
+                                                                    textPosition:
+                                                                        RadioButtonTextPosition
+                                                                            .left),
+                                                          ),
+                                                        ]),
                                                   )
                                               ]),
                                         ),
