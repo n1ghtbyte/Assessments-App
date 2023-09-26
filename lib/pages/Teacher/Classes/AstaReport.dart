@@ -14,7 +14,7 @@ Future<Uint8List> generateReport(
     List<String> info) async {
   // Summative table headers
 
-  const baseColor = PdfColors.green;
+  const baseColor = PdfColor.fromInt(1810353);
 
   // Create a PDF document.
   final document = pw.Document();
@@ -61,11 +61,12 @@ Future<Uint8List> generateReport(
   // Data table
 
   final table = pw.TableHelper.fromTextArray(
-    headers: ["Date", "Grade"],
+    headers: ["Date", "Description", "Grade"],
     data: List<List<dynamic>>.generate(
       fsum.length,
       (index) => <dynamic>[
-        fsum[index]['Created'].toDate().toString(),
+        DateFormat.yMMMEd().format(fsum[index]['Created'].toDate()).toString(),
+        fsum[index]['Description'].toString(),
         fsum[index]['Result'].toStringAsFixed(2),
       ],
     ),
@@ -124,7 +125,7 @@ Future<Uint8List> generateReport(
       ),
       datasets: [
         pw.BarDataSet(
-          color: PdfColors.green200,
+          color: baseColor,
           width: 10,
           offset: 0,
           borderColor: baseColor,
