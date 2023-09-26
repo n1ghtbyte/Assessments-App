@@ -235,35 +235,30 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     // VERIFICAR SE O DOC ESTA EM QUAL LISTA PEAR SELF FORM
 
                     if (selfAssess.contains(_doc)) {
-                      var type = AppLocalizations.of(context)!.self;
-
                       _smallData[comp]?.add(PointLinex(
                           index: fakeIndex,
                           hash: indicatorToHash(comp),
                           competence: comp,
                           value: _res,
-                          type: type,
+                          type: 'Self',
                           timestampDate: foo['Created']));
                     }
                     if (peerAssess.contains(_doc)) {
-                      var type = AppLocalizations.of(context)!.peer;
-
                       _smallData[comp]?.add(PointLinex(
                           index: fakeIndex,
                           hash: indicatorToHash(comp),
                           competence: comp,
                           value: _res,
-                          type: type,
+                          type: 'Peer',
                           timestampDate: foo['Created']));
                     }
                     if (formAssess.contains(_doc)) {
-                      var type = AppLocalizations.of(context)!.formative;
                       _smallData[comp]?.add(PointLinex(
                           index: fakeIndex,
                           hash: indicatorToHash(comp),
                           competence: comp,
                           value: _res,
-                          type: type,
+                          type: 'Formative',
                           timestampDate: foo['Created']));
                     }
 
