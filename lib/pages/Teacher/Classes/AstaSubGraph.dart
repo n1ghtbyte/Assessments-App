@@ -38,6 +38,8 @@ class AstaSubGraph extends StatefulWidget {
 }
 
 class _AstaSubGraphState extends State<AstaSubGraph> {
+  final colorMap = generateColorMap();
+
   ValueNotifier<bool> isDialOpen = ValueNotifier(false);
 
   Map<String, List<DataItem>> _bigData = {};
@@ -56,39 +58,6 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
 
   var _ind = 0;
 
-  static List _leColours = [
-    Color(0xff7a3279),
-    Color(0xff58c770),
-    Color(0xffc24fa8),
-    Color(0xffadbc3c),
-    Color(0xff483588),
-    Color(0xff80aa3d),
-    Color(0xff9c69cc),
-    Color(0xff48862e),
-    Color(0xff5c7cde),
-    Color(0xffcb9f2e),
-    Color(0xff6789cf),
-    Color(0xffc88130),
-    Color(0xff33d4d1),
-    Color(0xffcf483f),
-    Color(0xff4ac08f),
-    Color(0xffcb417f),
-    Color(0xff86c275),
-    Color(0xff872957),
-    Color(0xff347435),
-    Color(0xffd088d2),
-    Color(0xffc6ba61),
-    Color(0xffdb75a2),
-    Color(0xff7c7527),
-    Color(0xffd24660),
-    Color(0xffcc8b52),
-    Color(0xff8d2836),
-    Color(0xffc15c2d),
-    Color(0xffca5e71),
-    Color(0xff86341a),
-    Color(0xffdc7a67),
-  ];
-
   int indicatorToHash(String indicator) {
     int _sum = 0;
 
@@ -104,10 +73,7 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
   SideTitles get _bottomTitles => SideTitles(
         showTitles: true,
         reservedSize: 50,
-        // getTextStyles: (context, value) => const TextStyle(
-        //   color: Color(0xff939393),
-        //   fontSize: 10,
-        // ),
+
         getTitlesWidget: (value, meta) {
           var key = _leTitles.keys.firstWhere((k) => _leTitles[k] == value,
               orElse: () => "ERROR CONTACT O3");
@@ -196,7 +162,7 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
                 hash: indicatorToHash(comp),
                 competence: comp,
                 value: _res,
-                type: "noTypeHere",
+                type: "Formative",
                 timestampDate: foo['Created']));
 
             _ind = 0;
@@ -303,7 +269,7 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
                             for (var i = 0; i < _comp2cardinal[_comp]!; i++)
                               Legend(
                                   "${DateFormat.MEd().format(_smallData[_comp]![i].timestampDate.toDate())}",
-                                  _leColours[i]),
+                                  colorMap[_smallData[_comp]![i].type]![i]),
                           ],
                         ),
                         const SizedBox(height: 14),
@@ -351,12 +317,16 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
                                                     BackgroundBarChartRodData(
                                                   show: true,
                                                   toY: 0.1,
-                                                  color: _leColours[ind],
+                                                  color: colorMap[
+                                                      _smallData[_comp]![ind]
+                                                          .type]![ind],
                                                 ),
                                                 toY: double.parse(
                                                     dataItem.y[ind]),
                                                 width: 15,
-                                                color: _leColours[ind]),
+                                                color: colorMap[
+                                                    _smallData[_comp]![ind]
+                                                        .type]![ind]),
                                         ],
                                       ),
                                     )
