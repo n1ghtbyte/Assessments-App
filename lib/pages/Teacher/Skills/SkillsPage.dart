@@ -87,40 +87,91 @@ class _SkillsPageState extends State<SkillsPage> {
                               spacing: 10,
                               children: [
                                 IconButton(
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  ),
-                                  onPressed: () {
-                                    FirebaseFirestore.instance
-                                        .collection("users")
-                                        .doc(currentUser)
-                                        .collection('PrivateCompetences')
-                                        .doc(data['Name'])
-                                        .delete()
-                                        .then(
-                                          (doc) => print("Document deleted"),
-                                          onError: (e) => print(
-                                              "Error updating document $e"),
-                                        );
-                                  },
-                                ),
-                                IconButton(
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
                                     onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              CompetencePicked(
-                                            passedComp: data,
-                                            passedName: data['Name'],
-                                            editable: true,
-                                          ),
-                                        ),
+                                      showDialog(
+                                          context: context,
+                                          builder: (_) => AlertDialog(
+                                                  title:
+                                                      Text("Remove Competence"),
+                                                  content: Text(
+                                                      'Remove the indicators regarding this competence forever?'),
+                                                  actions: [
+                                                    TextButton(
+                                                      style: ButtonStyle(
+                                                        foregroundColor:
+                                                            MaterialStateProperty
+                                                                .all<Color>(
+                                                                    Colors
+                                                                        .blue),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(context,
+                                                                rootNavigator:
+                                                                    true)
+                                                            .pop();
+                                                      },
+                                                      child: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .cancel),
+                                                    ),
+                                                    TextButton(
+                                                      style: ButtonStyle(
+                                                        foregroundColor:
+                                                            MaterialStateProperty
+                                                                .all<Color>(
+                                                                    Colors
+                                                                        .blue),
+                                                      ),
+                                                      child: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .delete),
+                                                      onPressed: () async {
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection("users")
+                                                            .doc(currentUser)
+                                                            .collection(
+                                                                'PrivateCompetences')
+                                                            .doc(data['Name'])
+                                                            .delete()
+                                                            .then(
+                                                              (doc) => print(
+                                                                  "Document deleted"),
+                                                              onError: (e) => print(
+                                                                  "Error updating document $e"),
+                                                            );
+                                                        Navigator.of(context,
+                                                                rootNavigator:
+                                                                    true)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                  ]));
+
+                                      IconButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CompetencePicked(
+                                                passedComp: data,
+                                                passedName: data['Name'],
+                                                editable: true,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        icon: Icon(
+                                            Icons.arrow_circle_right_rounded),
                                       );
-                                    },
-                                    icon:
-                                        Icon(Icons.arrow_circle_right_rounded)),
+                                    })
                               ],
                             ),
                             title: Text(
