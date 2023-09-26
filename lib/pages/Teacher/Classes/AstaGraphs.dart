@@ -501,6 +501,9 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                                   MaterialPageRoute(
                                                     builder: (context) =>
                                                         AstaSubGraph(
+                                                      passedSummResult:
+                                                          dt['Result']
+                                                              .toString(),
                                                       passedSummDate:
                                                           dt['Created']
                                                               as Timestamp,

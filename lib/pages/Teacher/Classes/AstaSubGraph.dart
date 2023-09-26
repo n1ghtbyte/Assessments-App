@@ -10,6 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:assessments_app/InovWidgets/ChartData.dart';
 
 class AstaSubGraph extends StatefulWidget {
+  final String passedSummResult;
   final Timestamp passedSummDate;
   final String passedSummName;
   final String passedSummDesc;
@@ -22,6 +23,7 @@ class AstaSubGraph extends StatefulWidget {
 
   const AstaSubGraph(
       {Key? key,
+      required this.passedSummResult,
       required this.passedSummDate,
       required this.passedSummName,
       required this.passedSummDesc,
@@ -73,7 +75,6 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
   SideTitles get _bottomTitles => SideTitles(
         showTitles: true,
         reservedSize: 50,
-
         getTitlesWidget: (value, meta) {
           var key = _leTitles.keys.firstWhere((k) => _leTitles[k] == value,
               orElse: () => "ERROR CONTACT O3");
@@ -208,6 +209,15 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
                 child: Text(
                   "${AppLocalizations.of(context)!.assessname}: " +
                       widget.passedSummName,
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(14.0),
+                child: Text(
+                  "${AppLocalizations.of(context)!.grade}: " +
+                      widget.passedSummResult,
                   style: TextStyle(fontSize: 20),
                 ),
               ),
