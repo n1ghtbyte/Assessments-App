@@ -8,6 +8,10 @@ import 'package:assessments_app/InovWidgets/LegendWidget.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:assessments_app/InovWidgets/ChartData.dart';
+import 'package:pdf/pdf.dart';
+import 'package:printing/printing.dart';
+
+import 'AstaReport.dart';
 
 class AstaSubGraph extends StatefulWidget {
   final String passedSummResult;
@@ -20,6 +24,8 @@ class AstaSubGraph extends StatefulWidget {
   final Map<dynamic, dynamic> passedCompetences;
   final List<dynamic> passedFromatives;
   final String passedEmail;
+  final     Map<dynamic, dynamic> passedfsum;
+
 
   const AstaSubGraph(
       {Key? key,
@@ -32,7 +38,8 @@ class AstaSubGraph extends StatefulWidget {
       required this.passedLegitName,
       required this.passedCompetences,
       required this.passedFromatives,
-      required this.passedEmail})
+      required this.passedEmail,
+      required this.passedfsum})
       : super(key: key);
 
   @override
@@ -200,6 +207,30 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
             title: Text('${widget.passedLegitName}'),
             centerTitle: true,
             backgroundColor: Color(0xFF29D09E),
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () {
+                               Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PdfPreview(
+                                    canChangeOrientation: false,
+                                    canChangePageFormat: false,
+                                    canDebug: false,
+                                    initialPageFormat: PdfPageFormat.a4,
+                                    pdfFileName: "ASSESS.pdf",
+                                    build: (format) => generateReport(
+                                        _bigData, _smallData, [widget.passedfsum], [
+                                      widget.passedClassName,
+                                      widget.passedLegitName
+                                    ]),
+                                  ),
+                                ),
+                              );
+                            },
+            backgroundColor: const Color(0xFF29D09E),
+            icon: Icon(Icons.print),
+            label: Text("PDF"),
           ),
           body: ListView(
             children: [

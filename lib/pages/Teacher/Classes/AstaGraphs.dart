@@ -523,6 +523,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                                           dt['Formatives'],
                                                       passedLegitName: widget
                                                           .passedLegitName,
+                                                      passedfsum: dt,
                                                     ),
                                                   ),
                                                 );

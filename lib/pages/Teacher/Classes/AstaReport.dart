@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:assessments_app/InovWidgets/ChartData.dart';
@@ -93,21 +92,21 @@ Future<Uint8List> generateReport(
   // Top bar chart
   for (var comp in dataBarChart.keys) {
     final chart1 = pw.Chart(
-      left: pw.Container(
+      title: pw.Container(
         alignment: pw.Alignment.topCenter,
-        margin: const pw.EdgeInsets.only(right: 20, top: 10),
-        child: pw.Transform.rotateBox(
-          angle: pi / 2,
-          child: pw.Text(comp),
+        margin: const pw.EdgeInsets.all(10),
+        child: pw.Text(
+          comp,
+          style: pw.TextStyle(fontSize: 20),
         ),
       ),
       grid: pw.CartesianGrid(
         xAxis: pw.FixedAxis.fromStrings(
           List<String>.generate(dataBarChart[comp]!.length,
               (index) => wrapText(dataBarChart[comp]![index][0] as String, 15)),
-          textStyle: pw.TextStyle(fontSize: 9),
-          marginStart: 50,
-          marginEnd: 20,
+          textStyle: pw.TextStyle(fontSize: 10),
+          marginStart: 45,
+          marginEnd: 45,
           ticks: true,
         ),
         yAxis: pw.FixedAxis(
@@ -126,7 +125,7 @@ Future<Uint8List> generateReport(
       datasets: [
         pw.BarDataSet(
           color: baseColor,
-          width: 10,
+          width: 30,
           offset: 0,
           borderColor: baseColor,
           data: List<pw.PointChartValue>.generate(
