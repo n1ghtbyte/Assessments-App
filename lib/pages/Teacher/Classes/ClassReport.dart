@@ -26,7 +26,7 @@ Future<Uint8List> generateClassReport(Map<String, List<DataItem>> _bigData,
     Map<String, List<PointLinex>> _smallData, List<String> info) async {
   // Summative table headers
 
-  const baseColor = PdfColors.green;
+  const baseColor = PdfColor.fromInt(1810353);
 
   // Create a PDF document.
   final document = pw.Document();
@@ -86,10 +86,11 @@ Future<Uint8List> generateClassReport(Map<String, List<DataItem>> _bigData,
     datasets: [
       for (var x in _smallData.keys)
         pw.LineDataSet(
+          lineWidth: 4,
           legend: x,
           drawSurface: false,
-          isCurved: false,
-          drawPoints: false,
+          isCurved: true,
+          drawPoints: true,
           color: PdfColor.fromInt(genColourInt(x)),
           data: List<pw.PointChartValue>.generate(
             dataBarChart[x]!.length,
@@ -100,21 +101,6 @@ Future<Uint8List> generateClassReport(Map<String, List<DataItem>> _bigData,
             },
           ),
         ),
-
-      // pw.LineDataSet(
-      //   legend: 'Expense',
-      //   drawSurface: true,
-      //   isCurved: true,
-      //   drawPoints: false,
-      //   color: baseColor,
-      //   data: List<pw.PointChartValue>.generate(
-      //     dataTable.length,
-      //     (i) {
-      //       final v = dataTable[i][2] as num;
-      //       return pw.PointChartValue(i.toDouble(), v.toDouble());
-      //     },
-      //   ),
-      // ),
     ],
   );
   // Add page to the PDF
