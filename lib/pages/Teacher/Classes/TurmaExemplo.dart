@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:js_interop';
 import 'package:assessments_app/InovWidgets/ChartData.dart';
 import 'package:assessments_app/InovWidgets/LegendWidget.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/GenMultipleSelfAssessments.dart';
@@ -749,6 +748,102 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                               () {},
                                             ),
                                           );
+                                        },
+                                        onLongPress: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (_) => AlertDialog(
+                                                    title: Text(
+                                                        "Delete this student"),
+                                                    content: Text(
+                                                        "Are you sure you want to remove this?"),
+                                                    actions: [
+                                                      TextButton(
+                                                        style: ButtonStyle(
+                                                          foregroundColor:
+                                                              MaterialStateProperty
+                                                                  .all<Color>(
+                                                                      Colors
+                                                                          .blue),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.of(context,
+                                                                  rootNavigator:
+                                                                      true)
+                                                              .pop();
+                                                        },
+                                                        child: Text(
+                                                            AppLocalizations.of(
+                                                                    context)!
+                                                                .cancel),
+                                                      ),
+                                                      TextButton(
+                                                        style: ButtonStyle(
+                                                          foregroundColor:
+                                                              MaterialStateProperty
+                                                                  .all<Color>(
+                                                                      Colors
+                                                                          .blue),
+                                                        ),
+                                                        onPressed: () async {
+                                                          Navigator.of(context,
+                                                                  rootNavigator:
+                                                                      true)
+                                                              .pop();
+                                                          var x;
+                                                          if (studs[index] !=
+                                                              namedStuds[studs[
+                                                                      index]
+                                                                  .toString()]) {
+                                                            x = studs[index]
+                                                                .toString();
+                                                          } else {
+                                                            x = namedStuds[studs[
+                                                                        index]
+                                                                    .toString()]
+                                                                .toString();
+                                                          }
+                                                          print(x);
+
+                                                          // Delete the class from /classes
+                                                          // This does not removed subcollections
+
+                                                          // Delete assessments in /assessments
+
+                                                          await FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'classes')
+                                                              .doc(widget
+                                                                  .passedClassName)
+                                                              .update({
+                                                            'StudentList':
+                                                                FieldValue
+                                                                    .arrayRemove(
+                                                                        [x]),
+                                                          });
+                                                          await FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'classes')
+                                                              .doc(widget
+                                                                  .passedClassName)
+                                                              .update({
+                                                            'NumStudents':
+                                                                FieldValue
+                                                                    .increment(
+                                                                        -1),
+                                                          });
+                                                          setState(() {});
+                                                        },
+                                                        child: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .delete,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ));
                                         },
                                       );
                                     },
