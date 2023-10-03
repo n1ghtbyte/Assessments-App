@@ -103,21 +103,6 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
             ),
           );
         }
-        print("--------------------------------------------");
-        // print(snapshot.data!.docs[0].data()?.toString());
-        int actualNumberComp = snapshot.data!.docs.length;
-        for (var i = 0; i < actualNumberComp; i++) {
-          // print("pppppppppppppppppppppppppppppppppppppppppp");
-          // print(i);
-
-          //print(_comps);
-
-          Map<String, dynamic> foo1 =
-              snapshot.data?.docs[i].data()! as Map<String, dynamic>;
-          _comps.add(foo1);
-          // print(foo['Name']);
-        }
-        print(_competences);
 
         return StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
@@ -147,6 +132,16 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
             }
             print("*************************************");
             print(_comps);
+            print("--------------------------------------------");
+            // print(snapshot.data!.docs[0].data()?.toString());
+            int actualNumberComp = snapshot.data!.docs.length;
+            for (var i = 0; i < actualNumberComp; i++) {
+              Map<String, dynamic> foo1 =
+                  snapshot.data?.docs[i].data()! as Map<String, dynamic>;
+              _comps.add(foo1);
+              // print(foo['Name']);
+            }
+            print(_competences);
 
             return Scaffold(
               appBar: AppBar(
