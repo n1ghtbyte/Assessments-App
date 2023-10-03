@@ -281,6 +281,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     email: _emailController.text,
                                     password: _passwordController.text);
                             addUser();
+                            final snackBar =
+                                SnackBar(content: Text("Account Created"));
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
                             Navigator.of(context).pop();
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'weak-password') {
