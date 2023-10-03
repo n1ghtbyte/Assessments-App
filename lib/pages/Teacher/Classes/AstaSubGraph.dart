@@ -24,8 +24,7 @@ class AstaSubGraph extends StatefulWidget {
   final Map<dynamic, dynamic> passedCompetences;
   final List<dynamic> passedFromatives;
   final String passedEmail;
-  final     Map<dynamic, dynamic> passedfsum;
-
+  final Map<dynamic, dynamic> passedfsum;
 
   const AstaSubGraph(
       {Key? key,
@@ -210,24 +209,24 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
           ),
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
-                               Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PdfPreview(
-                                    canChangeOrientation: false,
-                                    canChangePageFormat: false,
-                                    canDebug: false,
-                                    initialPageFormat: PdfPageFormat.a4,
-                                    pdfFileName: "ASSESS.pdf",
-                                    build: (format) => generateReport(
-                                        _bigData, _smallData, [widget.passedfsum], [
-                                      widget.passedClassName,
-                                      widget.passedLegitName
-                                    ]),
-                                  ),
-                                ),
-                              );
-                            },
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PdfPreview(
+                    canChangeOrientation: false,
+                    canChangePageFormat: false,
+                    canDebug: false,
+                    initialPageFormat: PdfPageFormat.a4,
+                    pdfFileName: "ASSESS.pdf",
+                    build: (format) => generateReport(
+                        _bigData,
+                        _smallData,
+                        [widget.passedfsum],
+                        [widget.passedClassName, widget.passedLegitName]),
+                  ),
+                ),
+              );
+            },
             backgroundColor: const Color(0xFF29D09E),
             icon: Icon(Icons.print),
             label: Text("PDF"),
@@ -296,91 +295,101 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
               Column(
                 children: [
                   for (var _comp in _bigData.keys)
-                    Column(
-                      children: [
-                        Text(
-                          _comp.toString(),
-                          style: TextStyle(
-                              fontSize: 21, fontWeight: FontWeight.w400),
-                          textAlign: TextAlign.left,
-                        ),
-                        const SizedBox(height: 8),
-                        LegendsListWidget(
-                          legends: [
-                            for (var i = 0; i < _comp2cardinal[_comp]!; i++)
-                              Legend(
-                                  "${DateFormat.MEd().format(_smallData[_comp]![i].timestampDate.toDate())}",
-                                  colorMap[_smallData[_comp]![i].type]![i]),
-                          ],
-                        ),
-                        const SizedBox(height: 14),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Container(
-                            padding: EdgeInsets.only(
-                                left: 20, right: 20, top: 20, bottom: 20),
-                            height: 300,
-                            width: 100 +
-                                (_bigData[_comp]!.length * 200) +
-                                _smallData[_comp]!.length * 15,
-                            child: BarChart(
-                              BarChartData(
-                                baselineY: 0,
-                                titlesData: FlTitlesData(
-                                  bottomTitles:
-                                      AxisTitles(sideTitles: _bottomTitles),
-                                  leftTitles: AxisTitles(
-                                      sideTitles: SideTitles(showTitles: true)),
-                                  topTitles: AxisTitles(
-                                      sideTitles:
-                                          SideTitles(showTitles: false)),
-                                  rightTitles: AxisTitles(
-                                      sideTitles:
-                                          SideTitles(showTitles: false)),
-                                ),
-                                gridData: FlGridData(
-                                    drawHorizontalLine: true,
-                                    drawVerticalLine: false),
-                                maxY: 5,
-                                minY: 0,
-                                groupsSpace: 10,
-                                barGroups: _bigData[_comp]
-                                    ?.map(
-                                      (dataItem) => BarChartGroupData(
-                                        x: dataItem.hash,
-                                        barRods: [
-                                          for (var ind = 0;
-                                              ind < dataItem.y.length;
-                                              ind++)
-                                            BarChartRodData(
-                                                borderRadius: BorderRadius.zero,
-                                                backDrawRodData:
-                                                    BackgroundBarChartRodData(
-                                                  show: true,
-                                                  toY: 0.1,
-                                                  color: colorMap[
-                                                      _smallData[_comp]![ind]
-                                                          .type]![ind],
-                                                ),
-                                                toY: double.parse(
-                                                    dataItem.y[ind]),
-                                                width: 15,
-                                                color: colorMap[
-                                                    _smallData[_comp]![ind]
-                                                        .type]![ind]),
-                                        ],
-                                      ),
-                                    )
-                                    .toList(),
+                    _bigData[_comp]!.isNotEmpty
+                        ? Column(
+                            children: [
+                              Text(
+                                _comp.toString(),
+                                style: TextStyle(
+                                    fontSize: 21, fontWeight: FontWeight.w400),
+                                textAlign: TextAlign.left,
                               ),
-                              swapAnimationDuration:
-                                  Duration(milliseconds: 150), // Optional
-                              swapAnimationCurve: Curves.linear, // Optional
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                              const SizedBox(height: 8),
+                              LegendsListWidget(
+                                legends: [
+                                  for (var i = 0;
+                                      i < _comp2cardinal[_comp]!;
+                                      i++)
+                                    Legend(
+                                        "${DateFormat.MEd().format(_smallData[_comp]![i].timestampDate.toDate())}",
+                                        colorMap[_smallData[_comp]![i].type]![
+                                            i]),
+                                ],
+                              ),
+                              const SizedBox(height: 14),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                      left: 20, right: 20, top: 20, bottom: 20),
+                                  height: 300,
+                                  width: 100 +
+                                      (_bigData[_comp]!.length * 200) +
+                                      _smallData[_comp]!.length * 15,
+                                  child: BarChart(
+                                    BarChartData(
+                                      baselineY: 0,
+                                      titlesData: FlTitlesData(
+                                        bottomTitles: AxisTitles(
+                                            sideTitles: _bottomTitles),
+                                        leftTitles: AxisTitles(
+                                            sideTitles:
+                                                SideTitles(showTitles: true)),
+                                        topTitles: AxisTitles(
+                                            sideTitles:
+                                                SideTitles(showTitles: false)),
+                                        rightTitles: AxisTitles(
+                                            sideTitles:
+                                                SideTitles(showTitles: false)),
+                                      ),
+                                      gridData: FlGridData(
+                                          drawHorizontalLine: true,
+                                          drawVerticalLine: false),
+                                      maxY: 5,
+                                      minY: 0,
+                                      groupsSpace: 10,
+                                      barGroups: _bigData[_comp]
+                                          ?.map(
+                                            (dataItem) => BarChartGroupData(
+                                              x: dataItem.hash,
+                                              barRods: [
+                                                for (var ind = 0;
+                                                    ind < dataItem.y.length;
+                                                    ind++)
+                                                  BarChartRodData(
+                                                      borderRadius:
+                                                          BorderRadius.zero,
+                                                      backDrawRodData:
+                                                          BackgroundBarChartRodData(
+                                                        show: true,
+                                                        toY: 0.1,
+                                                        color: colorMap[
+                                                            _smallData[_comp]![
+                                                                    ind]
+                                                                .type]![ind],
+                                                      ),
+                                                      toY: double.parse(
+                                                          dataItem.y[ind]),
+                                                      width: 15,
+                                                      color: colorMap[
+                                                          _smallData[_comp]![
+                                                                  ind]
+                                                              .type]![ind]),
+                                              ],
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                    swapAnimationDuration:
+                                        Duration(milliseconds: 150), // Optional
+                                    swapAnimationCurve:
+                                        Curves.linear, // Optional
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Text("")
                 ],
               ),
             ],
