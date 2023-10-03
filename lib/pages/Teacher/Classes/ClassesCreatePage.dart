@@ -183,11 +183,11 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   } else {
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   const SnackBar(
-                    //       content: Text(
-                    //           AppLocalizations.of(context)!.enterclassname)),
-                    // );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text(
+                              AppLocalizations.of(context)!.enterclassname)),
+                    );
                   }
                 },
                 label: Text(AppLocalizations.of(context)!.create),
