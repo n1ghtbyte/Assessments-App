@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:js_interop';
 import 'package:assessments_app/InovWidgets/ChartData.dart';
 import 'package:assessments_app/InovWidgets/LegendWidget.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/GenMultipleSelfAssessments.dart';
@@ -45,6 +45,7 @@ class TurmaExemplo extends StatefulWidget {
 
 class _TurmaExemploState extends State<TurmaExemplo>
     with AutomaticKeepAliveClientMixin {
+  bool vis = false;
   Map<String, List<DataItem>> _bigData = {};
   Map<String, int> _comp2cardinal = {};
   Map<String, List<PointLinex>> _smallData = {};
@@ -157,6 +158,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
             helper.add(double.parse(foo['Competences'][comp][indicator]));
 
             if (_bigData[comp]!.isEmpty || !tt[indicator]!) {
+              vis = true;
               _bigData[comp]?.add(DataItem(
                   index: _ind,
                   hash: indicatorToHash(indicator),
@@ -579,6 +581,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
                           SpeedDialChild(
                             child: Icon(Icons.print),
                             backgroundColor: Color(0xFF29D09E),
+                            visible: vis,
                             label: "PDF",
                             elevation: 5.0,
                             onTap: () async {
@@ -886,60 +889,70 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                             style: TextStyle(fontSize: 16),
                                           ),
                                         ),
-                                        ListView.builder(
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount: data['Competences']
-                                              .keys
-                                              .toList()
-                                              .length,
-                                          itemBuilder: (context, index) {
-                                            return ExpansionTile(
-                                              trailing: Icon(
-                                                _customTileExpanded[index]
-                                                    ? Icons
-                                                        .arrow_drop_down_circle
-                                                    : Icons.arrow_drop_down,
-                                              ),
-                                              title: Text(data['Competences']
-                                                  .keys
-                                                  .toList()[index]),
-                                              subtitle: Text(data['Weights'][
-                                                          data['Competences']
-                                                              .keys
-                                                              .toList()[index]]
-                                                      .toString() +
-                                                  "%"),
-                                              children: [
-                                                ListView.builder(
-                                                  physics:
-                                                      const NeverScrollableScrollPhysics(),
-                                                  shrinkWrap: true,
-                                                  itemCount: data['Competences']
-                                                          [data['Competences']
-                                                              .keys
-                                                              .toList()[index]]
-                                                      .length,
-                                                  itemBuilder:
-                                                      (context, xipidi) {
-                                                    return ListTile(
-                                                      title: Text(data[
-                                                              'Competences'][
-                                                          data['Competences']
-                                                                  .keys
-                                                                  .toList()[
-                                                              index]][xipidi]),
-                                                      dense: true,
-                                                      visualDensity: VisualDensity
-                                                          .adaptivePlatformDensity,
-                                                    );
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        ),
+                                        data['Weights'][data['Competences']
+                                                    .keys
+                                                    .toList()[0]] !=
+                                                null
+                                            ? ListView.builder(
+                                                physics:
+                                                    const NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount: data['Competences']
+                                                    .keys
+                                                    .toList()
+                                                    .length,
+                                                itemBuilder: (context, index) {
+                                                  return ExpansionTile(
+                                                    trailing: Icon(
+                                                      _customTileExpanded[index]
+                                                          ? Icons
+                                                              .arrow_drop_down_circle
+                                                          : Icons
+                                                              .arrow_drop_down,
+                                                    ),
+                                                    title: Text(
+                                                        data['Competences']
+                                                            .keys
+                                                            .toList()[index]),
+                                                    subtitle: Text(data[
+                                                                'Weights'][data[
+                                                                    'Competences']
+                                                                .keys
+                                                                .toList()[index]]
+                                                            .toString() +
+                                                        "%"),
+                                                    children: [
+                                                      ListView.builder(
+                                                        physics:
+                                                            const NeverScrollableScrollPhysics(),
+                                                        shrinkWrap: true,
+                                                        itemCount: data[
+                                                                'Competences'][data[
+                                                                    'Competences']
+                                                                .keys
+                                                                .toList()[index]]
+                                                            .length,
+                                                        itemBuilder:
+                                                            (context, xipidi) {
+                                                          return ListTile(
+                                                            title: Text(data[
+                                                                'Competences'][data[
+                                                                        'Competences']
+                                                                    .keys
+                                                                    .toList()[
+                                                                index]][xipidi]),
+                                                            dense: true,
+                                                            visualDensity:
+                                                                VisualDensity
+                                                                    .adaptivePlatformDensity,
+                                                          );
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              )
+                                            : Text("Go define the weights"),
                                         Text(
                                           AppLocalizations.of(context)!
                                               .studentprog,
