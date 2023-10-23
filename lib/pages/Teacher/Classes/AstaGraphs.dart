@@ -502,8 +502,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                                     builder: (context) =>
                                                         AstaSubGraph(
                                                       passedSummResult:
-                                                          dt['Result']
-                                                              .toString(),
+                                                          dt['Result'],
                                                       passedSummDate:
                                                           dt['Created']
                                                               as Timestamp,

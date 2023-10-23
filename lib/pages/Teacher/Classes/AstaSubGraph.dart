@@ -14,7 +14,7 @@ import 'package:printing/printing.dart';
 import 'AstaReport.dart';
 
 class AstaSubGraph extends StatefulWidget {
-  final String passedSummResult;
+  final double passedSummResult;
   final Timestamp passedSummDate;
   final String passedSummName;
   final String passedSummDesc;
@@ -247,7 +247,7 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
                 padding: EdgeInsets.all(14.0),
                 child: Text(
                   "${AppLocalizations.of(context)!.grade}: " +
-                      widget.passedSummResult,
+                      widget.passedSummResult.toStringAsFixed(2),
                   style: TextStyle(fontSize: 20),
                 ),
               ),
