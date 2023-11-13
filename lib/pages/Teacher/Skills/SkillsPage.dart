@@ -177,6 +177,18 @@ class _SkillsPageState extends State<SkillsPage> {
                             title: Text(
                               data['Name'],
                             ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CompetencePicked(
+                                    passedComp: data,
+                                    passedName: data['Name'],
+                                    editable: true,
+                                  ),
+                                ),
+                              );
+                            },
                           );
                         },
                       ).toList() +
