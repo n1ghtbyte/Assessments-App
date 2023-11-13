@@ -66,7 +66,7 @@ class _SkillsIndicatorsStage extends State<SkillsIndicatorsStage> {
                 .collection("users")
                 .doc(FirebaseAuth.instance.currentUser!.email)
                 .collection("PrivateCompetences")
-                .doc(widget.passedCompetenceName.toString())
+                .doc(widget.passedCompetenceName)
                 .set(data)
                 .onError((e, _) => print("Error writing document: $e"));
             final snackBar = SnackBar(
