@@ -106,7 +106,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
     int indicatorToHash(String indicator) {
       int _sum = 0;
 
-      var foo = ascii.encode(indicator);
+      var foo = utf8.encode(indicator);
       for (var k in foo) {
         _sum += k;
       }
