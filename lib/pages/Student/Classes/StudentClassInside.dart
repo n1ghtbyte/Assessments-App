@@ -184,8 +184,8 @@ class _StudentClassInsideState extends State<StudentClassInside> {
             ),
           );
         }
-        return FutureBuilder<QuerySnapshot>(
-          future: selfs.orderBy('Created', descending: false).get(),
+        return StreamBuilder<QuerySnapshot>(
+          stream: selfs.orderBy('Created', descending: false).snapshots(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> selfs) {
             if (selfs.hasError) {
               return Text("Something went wrong");
@@ -197,8 +197,8 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                 ),
               );
             }
-            return FutureBuilder<QuerySnapshot>(
-              future: peers.orderBy('Created', descending: false).get(),
+            return StreamBuilder<QuerySnapshot>(
+              stream: peers.orderBy('Created', descending: false).snapshots(),
               builder:
                   (BuildContext context, AsyncSnapshot<QuerySnapshot> peers) {
                 if (peers.hasError) {
