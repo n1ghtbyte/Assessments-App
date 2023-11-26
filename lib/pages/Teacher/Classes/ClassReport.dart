@@ -35,7 +35,7 @@ Future<Uint8List> generateClassReport(Map<String, List<DataItem>> _bigData,
     base: await PdfGoogleFonts.openSansRegular(),
     bold: await PdfGoogleFonts.openSansBold(),
   );
-  int max = 0;
+  double max = 0;
 
   Map<String, List<List<Object>>> dataBarChart = {};
   List<pw.Chart> charts = [];
@@ -61,12 +61,14 @@ Future<Uint8List> generateClassReport(Map<String, List<DataItem>> _bigData,
     }
   }
 
-  for (var x in dataBarChart.values)
+  for (var x in dataBarChart.values) {
     for (var y in x) {
-      if (double.parse(y.first.toString()) > max) {
-        max = x.length;
+      print(y);
+      if (double.parse(y[0].toString()) > max) {
+        max = double.parse(y[0].toString());
       }
     }
+  }
   print(dataBarChart);
 
   // Data table
@@ -77,7 +79,8 @@ Future<Uint8List> generateClassReport(Map<String, List<DataItem>> _bigData,
   final chart2 = pw.Chart(
     right: pw.ChartLegend(),
     grid: pw.CartesianGrid(
-      xAxis: pw.FixedAxis(List<int>.generate(max, (index) => index)),
+      xAxis:
+          pw.FixedAxis(List<int>.generate(max.toInt() + 1, (index) => index)),
       yAxis: pw.FixedAxis(
         [0, 1, 2, 3, 4, 5],
         divisions: true,
