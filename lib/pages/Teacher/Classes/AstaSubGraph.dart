@@ -235,62 +235,37 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
             children: [
               Container(
                 alignment: Alignment.center,
-                padding: EdgeInsets.all(14.0),
+                padding: EdgeInsets.all(20.0),
                 child: Text(
                   "${AppLocalizations.of(context)!.assessname}: " +
                       widget.passedSummName,
                   style: TextStyle(fontSize: 20),
                 ),
               ),
+              Divider(),
               Container(
                 alignment: Alignment.center,
-                padding: EdgeInsets.all(14.0),
+                padding: EdgeInsets.all(20.0),
                 child: Text(
                   "${AppLocalizations.of(context)!.grade}: " +
                       widget.passedSummResult.toStringAsFixed(2),
                   style: TextStyle(fontSize: 20),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.all(14),
-                child: Text(
-                  AppLocalizations.of(context)!.formsarg,
-                  style: TextStyle(fontSize: 20),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection("assessments")
-                    .where('documentID', whereIn: widget.passedFromatives)
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData)
-                    return Text(AppLocalizations.of(context)!.connecting);
-                  var assessForms = snapshot.data?.docs;
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: assessForms?.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        title: Text(
-                            "${AppLocalizations.of(context)!.name}: ${assessForms![index]['Name'].toString()}" +
-                                "\n"),
-                        subtitle: Text(
-                            "${AppLocalizations.of(context)!.date}: ${DateFormat('yyyy-MM-dd').format((assessForms[index]['Created'] as Timestamp).toDate())}"),
-                      );
-                    },
-                  );
-                },
-              ),
+              Divider(),
               Container(
                 alignment: Alignment.center,
-                padding: EdgeInsets.all(14.0),
+                padding: EdgeInsets.all(20.0),
                 child: Text(
                   "${AppLocalizations.of(context)!.student}: ${widget.passedLegitName}\nDate: ${DateFormat('yyyy-MM-dd').format((widget.passedSummDate).toDate())}",
                   style: TextStyle(fontSize: 20),
                 ),
+              ),
+              Divider(
+                height: 2,
+              ),
+              SizedBox(
+                height: 14,
               ),
               Column(
                 children: [
@@ -301,10 +276,10 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
                               Text(
                                 _comp.toString(),
                                 style: TextStyle(
-                                    fontSize: 21, fontWeight: FontWeight.w400),
+                                    fontSize: 22, fontWeight: FontWeight.w400),
                                 textAlign: TextAlign.left,
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 10),
                               LegendsListWidget(
                                 legends: [
                                   for (var i = 0;
