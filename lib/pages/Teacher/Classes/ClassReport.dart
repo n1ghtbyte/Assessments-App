@@ -1,7 +1,10 @@
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:assessments_app/InovWidgets/ChartData.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -22,8 +25,11 @@ int genColourInt(String competence) {
   return color.value;
 }
 
-Future<Uint8List> generateClassReport(Map<String, List<DataItem>> _bigData,
-    Map<String, List<PointLinex>> _smallData, List<String> info) async {
+Future<Uint8List> generateClassReport(
+    Map<String, List<DataItem>> _bigData,
+    Map<String, List<PointLinex>> _smallData,
+    List<String> info,
+    BuildContext contextLanguage) async {
   // Summative table headers
 
   const baseColor = PdfColor.fromInt(1810353);
@@ -40,6 +46,8 @@ Future<Uint8List> generateClassReport(Map<String, List<DataItem>> _bigData,
   Map<String, List<List<Object>>> dataBarChart = {};
   List<pw.Chart> charts = [];
 
+  List<Timestamp> _times = [];
+
   // PRECISA DE MIN 2 INDICADORES !!!
   print("-----------------------------------------------");
 
@@ -50,7 +58,14 @@ Future<Uint8List> generateClassReport(Map<String, List<DataItem>> _bigData,
       [" ", 0.0]
     ];
     for (var dt in _smallData[comp]!) {
-      dataBarChart[comp]?.add([dt.index, dt.value]);
+      dataBarChart[comp]?.add([
+        dt.index,
+        dt.value,
+        DateFormat('dd/MM/yyyy').format(dt.timestampDate.toDate()),
+      ]);
+      if (!_times.contains(dt.timestampDate)) {
+        _times.add(dt.timestampDate);
+      }
     }
   }
   for (var comp in _bigData.keys) {
@@ -71,16 +86,26 @@ Future<Uint8List> generateClassReport(Map<String, List<DataItem>> _bigData,
   }
   print(dataBarChart);
 
+  List<String> formattedDates = _times.map((timestamp) {
+    return DateFormat('dd/MM/yyyy').format(timestamp.toDate());
+  }).toList();
+
   // Data table
 
   print("-----------------------------------------------");
 
   // Top bar chart
   final chart2 = pw.Chart(
-    right: pw.ChartLegend(),
+    // title: pw.Text(AppLocalizations.of(contextLanguage)!.studentprog),
+    overlay: pw.ChartLegend(),
     grid: pw.CartesianGrid(
-      xAxis:
-          pw.FixedAxis(List<int>.generate(max.toInt() + 1, (index) => index)),
+      xAxis: pw.FixedAxis.fromStrings(
+        List<String>.generate(
+            (max + 1).toInt(), (index) => formattedDates[index]),
+        marginStart: 0,
+        marginEnd: 30,
+        ticks: true,
+      ),
       yAxis: pw.FixedAxis(
         [0, 1, 2, 3, 4, 5],
         divisions: true,
@@ -89,7 +114,7 @@ Future<Uint8List> generateClassReport(Map<String, List<DataItem>> _bigData,
     datasets: [
       for (var x in _smallData.keys)
         pw.LineDataSet(
-          lineWidth: 4,
+          lineWidth: 3,
           legend: x,
           drawSurface: false,
           isCurved: true,

@@ -594,9 +594,12 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                     initialPageFormat: PdfPageFormat.a4,
                                     pdfFileName: "ASSESS.pdf",
                                     build: (format) => generateClassReport(
-                                        _bigData, averagedPointLinexList, [
-                                      data['Name'],
-                                    ]),
+                                        _bigData,
+                                        averagedPointLinexList,
+                                        [
+                                          data['Name'],
+                                        ],
+                                        context),
                                   ),
                                 ),
                               );
