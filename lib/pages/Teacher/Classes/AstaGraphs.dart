@@ -306,7 +306,14 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     }
                     List<Map<dynamic, dynamic>> fsum = [];
                     for (var _doc in snapshotSumm.data!.docs) {
-                      fsum.add(_doc.data()! as Map<dynamic, dynamic>);
+                      Map<dynamic, dynamic> documentData =
+                          _doc.data()! as Map<dynamic, dynamic>;
+                      // Access the document ID
+                      String documentId = _doc.id;
+
+                      // Add the ID directly to the map
+                      documentData['id'] = documentId;
+                      fsum.add(documentData);
                     }
 
                     return Scaffold(
@@ -511,6 +518,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                                           dt['Name'],
                                                       passedSummDesc:
                                                           dt['Description'],
+                                                      passedSummId: dt['id'],
                                                       passedClassId:
                                                           widget.passedClassId,
                                                       passedClassName: widget

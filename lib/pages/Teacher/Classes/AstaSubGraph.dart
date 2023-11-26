@@ -18,6 +18,7 @@ class AstaSubGraph extends StatefulWidget {
   final Timestamp passedSummDate;
   final String passedSummName;
   final String passedSummDesc;
+  final String passedSummId;
   final String passedLegitName;
   final String passedClassName;
   final String passedClassId;
@@ -26,20 +27,21 @@ class AstaSubGraph extends StatefulWidget {
   final String passedEmail;
   final Map<dynamic, dynamic> passedfsum;
 
-  const AstaSubGraph(
-      {Key? key,
-      required this.passedSummResult,
-      required this.passedSummDate,
-      required this.passedSummName,
-      required this.passedSummDesc,
-      required this.passedClassId,
-      required this.passedClassName,
-      required this.passedLegitName,
-      required this.passedCompetences,
-      required this.passedFromatives,
-      required this.passedEmail,
-      required this.passedfsum})
-      : super(key: key);
+  const AstaSubGraph({
+    Key? key,
+    required this.passedSummResult,
+    required this.passedSummDate,
+    required this.passedSummName,
+    required this.passedSummDesc,
+    required this.passedSummId,
+    required this.passedClassId,
+    required this.passedClassName,
+    required this.passedLegitName,
+    required this.passedCompetences,
+    required this.passedFromatives,
+    required this.passedEmail,
+    required this.passedfsum,
+  }) : super(key: key);
 
   @override
   State<AstaSubGraph> createState() => _AstaSubGraphState();
@@ -47,6 +49,10 @@ class AstaSubGraph extends StatefulWidget {
 
 class _AstaSubGraphState extends State<AstaSubGraph> {
   final colorMap = generateColorMap();
+
+  late TextEditingController _editingController;
+  late String _editedDescription; // Local variable for editing
+  bool _isEditing = false;
 
   ValueNotifier<bool> isDialOpen = ValueNotifier(false);
 
@@ -57,6 +63,10 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
   Map<String, List<PointLinex>> _smallData = {};
 
   var _max = 0;
+
+  late CollectionReference summativeCollection = FirebaseFirestore.instance
+      .collection(
+          '/classes/${widget.passedClassId}/grading/${widget.passedEmail}/summative/');
 
   late Query<Map<String, dynamic>> _formativeCollection = FirebaseFirestore
       .instance
@@ -96,6 +106,13 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
       );
 
   // Relative to Line charts
+
+  @override
+  void initState() {
+    super.initState();
+    _editedDescription = widget.passedSummDesc;
+    _editingController = TextEditingController(text: _editedDescription);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -233,26 +250,140 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
           ),
           body: ListView(
             children: [
+              SizedBox(
+                height: 10,
+              ),
               Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(20.0),
-                child: Text(
-                  "${AppLocalizations.of(context)!.assessname}: " +
+                child: Row(
+                  children: [
+                    Text(
+                      "${AppLocalizations.of(context)!.assessname}: ",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
                       widget.passedSummName,
-                  style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
                 ),
               ),
               Divider(),
               Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(20.0),
-                child: Text(
-                  "${AppLocalizations.of(context)!.grade}: " +
+                child: Row(
+                  children: [
+                    Text(
+                      "${AppLocalizations.of(context)!.grade}: ",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
                       widget.passedSummResult.toStringAsFixed(2),
-                  style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
                 ),
               ),
               Divider(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 20, top: 20, right: 20, bottom: 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Display the description on the same line as the "pencil" icon
+                        Text(
+                          "${AppLocalizations.of(context)!.description}",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () {
+                            setState(() {
+                              _isEditing = true;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    padding: EdgeInsets.all(28.0),
+                    child: _isEditing
+                        ? TextField(
+                            controller: _editingController,
+                            style: TextStyle(fontSize: 20),
+                          )
+                        : Text(
+                            _editedDescription,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                  ),
+                  Divider(),
+                  if (_isEditing)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            String editedDescription = _editingController.text;
+
+                            if (editedDescription != widget.passedSummDesc) {
+                              // The edited value is different, send to Firebase or perform your desired action
+                              // For demonstration purposes, printing the value to the console
+                              print('Sending to Firebase: $editedDescription');
+                              print(widget.passedSummId);
+
+                              // Set the value of "Description" in Firestore
+                              summativeCollection
+                                  .doc(widget.passedSummId)
+                                  .update({
+                                'Description': editedDescription,
+                              }).then((_) {
+                                print('Description updated successfully!');
+                              }).catchError((error) {
+                                print('Error updating description: $error');
+                              });
+                            }
+                            // Handle save logic here
+                            setState(
+                              () {
+                                _editedDescription = _editingController.text;
+                                _isEditing = false;
+                              },
+                            );
+                          },
+                          child: Text("Save"),
+                        ),
+                        SizedBox(width: 16),
+                        TextButton(
+                          onPressed: () {
+                            setState(
+                              () {
+                                _editingController.text = _editedDescription;
+                                _isEditing = false;
+                              },
+                            );
+                          },
+                          child: Text("Cancel"),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
               Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(20.0),
