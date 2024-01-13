@@ -39,6 +39,7 @@
      "date": "Data",
      "forma": "Avaliação formativa",
      "studentprog": "Progresso do estudante",
+     "classprog": "Progresso da turma",
      "result": "Resultado",
      "ltc": "Sair desta turma",
      "delclass": "Tens a certeza que queres sair desta turma e eliminar todas as tuas avaliações?",

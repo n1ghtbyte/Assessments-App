@@ -39,6 +39,7 @@
      "date": "Fecha",
      "forma": "Evaluación formativa",
      "studentprog": "Progreso del estudiante",
+     "classprog": "Progresión de clase",
      "result": "Resultado",
      "ltc": "Salir de la clase",
      "delclass": "¿Está seguro de que desea abandonar esta clase y borrar todas sus evaluaciones?",

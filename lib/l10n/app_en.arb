@@ -39,6 +39,7 @@
      "date": "Date",
      "forma": "Formative Assessments",
      "studentprog": "Student Progression",
+     "classprog": "Class progression",
      "result": "Result",
      "ltc": "Leave this class",
      "delclass": "Are you sure you wish to leave this class and delete all your assesments?",
