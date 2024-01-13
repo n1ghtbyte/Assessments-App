@@ -2,6 +2,7 @@ import 'package:assessments_app/pages/Teacher/Assessments/AssessmentFormative.da
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:overlay_kit/overlay_kit.dart';
 import 'package:readmore/readmore.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -21,9 +22,7 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
   late String _typeAssess;
   late List<String?> _competencesAssess = [];
   late String docID;
-
-  final String content =
-      'A formative assessement is: "the process of providing feedback to students during the learning process.  These are often low stakes activities that allow the instructor to check student work and provide feedback. Formative assessment refers to a wide variety of methods that teachersuse to conduct in-process evaluations of student comprehension, learning needs, and academic progress during a lesson, unit, or course. Formative assessments help teachers identify concepts that students are struggling to understand, skills they are having difficulty acquiring, or learning standards they have not yet achieved so that adjustments can be made to lessons, instructional techniques, and academic support.\nThe general goal of formative assessment is to collect detailed information that can be used to improve instruction and student learning while it’s happening. What makes an assessment “formative” is not the design of a test, technique, or self-evaluation, per se, but the way it is used—i.e., to inform in-process teaching and learning modifications."\n (Weimer, 2013)';
+  List<bool> isChecked = List<bool>.filled(20, false);
 
   late CollectionReference assessments =
       FirebaseFirestore.instance.collection('assessments');
@@ -33,6 +32,7 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
 
   String? _iD;
+
   Future<void> addAssessment(Map X, Map comp, var curr) {
     if (widget.passedStudName != "class") {
       return assessments.add({
@@ -85,14 +85,10 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
         .catchError((error) => print("Failed to update assessment: $error"));
   }
 
-  // Default Radio Button Selected Item When App Starts.
-
-  //11 just heristic
-  List<bool> isChecked = List<bool>.filled(11, false);
-
   Widget build(BuildContext context) {
     late CollectionReference _class =
         FirebaseFirestore.instance.collection('classes');
+
     return FutureBuilder<DocumentSnapshot>(
       future: _class.doc(widget.passedClassName).get(),
       builder:
@@ -122,7 +118,80 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
             centerTitle: true,
             backgroundColor: Color(0xFF29D09E),
           ),
+          floatingActionButton: FloatingActionButton.extended(
+            backgroundColor: Color(0xFF29D09E),
+            onPressed: () async {
+              _competencesAssess = [];
+              _typeAssess = "Formative";
+              for (int i = 0; i < list.length; i++) {
+                if (isChecked[i] == true) {
+                  _competencesAssess.add(list[i]);
+                }
+              }
+              if (_competencesAssess.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      AppLocalizations.of(context)!.fieldsdead,
+                    ),
+                  ),
+                );
+              } else {
+                OverlayLoadingProgress.start(
+                  widget: Container(
+                    width: MediaQuery.of(context).size.width / 4,
+                    padding:
+                        EdgeInsets.all(MediaQuery.of(context).size.width / 13),
+                    child: const AspectRatio(
+                      aspectRatio: 1,
+                      child: const CircularProgressIndicator(
+                        color: Color(0xFF29D09E),
+                      ),
+                    ),
+                  ),
+                );
+
+                FirebaseFirestore.instance
+                    .collection('classes')
+                    .doc(widget.passedClassName)
+                    .update({'currAssess': FieldValue.increment(1)});
+
+                Map<String, dynamic> competencesFirebase = {};
+                for (var x in widget.passedCompetences.entries) {
+                  if (_competencesAssess.contains(x.key.toString()) == true) {
+                    competencesFirebase[x.key] = x.value;
+                  }
+                }
+                await Future.delayed(
+                  const Duration(seconds: 1),
+                );
+                await addAssessment(
+                    resultMap, competencesFirebase, data['currAssess']);
+                await Future.delayed(
+                  const Duration(seconds: 1),
+                );
+                print(docID);
+                final snackBar = SnackBar(
+                    content: Text(AppLocalizations.of(context)!.issuedassess));
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AssessmentFormative(
+                      passedAssessmentIdName: docID,
+                    ),
+                  ),
+                );
+                //stop the loading
+                OverlayLoadingProgress.stop();
+              }
+            },
+            label: Text(AppLocalizations.of(context)!.create),
+            icon: Icon(Icons.add, size: 18),
+          ),
           body: SingleChildScrollView(
+            // physics for the scroll but just a bit
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
@@ -177,71 +246,17 @@ class _GenFormAssessmentState extends State<GenFormAssessment> {
                       title: Text("${list[index]}"),
                       value: isChecked[index],
                       onChanged: (value) {
-                        setState(() {
-                          isChecked[index] = value!;
-                        });
+                        setState(
+                          () {
+                            isChecked[index] = value!;
+                          },
+                        );
                       },
                       controlAffinity: ListTileControlAffinity.leading,
                     );
                   },
                 ),
-
-                //End Populator
-
-                const SizedBox(height: 16),
-
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Color(0xFF29D09E),
-                  ),
-                  onPressed: () async {
-                    // if (data['prevAssess'] == data['currAssess']) {
-                    FirebaseFirestore.instance
-                        .collection('classes')
-                        .doc(widget.passedClassName)
-                        .update({'currAssess': FieldValue.increment(1)});
-                    _competencesAssess = [];
-                    _typeAssess = "Formative";
-                    for (int i = 0; i < list.length; i++) {
-                      if (isChecked[i] == true) {
-                        _competencesAssess.add(list[i]);
-                      }
-                    }
-
-                    Map<String, dynamic> competencesFirebase = {};
-                    for (var x in widget.passedCompetences.entries) {
-                      if (_competencesAssess.contains(x.key.toString()) ==
-                          true) {
-                        competencesFirebase[x.key] = x.value;
-                      }
-                    }
-                    await addAssessment(
-                        resultMap, competencesFirebase, data['currAssess']);
-                    print(docID);
-                    final snackBar = SnackBar(
-                        content:
-                            Text(AppLocalizations.of(context)!.issuedassess));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AssessmentFormative(
-                          passedAssessmentIdName: docID,
-                        ),
-                      ),
-                    );
-                    // } else {
-                    //   final snackBar = SnackBar(
-                    //       content: Text(
-                    //           AppLocalizations.of(context)!.finishassessfirst));
-                    //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    // }
-                  },
-                  child: Text((AppLocalizations.of(context)!.create),
-                      style: new TextStyle(fontSize: 18)),
-                ),
+                SizedBox(height: 20),
               ],
             ),
           ),
