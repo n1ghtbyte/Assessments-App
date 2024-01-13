@@ -18,6 +18,7 @@
 GoogleService-Info.plist
 **/android/app/google-services.json
 lib/firebase_options.dart
+.firebase/
 
 # Crashlytics plugin (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
