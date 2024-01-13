@@ -42,7 +42,6 @@ dependencies:
   flutter_speed_dial: ^6.0.0
   intl: ^0.18.0
   firebase_storage: ^11.0.10
-  loader_overlay: ^2.1.0
   email_validator: ^2.1.17
   readmore: ^2.2.0
   firebase_crashlytics: ^3.0.16
@@ -51,6 +50,7 @@ dependencies:
   universal_io: ^2.2.0
   pdf: ^3.10.4
   printing: ^5.11.0
+  overlay_kit: ^1.0.4
 
 dev_dependencies:
   flutter_test:
