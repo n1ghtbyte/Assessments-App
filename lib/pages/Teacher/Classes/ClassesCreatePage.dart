@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassSetup.dart';
 import 'package:flutter/material.dart';
 import 'package:assessments_app/assets/Mypluggin.dart';
@@ -7,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import "package:assessments_app/utils/Competences.dart";
+import 'package:overlay_kit/overlay_kit.dart';
 
 class ClassesCreatePage extends StatefulWidget {
   const ClassesCreatePage({Key? key}) : super(key: key);
@@ -156,13 +156,22 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                   if (_formKey.currentState!.validate()) {
                     // If the form is valid, display a snackbar. In the real world,
                     // you'd often call a server or save the information in a database.
-
-                    context.loaderOverlay.show();
-
+                    OverlayLoadingProgress.start(
+                      widget: Container(
+                        width: MediaQuery.of(context).size.width / 4,
+                        padding: EdgeInsets.all(
+                            MediaQuery.of(context).size.width / 13),
+                        child: const AspectRatio(
+                          aspectRatio: 1,
+                          child: const CircularProgressIndicator(
+                            color: Color(0xFF29D09E),
+                          ),
+                        ),
+                      ),
+                    );
                     await addClass();
 
-                    await Future.delayed(Duration(seconds: 1));
-                    context.loaderOverlay.hide();
+                    await Future.delayed(const Duration(seconds: 2));
 
                     print(topG.id);
 
@@ -173,6 +182,8 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                             ClassSetup(passedClassNameSetup: topG.id),
                       ),
                     );
+                    OverlayLoadingProgress.stop();
+
                     final snackBar = SnackBar(
                       content: Text(AppLocalizations.of(context)!.geningcc),
                     );
@@ -188,82 +199,77 @@ class _ClassesCreatePageState extends State<ClassesCreatePage> {
                 label: Text(AppLocalizations.of(context)!.create),
                 icon: Icon(Icons.add, size: 18),
               ),
-              body: LoaderOverlay(
-                child: SafeArea(
-                  child: ListView(
-                    children: [
-                      Form(
-                        key: _formKey,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: TextFormField(
-                            controller: _controllerName,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return AppLocalizations.of(context)!.entertxt;
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.name,
-                            decoration: InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Color(0xff388e3c)),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Color(0xff388e3c)),
-                              ),
-                              icon: Icon(Icons.person),
-                              labelText:
-                                  AppLocalizations.of(context)!.classname,
-                              labelStyle: TextStyle(
-                                color: Color(0xFF29D09E),
-                              ),
-                              helperText:
-                                  AppLocalizations.of(context)!.enterclassname,
+              body: SafeArea(
+                child: ListView(
+                  children: [
+                    Form(
+                      key: _formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: TextFormField(
+                          controller: _controllerName,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return AppLocalizations.of(context)!.entertxt;
+                            }
+                            return null;
+                          },
+                          keyboardType: TextInputType.name,
+                          decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xff388e3c)),
                             ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xff388e3c)),
+                            ),
+                            icon: Icon(Icons.person),
+                            labelText: AppLocalizations.of(context)!.classname,
+                            labelStyle: TextStyle(
+                              color: Color(0xFF29D09E),
+                            ),
+                            helperText:
+                                AppLocalizations.of(context)!.enterclassname,
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Divider(
-                        thickness: 1,
-                        height: 1,
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.computer),
-                        title: Text(AppLocalizations.of(context)!.competences),
-                        subtitle: Text(AppLocalizations.of(context)!.pickind),
-                        enabled: true,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          for (var i = 0;
-                              i < actualNumberComp + actualNumberCompPrivate;
-                              i++)
-                            ParentChildCheckbox(
-                              parentCheckboxColor: Color(0xFF29D09E),
-                              childrenCheckboxColor: Color(0xff388e3c),
-                              parent: Text(
-                                _comps[i]['Name'],
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16),
-                              ),
-                              children: textify(_comps[i].keys.toList()),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Divider(
+                      thickness: 1,
+                      height: 1,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.computer),
+                      title: Text(AppLocalizations.of(context)!.competences),
+                      subtitle: Text(AppLocalizations.of(context)!.pickind),
+                      enabled: true,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (var i = 0;
+                            i < actualNumberComp + actualNumberCompPrivate;
+                            i++)
+                          ParentChildCheckbox(
+                            parentCheckboxColor: Color(0xFF29D09E),
+                            childrenCheckboxColor: Color(0xff388e3c),
+                            parent: Text(
+                              _comps[i]['Name'],
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
                             ),
-                        ],
-                      ),
-                      SizedBox(height: 64),
-                    ],
-                  ),
+                            children: textify(_comps[i].keys.toList()),
+                          ),
+                      ],
+                    ),
+                    SizedBox(height: 64),
+                  ],
                 ),
               ),
             );
