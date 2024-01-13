@@ -373,7 +373,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                 ClassesSettingsPage(widget.passedClassName)));
                         break;
                       case _MenuValues.Setup:
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        Navigator.of(context).push(MaterialPageRoute(
                             builder: (c) => ClassSetup(
                                   passedClassNameSetup: widget.passedClassName,
                                 )));
@@ -541,7 +541,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                   break;
                                 case _MenuValues.Setup:
                                   Navigator.of(context)
-                                      .pushReplacement(
+                                      .push(
                                         MaterialPageRoute(
                                           builder: (c) => ClassSetup(
                                             passedClassNameSetup:
