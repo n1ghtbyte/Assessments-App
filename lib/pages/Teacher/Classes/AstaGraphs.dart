@@ -106,7 +106,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
               if (v.index == value) {
                 return Text(
                   "\n" +
-                      DateFormat.MEd()
+                      DateFormat('dd-MM-yyyy')
                           .format(v.timestampDate.toDate())
                           .toString(),
                   // overflow: TextOverflow.fade,
@@ -497,11 +497,11 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                               cells: [
                                                 DataCell(Text(dt['Result']
                                                     .toStringAsFixed(2))),
-                                                DataCell(Text(
-                                                    DateFormat.yMMMEd()
-                                                        .format(dt['Created']
-                                                            .toDate())
-                                                        .toString()))
+                                                DataCell(Text(DateFormat(
+                                                        'dd-MM-yyyy')
+                                                    .format(
+                                                        dt['Created'].toDate())
+                                                    .toString()))
                                               ],
                                               onSelectChanged: (newValue) {
                                                 Navigator.of(context).push(
@@ -626,7 +626,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                                                     "${AppLocalizations.of(context)!.name}: ${assessForms![index]['Name'].toString()}" +
                                                                         "\n"),
                                                                 subtitle: Text(
-                                                                    "${AppLocalizations.of(context)!.date}: ${DateFormat('yyyy-MM-dd').format((assessForms[index]['Created'] as Timestamp).toDate())}"),
+                                                                    "${AppLocalizations.of(context)!.date}: ${DateFormat('dd-MM-yyyy').format((assessForms[index]['Created'] as Timestamp).toDate())}"),
                                                               );
                                                             },
                                                           );
@@ -741,7 +741,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                                               i < _comp2cardinal[_comp]!;
                                               i++)
                                             Legend(
-                                                "${DateFormat.yMEd().format(_smallData[_comp]![i].timestampDate.toDate())}" +
+                                                "${DateFormat('dd-MM-yyyy').format(_smallData[_comp]![i].timestampDate.toDate())}" +
                                                     " " +
                                                     _smallData[_comp]![i].type,
                                                 colorMap[_smallData[_comp]![i]

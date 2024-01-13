@@ -97,7 +97,7 @@ class _AssessmentCheckState extends State<AssessmentCheck> {
                         Container(
                           padding: EdgeInsets.all(14.0),
                           child: Text(
-                            "${AppLocalizations.of(context)!.name}: ${data['Name']}\n${AppLocalizations.of(context)!.classConcept}: ${data['ClassName']}\n${AppLocalizations.of(context)!.date}: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}",
+                            "${AppLocalizations.of(context)!.name}: ${data['Name']}\n${AppLocalizations.of(context)!.classConcept}: ${data['ClassName']}\n${AppLocalizations.of(context)!.date}: ${DateFormat('dd-MM-yyyy').format((data['Created'] as Timestamp).toDate())}",
                             style: TextStyle(fontSize: 20),
                           ),
                         ),

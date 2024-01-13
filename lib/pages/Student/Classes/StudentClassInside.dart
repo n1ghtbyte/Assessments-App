@@ -150,7 +150,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
               if (v.index == value) {
                 return Text(
                   "\n" +
-                      DateFormat.yMd()
+                      DateFormat('dd-MM-yyyy')
                           .format(v.timestampDate.toDate())
                           .toString(),
                   overflow: TextOverflow.ellipsis,
@@ -716,8 +716,8 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                                                                       'Result']
                                                                   .toStringAsFixed(
                                                                       2))),
-                                                              DataCell(Text(DateFormat
-                                                                      .yMMMEd()
+                                                              DataCell(Text(DateFormat(
+                                                                      'dd-MM-yyyy')
                                                                   .format(dt[
                                                                           'Created']
                                                                       .toDate())
@@ -787,7 +787,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                                                                               (BuildContext context, int index) {
                                                                             return ListTile(
                                                                               title: Text("${AppLocalizations.of(context)!.name}: ${assessForms![index]['Name'].toString()}"),
-                                                                              subtitle: Text("${AppLocalizations.of(context)!.date}: ${DateFormat('yyyy-MM-dd').format((assessForms[index]['Created'] as Timestamp).toDate())}"),
+                                                                              subtitle: Text("${AppLocalizations.of(context)!.date}: ${DateFormat('dd-MM-yyyy').format((assessForms[index]['Created'] as Timestamp).toDate())}"),
                                                                             );
                                                                           },
                                                                         );
@@ -911,7 +911,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                                                                     _comp]!;
                                                             i++)
                                                           Legend(
-                                                              "${DateFormat.yMd().format(_smallData[_comp]![i].timestampDate.toDate())}" +
+                                                              "${DateFormat('dd-MM-yyyy').format(_smallData[_comp]![i].timestampDate.toDate())}" +
                                                                   " " +
                                                                   _smallData[_comp]![
                                                                           i]

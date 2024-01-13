@@ -63,7 +63,7 @@ Future<Uint8List> generateReport(
       dataLinesChart[comp]?.add([
         dt.index,
         dt.value,
-        DateFormat('dd/MM/yyyy').format(dt.timestampDate.toDate()),
+        DateFormat('dd-MM-yyyy').format(dt.timestampDate.toDate()),
       ]);
       if (!_times.contains(dt.timestampDate)) {
         _times.add(dt.timestampDate);
@@ -99,7 +99,7 @@ Future<Uint8List> generateReport(
   }
 
   List<String> formattedDates = _times.map((timestamp) {
-    return DateFormat('dd/MM/yyyy').format(timestamp.toDate());
+    return DateFormat('dd-MM-yyyy').format(timestamp.toDate());
   }).toList();
 
   print(dataBarChart);
@@ -111,7 +111,9 @@ Future<Uint8List> generateReport(
     data: List<List<dynamic>>.generate(
       fsum.length,
       (index) => <dynamic>[
-        DateFormat.yMMMEd().format(fsum[index]['Created'].toDate()).toString(),
+        DateFormat('dd-MM-yyyy')
+            .format(fsum[index]['Created'].toDate())
+            .toString(),
         fsum[index]['Description'].toString(),
         fsum[index]['Result'].toStringAsFixed(2),
       ],
@@ -267,7 +269,8 @@ Future<Uint8List> generateReport(
                         crossAxisCount: 2,
                         children: [
                           pw.Text('Date:'),
-                          pw.Text(DateFormat.yMMMEd()
+                          // date format is dd/mm/yyyy
+                          pw.Text(DateFormat('dd-MM-yyyy')
                               .format(DateTime.now())
                               .toString()),
                           pw.Text('Class:'),

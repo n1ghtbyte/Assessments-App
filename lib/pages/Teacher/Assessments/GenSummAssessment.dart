@@ -177,7 +177,7 @@ class _GenSummAssessmentState extends State<GenSummAssessment> {
                                         .data()['Name'])
                                     .toString() +
                                 "\n" +
-                                DateFormat('yyyy-MM-dd')
+                                DateFormat('dd-MM-yyyy')
                                     .format(
                                         (_assessmentsFormativeMultiple[index]
                                                 .data()['Created'] as Timestamp)

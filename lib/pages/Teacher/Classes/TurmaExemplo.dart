@@ -953,9 +953,9 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                       subtitle: data['Target'].toString() ==
                                               'Single'
                                           ? Text(
-                                              "${AppLocalizations.of(context)!.student}: ${data['Students'].keys.toList()[0].toString()}\n${AppLocalizations.of(context)!.date}: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}")
+                                              "${AppLocalizations.of(context)!.student}: ${data['Students'].keys.toList()[0].toString()}\n${AppLocalizations.of(context)!.date}: ${DateFormat('dd-MM-yyyy').format((data['Created'] as Timestamp).toDate())}")
                                           : Text(
-                                              "${AppLocalizations.of(context)!.done}: ${data['Count'].toString()}/${data['Students'].values.toList().length}\n${AppLocalizations.of(context)!.date}: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}"),
+                                              "${AppLocalizations.of(context)!.done}: ${data['Count'].toString()}/${data['Students'].values.toList().length}\n${AppLocalizations.of(context)!.date}: ${DateFormat('dd-MM-yyyy').format((data['Created'] as Timestamp).toDate())}"),
                                     );
                                   }).toList(),
                                 ),

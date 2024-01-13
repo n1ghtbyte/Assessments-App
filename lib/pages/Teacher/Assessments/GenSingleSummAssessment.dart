@@ -137,7 +137,7 @@ class _GenSingleSummAssessmentState extends State<GenSingleSummAssessment> {
                                   as Map<dynamic, dynamic>)['Name']
                               .toString() +
                           "\n" +
-                          DateFormat('yyyy-MM-dd')
+                          DateFormat('dd-MM-yyyy')
                               .format(((snapshot.data!.docs[index].data()
                                           as Map<dynamic, dynamic>)['Created']
                                       as Timestamp)

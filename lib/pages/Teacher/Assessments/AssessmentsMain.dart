@@ -93,9 +93,9 @@ class _AssessmentsMainState extends State<AssessmentsMain> {
                   // CHECK THIS OUT
                   subtitle: data['Type'].toString() == 'Formative'
                       ? Text(
-                          "${AppLocalizations.of(context)!.classname}:${data['ClassName'].toString()}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}")
+                          "${AppLocalizations.of(context)!.classname}:${data['ClassName'].toString()}\nDate: ${DateFormat('dd-MM-yyyy').format((data['Created'] as Timestamp).toDate())}")
                       : Text(
-                          "${AppLocalizations.of(context)!.classname}:${data['ClassName'].toString()}\nDate: ${DateFormat('yyyy-MM-dd').format((data['Created'] as Timestamp).toDate())}"),
+                          "${AppLocalizations.of(context)!.classname}:${data['ClassName'].toString()}\nDate: ${DateFormat('dd-MM-yyyy').format((data['Created'] as Timestamp).toDate())}"),
                 );
               }).toList(),
             ),

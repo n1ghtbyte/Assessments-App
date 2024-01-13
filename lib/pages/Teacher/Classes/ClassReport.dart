@@ -1,6 +1,4 @@
 import 'dart:typed_data';
-import 'dart:ui';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:assessments_app/InovWidgets/ChartData.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -61,7 +59,7 @@ Future<Uint8List> generateClassReport(
       dataBarChart[comp]?.add([
         dt.index,
         dt.value,
-        DateFormat('dd/MM/yyyy').format(dt.timestampDate.toDate()),
+        DateFormat('dd-MM-yyyy').format(dt.timestampDate.toDate()),
       ]);
       if (!_times.contains(dt.timestampDate)) {
         _times.add(dt.timestampDate);
@@ -87,7 +85,7 @@ Future<Uint8List> generateClassReport(
   print(dataBarChart);
 
   List<String> formattedDates = _times.map((timestamp) {
-    return DateFormat('dd/MM/yyyy').format(timestamp.toDate());
+    return DateFormat('dd-MM-yyyy').format(timestamp.toDate());
   }).toList();
 
   // Data table
@@ -175,7 +173,7 @@ Future<Uint8List> generateClassReport(
                             crossAxisCount: 2,
                             children: [
                               pw.Text('Date:'),
-                              pw.Text(DateFormat.yMMMEd()
+                              pw.Text(DateFormat('dd-MM-yyyy')
                                   .format(DateTime.now())
                                   .toString()),
                               pw.Text('Class:'),
@@ -198,6 +196,7 @@ Future<Uint8List> generateClassReport(
       },
     ),
   );
+
   print(charts.length);
 
   // On Flutter, use the [path_provider](https://pub.dev/packages/path_provider) library:

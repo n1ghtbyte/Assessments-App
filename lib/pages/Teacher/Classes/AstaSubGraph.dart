@@ -388,7 +388,7 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(20.0),
                 child: Text(
-                  "${AppLocalizations.of(context)!.student}: ${widget.passedLegitName}\nDate: ${DateFormat('yyyy-MM-dd').format((widget.passedSummDate).toDate())}",
+                  "${AppLocalizations.of(context)!.student}: ${widget.passedLegitName}\nDate: ${DateFormat('dd-MM-yyyy').format((widget.passedSummDate).toDate())}",
                   style: TextStyle(fontSize: 20),
                 ),
               ),
@@ -417,7 +417,7 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
                                       i < _comp2cardinal[_comp]!;
                                       i++)
                                     Legend(
-                                        "${DateFormat.MEd().format(_smallData[_comp]![i].timestampDate.toDate())}",
+                                        "${DateFormat('dd-MM-yyyy').format(_smallData[_comp]![i].timestampDate.toDate())}",
                                         colorMap[_smallData[_comp]![i].type]![
                                             i]),
                                 ],

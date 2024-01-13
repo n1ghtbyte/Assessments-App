@@ -66,7 +66,7 @@ class _TeacherProfileState extends State<TeacherProfile> {
               ),
               ListTile(
                 title: Text(AppLocalizations.of(context)!.since),
-                subtitle: Text(DateFormat('yyyy-MM-dd')
+                subtitle: Text(DateFormat('dd-MM-yyyy')
                     .format((data['Created'] as Timestamp).toDate())),
               )
             ],
