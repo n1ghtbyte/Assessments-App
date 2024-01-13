@@ -1050,7 +1050,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                                   );
                                                 },
                                               )
-                                            : Text("Go define the weights"),
+                                            : Text("0%\n\n"),
                                         Text(
                                           AppLocalizations.of(context)!
                                               .studentprog,
