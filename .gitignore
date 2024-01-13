@@ -36,6 +36,7 @@ fabric.properties
 .project
 .settings/
 .vscode/*
+settings.json
 
 # Flutter repo-specific
 /bin/cache/
