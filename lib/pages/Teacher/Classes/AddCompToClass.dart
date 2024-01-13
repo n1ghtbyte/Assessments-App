@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'package:assessments_app/assets/Mypluggin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'ClassSetup.dart';
 import "package:assessments_app/utils/Competences.dart";
+import 'package:overlay_kit/overlay_kit.dart';
+
+import 'ClassSetup.dart';
 
 class AddCompToClass extends StatefulWidget {
   final String passedClassName;
@@ -13,14 +16,10 @@ class AddCompToClass extends StatefulWidget {
   const AddCompToClass(this.passedClassName, this.passedCompetences);
 
   @override
-  State<AddCompToClass> createState() => _AddStudentToClassState();
+  State<AddCompToClass> createState() => _AddCompToClassState();
 }
 
-class _AddStudentToClassState extends State<AddCompToClass> {
-  late Stream<QuerySnapshot> _stream =
-      FirebaseFirestore.instance.collection(getCompetencesPath()).snapshots();
-
-  final _controllerName = TextEditingController();
+class _AddCompToClassState extends State<AddCompToClass> {
   Map<String?, List<String?>> _competences =
       ParentChildCheckbox.selectedChildrens;
 
@@ -34,8 +33,6 @@ class _AddStudentToClassState extends State<AddCompToClass> {
       if (k != "Name") {
         result.add(Text(
           k.toString(),
-          // overflow: TextOverflow.ellipsis,
-          // softWrap: true,
         ));
       }
     }
@@ -44,21 +41,32 @@ class _AddStudentToClassState extends State<AddCompToClass> {
   }
 
   List<Map<String, dynamic>> _comps = [];
-  @override
+
   void dispose() {
-    _controllerName.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _stream,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return Text('Something went wrong');
-        }
+    Future<List<Map<String, dynamic>>> _getCompetences() async {
+      final snapshot = await FirebaseFirestore.instance
+          .collection(getCompetencesPath())
+          .get();
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    }
 
+    Future<List<Map<String, dynamic>>> _getPrivateCompetences() async {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser)
+          .collection('PrivateCompetences')
+          .get();
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    }
+
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: _getCompetences(),
+      builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container(
             child: Center(
@@ -66,35 +74,17 @@ class _AddStudentToClassState extends State<AddCompToClass> {
             ),
           );
         }
-        print("--------------------------------------------");
-        // print(snapshot.data!.docs[0].data()?.toString());
-        int actualNumberComp = snapshot.data!.docs.length;
-        for (var i = 0; i < actualNumberComp; i++) {
-          // print(i);
 
-          //print(_comps);
-
-          Map<String, dynamic> foo =
-              snapshot.data?.docs[i].data()! as Map<String, dynamic>;
-
-          _comps.add(foo);
-
-          // print(foo['Name']);
+        if (snapshot.hasError) {
+          return Text('Something went wrong');
         }
-        print("pppppppppppppppppppppppppppppppppppppppppp");
-        print(_comps);
-        return StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('users')
-              .doc(currentUser)
-              .collection('PrivateCompetences')
-              .snapshots(),
-          builder: (BuildContext context,
-              AsyncSnapshot<QuerySnapshot> snapshotprivate) {
-            if (snapshotprivate.hasError) {
-              return Text("Something went wrong");
-            }
-            if (!snapshotprivate.hasData) {
+
+        _comps = snapshot.data!;
+
+        return FutureBuilder<List<Map<String, dynamic>>>(
+          future: _getPrivateCompetences(),
+          builder: (context, snapshotprivate) {
+            if (snapshotprivate.connectionState == ConnectionState.waiting) {
               return Container(
                 child: Center(
                   child: CircularProgressIndicator(),
@@ -102,18 +92,21 @@ class _AddStudentToClassState extends State<AddCompToClass> {
               );
             }
 
-            int actualNumberCompPrivate = snapshotprivate.data!.docs.length;
-            for (var i = 0; i < actualNumberCompPrivate; i++) {
-              Map<String, dynamic> foo2 =
-                  snapshotprivate.data?.docs[i].data()! as Map<String, dynamic>;
-              _comps.insert(0, foo2);
-              print(foo2['Name']);
+            if (snapshotprivate.hasError) {
+              return Text("Something went wrong");
             }
-            print("*************************************");
-            print(_comps);
 
-            print(widget.passedCompetences);
+            _comps.insertAll(0, snapshotprivate.data!);
 
+            // remove the values of passed competences from the list of competences
+            for (var i = 0; i < _comps.length; i++) {
+              for (var j = 0; j < widget.passedCompetences.length; j++) {
+                if (_comps[i]['Name'] ==
+                    widget.passedCompetences.keys.toList()[j]) {
+                  _comps.removeAt(i);
+                }
+              }
+            }
             return Scaffold(
               appBar: AppBar(
                 title: Text(AppLocalizations.of(context)!.addcomps),
@@ -123,64 +116,84 @@ class _AddStudentToClassState extends State<AddCompToClass> {
               floatingActionButton: FloatingActionButton.extended(
                 backgroundColor: Color(0xFF29D09E),
                 onPressed: () async {
-                  _competences.removeWhere((key, value) => value.isEmpty);
-                  var thirdMap = {};
+                  OverlayLoadingProgress.start(
+                    widget: Container(
+                      width: MediaQuery.of(context).size.width / 4,
+                      padding: EdgeInsets.all(
+                          MediaQuery.of(context).size.width / 13),
+                      child: const AspectRatio(
+                        aspectRatio: 1,
+                        child: const CircularProgressIndicator(
+                          color: Color(0xFF29D09E),
+                        ),
+                      ),
+                    ),
+                  );
 
-                  thirdMap.addAll(widget.passedCompetences);
-                  thirdMap.addAll(_competences);
-                  print(thirdMap);
+                  // compute the junction of the two maps and remove the empty values
+                  _competences.removeWhere((key, value) => value.isEmpty);
+                  var junction = {};
+                  junction.addAll(widget.passedCompetences);
+                  junction.addAll(_competences);
 
                   await FirebaseFirestore.instance
                       .collection('classes')
                       .doc(widget.passedClassName)
-                      .update({
-                    'Competences': thirdMap,
-                  });
+                      .update(
+                    {
+                      'Competences': junction,
+                    },
+                  );
 
-                  // await Future.delayed(Duration(seconds: 1));
-                  // context.loaderOverlay.hide();
+                  await Future.delayed(
+                    const Duration(seconds: 1),
+                  );
 
                   Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ClassSetup(
-                              passedClassNameSetup: widget.passedClassName)));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ClassSetup(passedClassNameSetup: topG.id),
+                    ),
+                  );
+
+                  //stop the loading
+                  OverlayLoadingProgress.stop();
                 },
                 label: Text(AppLocalizations.of(context)!.add),
                 icon: Icon(Icons.add, size: 18),
               ),
-              body: SafeArea(
-                child: ListView(
+              body: SingleChildScrollView(
+                physics: ClampingScrollPhysics(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(24),
+                      padding: EdgeInsets.all(30),
+                      // center
+                      alignment: Alignment.center,
                       child: Text(
-                        AppLocalizations.of(context)!.pickcompsclass,
+                        AppLocalizations.of(context)!.addcomps,
                         style: TextStyle(
-                            fontSize: 21, fontWeight: FontWeight.w500),
-                        textAlign: TextAlign.center,
+                            fontWeight: FontWeight.w400, fontSize: 20),
                       ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        for (var i = 0;
-                            i < actualNumberComp + actualNumberCompPrivate;
-                            i++)
-                          ParentChildCheckbox(
-                            parentCheckboxColor: Color(0xFF29D09E),
-                            childrenCheckboxColor: Color(0xff388e3c),
-                            parent: Text(
-                              _comps[i]['Name'],
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                            children: textify(_comps[i].keys.toList()),
-                          ),
-                      ],
-                    ),
-                    SizedBox(height: 64),
+                    // divider with the green color
+                    const SizedBox(height: 10),
+                    for (var i = 0; i < _comps.length; i++)
+                      ParentChildCheckbox(
+                        parentCheckboxColor: Color(0xFF29D09E),
+                        childrenCheckboxColor: Color(0xff388e3c),
+                        parent: Text(
+                          _comps[i]['Name'],
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        children: textify(
+                          _comps[i].keys.toList(),
+                        ),
+                      ),
                   ],
                 ),
               ),
