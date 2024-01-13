@@ -24,7 +24,6 @@ class _AddCompToClassState extends State<AddCompToClass> {
       ParentChildCheckbox.selectedChildrens;
 
   String? currentUser = FirebaseAuth.instance.currentUser!.email;
-  var topG; //document ID
 
   List<Text> textify(List x) {
     List<Text> result = [];
@@ -41,10 +40,6 @@ class _AddCompToClassState extends State<AddCompToClass> {
   }
 
   List<Map<String, dynamic>> _comps = [];
-
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,49 +111,64 @@ class _AddCompToClassState extends State<AddCompToClass> {
               floatingActionButton: FloatingActionButton.extended(
                 backgroundColor: Color(0xFF29D09E),
                 onPressed: () async {
-                  OverlayLoadingProgress.start(
-                    widget: Container(
-                      width: MediaQuery.of(context).size.width / 4,
-                      padding: EdgeInsets.all(
-                          MediaQuery.of(context).size.width / 13),
-                      child: const AspectRatio(
-                        aspectRatio: 1,
-                        child: const CircularProgressIndicator(
-                          color: Color(0xFF29D09E),
+                  // check if the user has selected at least one competence
+
+                  var foo = _competences;
+                  foo.removeWhere((key, value) => value.isEmpty);
+
+                  if (foo.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          AppLocalizations.of(context)!.fieldsdead,
                         ),
                       ),
-                    ),
-                  );
+                    );
+                  } else {
+                    //start the loading
+                    OverlayLoadingProgress.start(
+                      widget: Container(
+                        width: MediaQuery.of(context).size.width / 4,
+                        padding: EdgeInsets.all(
+                            MediaQuery.of(context).size.width / 13),
+                        child: const AspectRatio(
+                          aspectRatio: 1,
+                          child: const CircularProgressIndicator(
+                            color: Color(0xFF29D09E),
+                          ),
+                        ),
+                      ),
+                    );
 
-                  // compute the junction of the two maps and remove the empty values
-                  _competences.removeWhere((key, value) => value.isEmpty);
-                  var junction = {};
-                  junction.addAll(widget.passedCompetences);
-                  junction.addAll(_competences);
+                    // compute the junction of the two maps and remove the empty values
+                    var junction = {};
+                    junction.addAll(widget.passedCompetences);
+                    junction.addAll(foo);
 
-                  await FirebaseFirestore.instance
-                      .collection('classes')
-                      .doc(widget.passedClassName)
-                      .update(
-                    {
-                      'Competences': junction,
-                    },
-                  );
+                    await FirebaseFirestore.instance
+                        .collection('classes')
+                        .doc(widget.passedClassName)
+                        .update(
+                      {
+                        'Competences': junction,
+                      },
+                    );
 
-                  await Future.delayed(
-                    const Duration(seconds: 1),
-                  );
+                    await Future.delayed(
+                      const Duration(seconds: 1),
+                    );
 
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ClassSetup(passedClassNameSetup: topG.id),
-                    ),
-                  );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ClassSetup(
+                            passedClassNameSetup: widget.passedClassName),
+                      ),
+                    );
 
-                  //stop the loading
-                  OverlayLoadingProgress.stop();
+                    //stop the loading
+                    OverlayLoadingProgress.stop();
+                  }
                 },
                 label: Text(AppLocalizations.of(context)!.add),
                 icon: Icon(Icons.add, size: 18),
