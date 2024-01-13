@@ -1053,7 +1053,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
                                             : Text("0%\n\n"),
                                         Text(
                                           AppLocalizations.of(context)!
-                                              .studentprog,
+                                              .classprog,
                                           style: TextStyle(
                                               fontSize: 21,
                                               fontWeight: FontWeight.w400),
