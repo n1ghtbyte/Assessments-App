@@ -107,16 +107,11 @@ class _NavBarTeacherState extends State<NavBarTeacher> {
                             MaterialStateProperty.all<Color>(Colors.blue),
                       ),
                       onPressed: () async {
-                        await _firebaseAuth.signOut().then(
-                          (user) {
-                            Navigator.of(context, rootNavigator: true).pop();
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => LoginScreen(),
-                              ),
-                            );
-                          },
-                        );
+                        await _firebaseAuth.signOut().then((value) =>
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => LoginScreen()),
+                                (route) => false));
                       },
                       child: Text(AppLocalizations.of(context)!.logout),
                     ),
