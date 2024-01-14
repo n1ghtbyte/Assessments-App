@@ -62,54 +62,7 @@ class _MyAppState extends State<MyApp> {
           colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green)
               .copyWith(background: Colors.white),
         ),
-        home: FutureBuilder(
-          future: _initializeFirebase(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              FirebaseAuth.instance.authStateChanges().listen(
-                (User? user) {
-                  if (user != null) {
-                    FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(user.email)
-                        .get()
-                        .then((DocumentSnapshot documentSnapshot) {
-                      if (documentSnapshot.exists) {
-                        print('Document data: ${documentSnapshot['Status']}');
-                        if (documentSnapshot['Status'] == "Teacher") {
-                          Future.microtask(() {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => ClassesPage()),
-                            );
-                          });
-                        } else if (documentSnapshot['Status'] == 'Student') {
-                          Future.microtask(() {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => StudClassesMain()),
-                            );
-                          });
-                        } else if (documentSnapshot['Status'] == 'Parent') {
-                          Future.microtask(() {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => ParentMainScreen()),
-                            );
-                          });
-                        }
-                      }
-                    });
-                  }
-                },
-              );
-              return LoginScreen();
-            }
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-        ),
+        home: const LoginScreen(),
       ),
     );
   }
