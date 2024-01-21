@@ -1,10 +1,5 @@
 import 'package:assessments_app/firebase_options.dart';
 import 'package:assessments_app/pages/Auth/LoginScreen.dart';
-import 'package:assessments_app/pages/Parent/ParentMain.dart';
-import 'package:assessments_app/pages/Student/Classes/StudentClasses.dart';
-import 'package:assessments_app/pages/Teacher/Classes/ClassesPage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,11 +13,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(MyApp());
-}
-
-Future<FirebaseApp> _initializeFirebase() async {
-  FirebaseApp firebaseApp = await Firebase.initializeApp();
-  return firebaseApp;
 }
 
 class MyApp extends StatefulWidget {
@@ -42,13 +32,6 @@ class _MyAppState extends State<MyApp> {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: AppLocalizations.supportedLocales,
-
-        // supportedLocales: [
-        //   Locale('en'), // English
-        //   Locale('pt'), // Portuguese
-        //   Locale('el'), // Modern Greek
-        //   Locale('es'), // Spanish
-        // ],
         theme: ThemeData(
           primaryColor: Color(0xFF29D09E),
           scaffoldBackgroundColor: Colors.white,
