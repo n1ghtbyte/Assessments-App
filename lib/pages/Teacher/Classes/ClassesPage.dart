@@ -5,8 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '../../../InovWidgets/NavBarTeacher.dart';
+import 'package:assessments_app/InovWidgets/NavBarTeacher.dart';
 
 class ClassesPage extends StatefulWidget {
   const ClassesPage({Key? key}) : super(key: key);
@@ -16,13 +15,80 @@ class ClassesPage extends StatefulWidget {
 }
 
 class _ClassesPageState extends State<ClassesPage> {
-  String? currentUser = FirebaseAuth.instance.currentUser!.email;
+  String? currentUser = FirebaseAuth.instance.currentUser?.email;
 
   final _classesStream = FirebaseFirestore.instance
       .collection('classes')
-      .where('TeacherID', isEqualTo: FirebaseAuth.instance.currentUser!.email)
+      .where('TeacherID', isEqualTo: FirebaseAuth.instance.currentUser?.email)
       .orderBy("Created", descending: true)
       .snapshots();
+
+  Widget _buildEmptyState(BuildContext context) {
+    return Scaffold(
+      drawer: NavBarTeacher(),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.classes),
+        centerTitle: true,
+        backgroundColor: Color(0xFF29D09E),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        backgroundColor: Color(0xFF29D09E),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ClassesCreatePage(),
+            ),
+          );
+        },
+      ),
+      body: Center(
+        child: Text(
+          AppLocalizations.of(context)!.classdisplayhere,
+          style: TextStyle(fontStyle: FontStyle.italic),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildListItem(BuildContext context, Map<String, dynamic> data) {
+    return ListTile(
+      onTap: () {
+        print(data);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                TurmaExemplo(data['documentID']?.toString() ?? ''),
+          ),
+        );
+      },
+      leading: Icon(Icons.school),
+      isThreeLine: true,
+      title: Text(data['Name']?.toString() ?? ''),
+      subtitle: Text(
+        "${AppLocalizations.of(context)!.students}: ${data['NumStudents']?.toString()}\n${AppLocalizations.of(context)!.joinc}: ${data['documentID']?.toString() ?? ''}",
+      ),
+      onLongPress: () async {
+        final docId = data['documentID'];
+        final snackBar = SnackBar(
+          content: Text(AppLocalizations.of(context)!.copyclipboard),
+        );
+        await Clipboard.setData(ClipboardData(text: docId)).then((value) {
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }).catchError((error) {
+          // Handle clipboard operation errors
+          print('Error copying to clipboard: $error');
+        });
+        print(docId);
+        await Clipboard.getData(Clipboard.kTextPlain).then((value) {
+          print(value?.text); //value is clipbarod data
+        });
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,35 +106,11 @@ class _ClassesPageState extends State<ClassesPage> {
             ),
           );
         }
+
         if (snapshot.data?.size.toInt() == 0) {
-          return Scaffold(
-            drawer: NavBarTeacher(),
-            appBar: AppBar(
-              title: Text(AppLocalizations.of(context)!.classes),
-              centerTitle: true,
-              backgroundColor: Color(0xFF29D09E),
-            ),
-            floatingActionButton: FloatingActionButton(
-              child: Icon(Icons.add),
-              backgroundColor: Color(0xFF29D09E),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ClassesCreatePage(),
-                  ),
-                );
-              },
-            ),
-            body: Center(
-              child: Text(
-                AppLocalizations.of(context)!.classdisplayhere,
-                style: TextStyle(fontStyle: FontStyle.italic),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          );
+          return _buildEmptyState(context);
         }
+
         return Scaffold(
           drawer: NavBarTeacher(),
           appBar: AppBar(
@@ -92,39 +134,7 @@ class _ClassesPageState extends State<ClassesPage> {
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
                   document.data()! as Map<String, dynamic>;
-              return ListTile(
-                onTap: () {
-                  print(data);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            TurmaExemplo(data['documentID'].toString())),
-                  );
-                },
-                leading: Icon(Icons.school),
-                isThreeLine: true,
-                title: Text(data['Name']),
-                subtitle: Text(
-                    "${AppLocalizations.of(context)!.students}: ${data['NumStudents'].toString()}\n${AppLocalizations.of(context)!.joinc}: ${data['documentID'].toString()}"),
-                onLongPress: () async {
-                  final docId = data['documentID'];
-                  final snackBar = SnackBar(
-                      content:
-                          Text(AppLocalizations.of(context)!.copyclipboard));
-                  await Clipboard.setData(ClipboardData(text: docId))
-                      .then((value) {
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }).catchError((error) {
-                    // Handle clipboard operation errors
-                    print('Error copying to clipboard: $error');
-                  });
-                  print(docId);
-                  await Clipboard.getData(Clipboard.kTextPlain).then((value) {
-                    print(value?.text); //value is clipbarod data
-                  });
-                },
-              );
+              return _buildListItem(context, data);
             }).toList(),
           ),
         );
