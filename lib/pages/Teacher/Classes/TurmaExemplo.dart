@@ -23,8 +23,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 
-import '../Assessments/AssessmentCheck.dart';
-import '../Assessments/AssessmentFormative.dart';
+import 'package:assessments_app/pages/Teacher/Assessments/AssessmentCheck.dart';
+import 'package:assessments_app/pages/Teacher/Assessments/AssessmentFormative.dart';
 
 enum _MenuValues {
   CompetenceAdd,
@@ -35,7 +35,6 @@ enum _MenuValues {
 
 class TurmaExemplo extends StatefulWidget {
   final String passedClassName;
-
   const TurmaExemplo(this.passedClassName);
 
   @override
@@ -50,7 +49,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
   Map<String, List<PointLinex>> _smallData = {};
   Map<String, List<PointLinex>> _finalData = {};
   Map<String, List<PointLinex>> averagedPointLinexList = {};
-  List<bool> _customTileExpanded = List<bool>.filled(10, false);
+  List<bool> _customTileExpanded = List<bool>.filled(15, false);
 
   TextEditingController _textFieldController = TextEditingController();
   Map<String, int> _leTitles = {};
@@ -58,44 +57,45 @@ class _TurmaExemploState extends State<TurmaExemplo>
   Future<void> _displayTextInputDialog(
       BuildContext context, String docId) async {
     return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(AppLocalizations.of(context)!.formasse),
-            content: TextField(
-              onChanged: (value) {
-                setState(() {
-                  valueText = value;
-                });
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.formasse),
+          content: TextField(
+            onChanged: (value) {
+              setState(() {
+                valueText = value;
+              });
+            },
+            controller: _textFieldController,
+            decoration: InputDecoration(
+                hintText: AppLocalizations.of(context)!.formative +
+                    " " +
+                    AppLocalizations.of(context)!.name),
+          ),
+          actions: <Widget>[
+            MaterialButton(
+              color: Colors.green,
+              textColor: Colors.white,
+              child: const Text('OK'),
+              onPressed: () {
+                setState(
+                  () {
+                    db.collection("assessments").doc(docId).update({
+                      "Name": valueText
+                    }).then(
+                        (value) =>
+                            print("Updated form name successfully updated!"),
+                        onError: (e) => print("Error updating document $e"));
+                    Navigator.pop(context);
+                  },
+                );
               },
-              controller: _textFieldController,
-              decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context)!.formative +
-                      " " +
-                      AppLocalizations.of(context)!.name),
             ),
-            actions: <Widget>[
-              MaterialButton(
-                color: Colors.green,
-                textColor: Colors.white,
-                child: const Text('OK'),
-                onPressed: () {
-                  setState(
-                    () {
-                      db.collection("assessments").doc(docId).update({
-                        "Name": valueText
-                      }).then(
-                          (value) =>
-                              print("Updated form name successfully updated!"),
-                          onError: (e) => print("Error updating document $e"));
-                      Navigator.pop(context);
-                    },
-                  );
-                },
-              ),
-            ],
-          );
-        });
+          ],
+        );
+      },
+    );
   }
 
   Future<Map<String, List<PointLinex>>> _fetchFormativeData(
@@ -392,6 +392,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
             ),
           );
         } else {
+          // HERE
           return StreamBuilder<QuerySnapshot>(
             stream: db.collection('users').snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snp) {
