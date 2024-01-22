@@ -1,30 +1,30 @@
 import 'dart:convert';
+import 'package:collection/collection.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:intl/intl.dart';
+import 'package:pdf/pdf.dart';
+import 'package:printing/printing.dart';
+
 import 'package:assessments_app/InovWidgets/ChartData.dart';
 import 'package:assessments_app/InovWidgets/LegendWidget.dart';
+import 'package:assessments_app/pages/Teacher/Assessments/AssessmentCheck.dart';
+import 'package:assessments_app/pages/Teacher/Assessments/AssessmentFormative.dart';
+import 'package:assessments_app/pages/Teacher/Assessments/GenFormAssessment.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/GenMultipleSelfAssessments.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/GenPeerAssessment.dart';
 import 'package:assessments_app/pages/Teacher/Assessments/GenSummAssessment.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AddCompToClass.dart';
-import 'package:assessments_app/pages/Teacher/Classes/AstaGraphs.dart';
 import 'package:assessments_app/pages/Teacher/Classes/AddStudentClass.dart';
+import 'package:assessments_app/pages/Teacher/Classes/AstaGraphs.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassReport.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:assessments_app/pages/Teacher/Assessments/GenFormAssessment.dart';
-import 'package:collection/collection.dart';
-
 import 'package:assessments_app/pages/Teacher/Classes/ClassSetup.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassesSettingsPage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:pdf/pdf.dart';
-import 'package:printing/printing.dart';
 
-import 'package:assessments_app/pages/Teacher/Assessments/AssessmentCheck.dart';
-import 'package:assessments_app/pages/Teacher/Assessments/AssessmentFormative.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum _MenuValues {
   CompetenceAdd,
