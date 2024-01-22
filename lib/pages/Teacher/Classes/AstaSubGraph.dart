@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'package:collection/collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,6 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:assessments_app/InovWidgets/ChartData.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
+import 'package:assessments_app/utils/indicatorToHash.dart';
 
 import 'AstaReport.dart';
 
@@ -75,17 +75,6 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
       .where('AssessID', whereIn: widget.passedFromatives);
 
   var _ind = 0;
-
-  int indicatorToHash(String indicator) {
-    int _sum = 0;
-
-    var foo = utf8.encode(indicator);
-    for (var k in foo) {
-      _sum += k;
-    }
-    _leTitles[indicator] = _sum;
-    return _sum;
-  }
 
   // Relative to bar charts
   SideTitles get _bottomTitles => SideTitles(
@@ -163,7 +152,7 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
               if (_bigData[comp]!.isEmpty || !tt[indicator]!) {
                 _bigData[comp]?.add(DataItem(
                     index: _ind,
-                    hash: indicatorToHash(indicator),
+                    hash: indicatorToHash(indicator, _leTitles),
                     x: indicator,
                     y: [foo['Competences'][comp][indicator]]));
               } else {
@@ -183,7 +172,7 @@ class _AstaSubGraphState extends State<AstaSubGraph> {
             var _res = helper.average;
             _smallData[comp]?.add(PointLinex(
                 index: fakeIndex,
-                hash: indicatorToHash(comp),
+                hash: indicatorToHash(comp, _leTitles),
                 competence: comp,
                 value: _res,
                 type: "Formative",

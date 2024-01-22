@@ -1,6 +1,5 @@
 // check this out https://github.com/imaNNeoFighT/fl_chart/blob/master/repo_files/documentations/bar_chart.md
 
-import 'dart:convert';
 import 'dart:developer';
 import 'package:assessments_app/pages/Student/Assessments/AssessmentSelf.dart';
 import 'package:collection/collection.dart';
@@ -12,6 +11,7 @@ import 'package:assessments_app/InovWidgets/LegendWidget.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:assessments_app/InovWidgets/ChartData.dart';
+import 'package:assessments_app/utils/indicatorToHash.dart';
 
 import '../Assessments/AssessmentPeer.dart';
 
@@ -107,17 +107,6 @@ class _StudentClassInsideState extends State<StudentClassInside> {
       .where('Type', isEqualTo: 'Peer');
 
   var _ind = 0;
-
-  int indicatorToHash(String indicator) {
-    int _sum = 0;
-
-    var foo = utf8.encode(indicator);
-    for (var k in foo) {
-      _sum += k;
-    }
-    _leTitles[indicator] = _sum;
-    return _sum;
-  }
 
   // Relative to bar charts
   SideTitles get _bottomTitles => SideTitles(
@@ -288,7 +277,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                               if (_bigData[comp]!.isEmpty || !tt[indicator]!) {
                                 _bigData[comp]?.add(DataItem(
                                     index: _ind,
-                                    hash: indicatorToHash(indicator),
+                                    hash: indicatorToHash(indicator, _leTitles),
                                     x: indicator,
                                     y: [foo['Competences'][comp][indicator]]));
                               } else {
@@ -314,7 +303,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
 
                               _smallData[comp]?.add(PointLinex(
                                   index: fakeIndex,
-                                  hash: indicatorToHash(comp),
+                                  hash: indicatorToHash(comp, _leTitles),
                                   competence: comp,
                                   value: _res,
                                   type: type,
@@ -325,7 +314,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
 
                               _smallData[comp]?.add(PointLinex(
                                   index: fakeIndex,
-                                  hash: indicatorToHash(comp),
+                                  hash: indicatorToHash(comp, _leTitles),
                                   competence: comp,
                                   value: _res,
                                   type: type,
@@ -336,7 +325,7 @@ class _StudentClassInsideState extends State<StudentClassInside> {
                                   AppLocalizations.of(context)!.formative;
                               _smallData[comp]?.add(PointLinex(
                                   index: fakeIndex,
-                                  hash: indicatorToHash(comp),
+                                  hash: indicatorToHash(comp, _leTitles),
                                   competence: comp,
                                   value: _res,
                                   type: type,

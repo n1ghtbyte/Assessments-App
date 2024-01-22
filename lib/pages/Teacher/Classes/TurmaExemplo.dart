@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,6 +22,7 @@ import 'package:assessments_app/pages/Teacher/Classes/AstaGraphs.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassReport.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassSetup.dart';
 import 'package:assessments_app/pages/Teacher/Classes/ClassesSettingsPage.dart';
+import 'package:assessments_app/utils/indicatorToHash.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -167,16 +167,6 @@ class _TurmaExemploState extends State<TurmaExemplo>
     for (var ini in comps.keys) {
       _finalData[ini] = [];
     }
-    int indicatorToHash(String indicator) {
-      int _sum = 0;
-
-      var foo = utf8.encode(indicator);
-      for (var k in foo) {
-        _sum += k;
-      }
-      _leTitles[indicator] = _sum;
-      return _sum;
-    }
 
     for (String user in stds) {
       var _ind = 0;
@@ -224,7 +214,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
               vis = true;
               _bigData[comp]?.add(DataItem(
                   index: _ind,
-                  hash: indicatorToHash(indicator),
+                  hash: indicatorToHash(indicator, _leTitles),
                   x: indicator,
                   y: [foo['Competences'][comp][indicator]]));
             } else {
@@ -246,7 +236,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
 
           _finalData[comp]?.add(PointLinex(
               index: fakeIndex,
-              hash: indicatorToHash(comp),
+              hash: indicatorToHash(comp, _leTitles),
               competence: comp,
               value: _res,
               type: foo['AssessID'],
@@ -254,7 +244,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
 
           _smallData[comp]?.add(PointLinex(
               index: fakeIndex,
-              hash: indicatorToHash(comp),
+              hash: indicatorToHash(comp, _leTitles),
               competence: comp,
               value: _res,
               type: foo['AssessID'],
@@ -321,12 +311,12 @@ class _TurmaExemploState extends State<TurmaExemplo>
         // Create a new PointLinex object with the averaged value
         PointLinex averagedPointLinex = PointLinex(
           index: double.parse(indd.toString()) -
-              1, // You might need to adjust this
-          hash: indicatorToHash(x), // You might need to adjust this
-          competence: x, // You might need to adjust this
+              1, 
+          hash: indicatorToHash(x, _leTitles),
+          competence: x, 
           value: averageValue,
           type: type,
-          timestampDate: doc['Created'], // You might need to adjust this
+          timestampDate: doc['Created'],
         );
         averagedPointLinexList[x]!.add(averagedPointLinex);
       });

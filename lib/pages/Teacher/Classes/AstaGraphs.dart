@@ -1,6 +1,5 @@
 // check this out https://github.com/imaNNeoFighT/fl_chart/blob/master/repo_files/documentations/bar_chart.md
 
-import 'dart:convert';
 import 'dart:developer';
 import 'package:assessments_app/pages/Teacher/Classes/AstaSubGraph.dart';
 import 'package:collection/collection.dart';
@@ -11,6 +10,7 @@ import 'package:assessments_app/InovWidgets/LegendWidget.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:assessments_app/utils/indicatorToHash.dart';
 
 import 'package:assessments_app/InovWidgets/ChartData.dart';
 import 'package:pdf/pdf.dart';
@@ -68,16 +68,6 @@ class _AstaGraphsState extends State<AstaGraphs> {
           '/classes/${widget.passedClassId}/grading/${widget.passedEmail}/summative');
   var _ind = 0;
 
-  int indicatorToHash(String indicator) {
-    int _sum = 0;
-
-    var foo = utf8.encode(indicator);
-    for (var k in foo) {
-      _sum += k;
-    }
-    _leTitles[indicator] = _sum;
-    return _sum;
-  }
 
   // Relative to bar charts
   SideTitles get _bottomTitles => SideTitles(
@@ -214,7 +204,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                       if (_bigData[comp]!.isEmpty || !tt[indicator]!) {
                         _bigData[comp]?.add(DataItem(
                             index: _ind,
-                            hash: indicatorToHash(indicator),
+                            hash: indicatorToHash(indicator, _leTitles),
                             x: indicator,
                             y: [foo['Competences'][comp][indicator]]));
                       } else {
@@ -237,7 +227,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     if (selfAssess.contains(_doc)) {
                       _smallData[comp]?.add(PointLinex(
                           index: fakeIndex,
-                          hash: indicatorToHash(comp),
+                          hash: indicatorToHash(comp, _leTitles),
                           competence: comp,
                           value: _res,
                           type: 'Self',
@@ -246,7 +236,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     if (peerAssess.contains(_doc)) {
                       _smallData[comp]?.add(PointLinex(
                           index: fakeIndex,
-                          hash: indicatorToHash(comp),
+                          hash: indicatorToHash(comp, _leTitles),
                           competence: comp,
                           value: _res,
                           type: 'Peer',
@@ -255,7 +245,7 @@ class _AstaGraphsState extends State<AstaGraphs> {
                     if (formAssess.contains(_doc)) {
                       _smallData[comp]?.add(PointLinex(
                           index: fakeIndex,
-                          hash: indicatorToHash(comp),
+                          hash: indicatorToHash(comp, _leTitles),
                           competence: comp,
                           value: _res,
                           type: 'Formative',
