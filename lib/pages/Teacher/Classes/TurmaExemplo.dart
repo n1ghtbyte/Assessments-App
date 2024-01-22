@@ -50,9 +50,73 @@ class _TurmaExemploState extends State<TurmaExemplo>
   Map<String, List<PointLinex>> _finalData = {};
   Map<String, List<PointLinex>> averagedPointLinexList = {};
   List<bool> _customTileExpanded = List<bool>.filled(15, false);
-
   TextEditingController _textFieldController = TextEditingController();
   Map<String, int> _leTitles = {};
+
+  PopupMenuButton<_MenuValues> buildPopupMenuButton(
+      BuildContext context, Map competences) {
+    return PopupMenuButton<_MenuValues>(
+      icon: Icon(Icons.more_vert),
+      itemBuilder: (BuildContext context) => [
+        _buildPopupMenuItem(
+          context,
+          AppLocalizations.of(context)!.addstud,
+          _MenuValues.AddStuddent,
+        ),
+        _buildPopupMenuItem(
+          context,
+          AppLocalizations.of(context)!.addcomps,
+          _MenuValues.CompetenceAdd,
+        ),
+        _buildPopupMenuItem(
+          context,
+          AppLocalizations.of(context)!.setupweights,
+          _MenuValues.Setup,
+        ),
+        _buildPopupMenuItem(
+          context,
+          AppLocalizations.of(context)!.settings,
+          _MenuValues.Settings,
+        ),
+      ],
+      onSelected: (value) =>
+          _handlePopupMenuSelection(context, value, competences),
+    );
+  }
+
+  PopupMenuItem<_MenuValues> _buildPopupMenuItem(
+      BuildContext context, String text, _MenuValues value) {
+    return PopupMenuItem(
+      child: Text(text),
+      value: value,
+    );
+  }
+
+  void _handlePopupMenuSelection(
+      BuildContext context, _MenuValues value, Map competences) {
+    switch (value) {
+      case _MenuValues.CompetenceAdd:
+        _navigateToPage(
+            context, AddCompToClass(widget.passedClassName, competences));
+        break;
+      case _MenuValues.AddStuddent:
+        _navigateToPage(context, AddStudentToClass(widget.passedClassName));
+        break;
+      case _MenuValues.Settings:
+        _navigateToPage(context, ClassesSettingsPage(widget.passedClassName));
+        break;
+      case _MenuValues.Setup:
+        _navigateToPage(
+            context, ClassSetup(passedClassNameSetup: widget.passedClassName));
+        break;
+    }
+  }
+
+  void _navigateToPage(BuildContext context, Widget page) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (c) => page))
+        .then((value) => setState(() {}));
+  }
 
   Future<void> _displayTextInputDialog(
       BuildContext context, String docId) async {
@@ -331,56 +395,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
               centerTitle: true,
               backgroundColor: Color(0xFF29D09E),
               actions: [
-                PopupMenuButton<_MenuValues>(
-                  icon: Icon(Icons.more_vert),
-                  itemBuilder: (BuildContext context) => [
-                    PopupMenuItem(
-                      child: Text(AppLocalizations.of(context)!.addstud),
-                      value: _MenuValues.AddStuddent,
-                    ),
-                    PopupMenuItem(
-                      child: Text(AppLocalizations.of(context)!.addcomps),
-                      value: _MenuValues.CompetenceAdd,
-                    ),
-                    PopupMenuItem(
-                      child: Text(AppLocalizations.of(context)!.setupweights),
-                      value: _MenuValues.Setup,
-                    ),
-                    PopupMenuItem(
-                      child: Text(AppLocalizations.of(context)!.settings),
-                      value: _MenuValues.Settings,
-                    ),
-                  ],
-                  onSelected: (value) {
-                    switch (value) {
-                      case _MenuValues.CompetenceAdd:
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(
-                                builder: (c) => AddCompToClass(
-                                    widget.passedClassName, competences)))
-                            .then((value) => setState(() {}));
-                        break;
-                      case _MenuValues.AddStuddent:
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(
-                                builder: (c) =>
-                                    AddStudentToClass(widget.passedClassName)))
-                            .then((value) => setState(() {}));
-                        break;
-                      case _MenuValues.Settings:
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (c) =>
-                                ClassesSettingsPage(widget.passedClassName)));
-                        break;
-                      case _MenuValues.Setup:
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (c) => ClassSetup(
-                                  passedClassNameSetup: widget.passedClassName,
-                                )));
-                        break;
-                    }
-                  },
-                ),
+                buildPopupMenuButton(context, competences),
               ],
             ),
             body: Center(
@@ -473,92 +488,7 @@ class _TurmaExemploState extends State<TurmaExemplo>
                             "${AppLocalizations.of(context)!.classConcept} ${data['Name'].toString()}"),
                         centerTitle: true,
                         actions: [
-                          PopupMenuButton<_MenuValues>(
-                            icon: Icon(Icons.more_vert),
-                            itemBuilder: (BuildContext context) => [
-                              PopupMenuItem(
-                                child:
-                                    Text(AppLocalizations.of(context)!.addstud),
-                                value: _MenuValues.AddStuddent,
-                              ),
-                              PopupMenuItem(
-                                child: Text(
-                                    AppLocalizations.of(context)!.addcomps),
-                                value: _MenuValues.CompetenceAdd,
-                              ),
-                              PopupMenuItem(
-                                child: Text(
-                                    AppLocalizations.of(context)!.setupweights),
-                                value: _MenuValues.Setup,
-                              ),
-                              PopupMenuItem(
-                                child: Text(
-                                    AppLocalizations.of(context)!.settings),
-                                value: _MenuValues.Settings,
-                              ),
-                            ],
-                            onSelected: (value) {
-                              switch (value) {
-                                case _MenuValues.CompetenceAdd:
-                                  Navigator.of(context)
-                                      .push(
-                                        MaterialPageRoute(
-                                          builder: (c) => AddCompToClass(
-                                              widget.passedClassName,
-                                              competences),
-                                        ),
-                                      )
-                                      .then(
-                                        (value) => setState(
-                                          () {},
-                                        ),
-                                      );
-                                  break;
-                                case _MenuValues.AddStuddent:
-                                  Navigator.of(context)
-                                      .push(
-                                        MaterialPageRoute(
-                                          builder: (c) => AddStudentToClass(
-                                              widget.passedClassName),
-                                        ),
-                                      )
-                                      .then(
-                                        (value) => setState(() {}),
-                                      );
-                                  break;
-                                case _MenuValues.Settings:
-                                  Navigator.of(context)
-                                      .push(
-                                        MaterialPageRoute(
-                                          builder: (c) => ClassesSettingsPage(
-                                              widget.passedClassName),
-                                        ),
-                                      )
-                                      .then(
-                                        (value) => setState(
-                                          () {},
-                                        ),
-                                      );
-                                  break;
-                                case _MenuValues.Setup:
-                                  Navigator.of(context)
-                                      .push(
-                                        MaterialPageRoute(
-                                          builder: (c) => ClassSetup(
-                                            passedClassNameSetup:
-                                                widget.passedClassName,
-                                          ),
-                                        ),
-                                      )
-                                      .then(
-                                        (value) => setState(
-                                          () {},
-                                        ),
-                                      );
-                                  break;
-                              }
-                            },
-                          ),
+                          buildPopupMenuButton(context, competences),
                         ],
                         backgroundColor: Color(0xFF29D09E),
                       ),
