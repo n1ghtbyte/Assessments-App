@@ -51,6 +51,7 @@ dependencies:
   pdf: ^3.10.4
   printing: ^5.11.0
   overlay_kit: ^1.0.4
+  provider: ^6.1.1
 
 dev_dependencies:
   flutter_test:
